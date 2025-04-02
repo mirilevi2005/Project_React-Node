@@ -1,8 +1,12 @@
+
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
 const apiSlice = createApi({
-    reducerPath: "api",
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/api' }),
-    tagTypes: ["Material"],
-    endpoints: () =>({})
-})
-export default apiSlice
+  reducerPath: "HomeLacturer", // שמירה על reducerPath שלך
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080' }), // עדכון ה-baseUrl
+  tagTypes: ["Material"],  // משדרגים את הטאגים כדי לנהל את הצורך בעדכון נתונים
+  endpoints: () => ({}),
+});
+
+export default apiSlice;
+

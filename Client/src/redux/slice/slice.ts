@@ -1,41 +1,39 @@
-import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Video } from "../../interface/VideoMaterial";  
+
+const initialState = {  
+  VideoList: [] as Video[],  // הגדרה ישירה של מערך מסוג Video
+  uploadedVideo: null as Video | null, // משתנה זמני להעלאה
 };
 
 const materialSlice = createSlice({
-    name: "recipes",
-    initialState,
-    reducers: {
-    //   setRecipeList: (state, action) => {
-    //         state.recipeList = action.payload;
-    //     },
-    //     setinsertRecipe: (state, action) => {
-    //         state.recipeList.push(action.payload);
-    //     },
-    //     seteditRecipe: (state, action) => {
-    //         const index = state.recipeList.findIndex(r => r.id === action.payload.id);
-    //         if (index !== -1) {
-    //             state.recipeList[index] = action.payload;
-    //         }  
-    //     },
-    //     setremoveRecipe: (state, action) => {
-    //         state.recipeList = state.recipeList.filter(recipe => recipe.id !== action.payload);
-    //     },
-    //     setSelectedRecipe: (state, action) => {
-    //         state.selectedRecipe = action.payload;
-    //     },
-    //     setFormMode: (state, action) => {
-    //         state.formMode = action.payload;
-    //     },
-    //     setError: (state, action) => {
-    //         state.error = action.payload;
-        
-    //     },
-    //     setIsLoading: (state, action) => {
-    //       state.isLoading = action.payload;
-    //     }
-     }
+  name: "videos",
+  initialState,
+  reducers: {
+    setAllVideo: (state, action: PayloadAction<Video[]>) => {
+      state.VideoList = action.payload;
+    },
+    addVideo: (state, action: PayloadAction<Video>) => {
+      state.VideoList.push(action.payload);
+    },
+    setUploadVideo: (state, action: PayloadAction<Video | null>) => {
+      state.uploadedVideo = action.payload;
+    },
+    deleteVideo: (state, action: PayloadAction<{ videoPath: string }>) => {
+      state.VideoList = state.VideoList.filter(video => video.videoPath !== action.payload.videoPath);
+    },
+    
+    
+    
+  },
 });
 
+export const { setAllVideo, addVideo, setUploadVideo ,deleteVideo} = materialSlice.actions;
 export default materialSlice.reducer;
+
+
+
+
+
+  
