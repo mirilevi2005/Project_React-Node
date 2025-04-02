@@ -7,14 +7,14 @@ const HomeLacturerData = [
       desc: "Artificial Intelligence", 
       body: "AI is changing the world.", 
       image: paperDemoImage,
-      link: "/ai"
+      link: "Ai"
     },
     { 
       title: "Cyber Security", 
       desc: "Protecting digital assets", 
       body: "Cyber security is crucial in today's digital world.", 
       image: paperDemoImage ,
-      link: "/CyberSecurity"
+      link: "CyberSecurity"
 
     },
     { 
@@ -22,7 +22,7 @@ const HomeLacturerData = [
       desc: "The future of cloud technology", 
       body: "Cloud computing is transforming data storage.", 
       image: paperDemoImage ,
-      link: "/CloudComputing"
+      link: "CloudComputing"
 
 
     }

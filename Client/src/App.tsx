@@ -6,8 +6,6 @@ import store from './redux/store'
 import { RouterProvider } from 'react-router'
 
 function App() {
-
-
   return (
     <>
       <Provider store={store}>
