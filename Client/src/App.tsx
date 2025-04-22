@@ -1,5 +1,6 @@
 
 import './App.css'
+// import SignUp from './components/signUp'
 import { Provider } from 'react-redux'
 import router from './routes/appRouter'
 import store from './redux/store'
@@ -11,6 +12,7 @@ function App() {
       <Provider store={store}>
       <RouterProvider router={router}/>
       </Provider> 
+      {/* <SignUp/> */}
     </>
   )
 }
