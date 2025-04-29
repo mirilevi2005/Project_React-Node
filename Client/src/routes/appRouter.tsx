@@ -1,32 +1,3 @@
-// import { createBrowserRouter } from "react-router";
-// import AppLayout from "../components/AppLayout";
-// import NotFound from "../pages/NotFound";
-// import Ai from "../pages/Ai";
-// import CyberSecurity from "../pages/CyberSecurity";
-// import CloudComputing from "../pages/CloudComputing";
-// import HomeLacturer from "../pages/HomeLacturer";
-
-// const router = createBrowserRouter([
-//   { element: <AppLayout/>,
-//     children: [
-//       {index:true,  path: '/',element:<HomeLacturer/>},
-//       {path:"HomeLacturer",
-//         children:[
-//           {index:true,element:<HomeLacturer/>},
-//           {path: "Ai", element: <Ai/>},
-//           {path: "CyberSecurity", element: <CyberSecurity/>},
-//           {path: "CloudComputing", element: <CloudComputing/>},
-//         ]
-//       },
-//       {  path: "*", element: <NotFound />,      },
-//     ],
-//   },
-// ]);
-
-
-// export default router;
-
-
 
 // import { createBrowserRouter, RouteObject } from "react-router";
 // import AppLayout from "../components/AppLayout";
@@ -36,12 +7,15 @@
 // import CloudComputing from "../pages/CloudComputing";
 // import HomeLacturer from "../pages/HomeLacturer";
 // import SignIn from "../components/SignIn";
+// import SignUp from "../components/SignUp"; // ✅ ייבוא קומפוננטת SignUp
+
 
 // const routes: RouteObject[] = [
 //   {
-//     element: <AppLayout />,
+//     element: <AppLayout />, // AppLayout הוא המעטפת הכללית
 //     children: [
-//       { index: true, path: '/', element: <SignIn /> },
+//       { index: true, path: '/', element: <SignIn /> }, 
+//       { path: "SignUp", element: <SignUp /> },  // נתיב ראשי שמפנה ל-SignIn
 //       {
 //         path: "HomeLacturer",
 //         children: [
@@ -51,7 +25,8 @@
 //           { path: "CloudComputing", element: <CloudComputing /> },
 //         ],
 //       },
-//       { path: "*", element: <NotFound /> },
+//        // נתיב ל-FinishSignIn
+//        { path: "*", element: <NotFound /> },
 //     ],
 //   },
 // ];
@@ -60,6 +35,7 @@
 
 // export default router;
 
+
 import { createBrowserRouter, RouteObject } from "react-router";
 import AppLayout from "../components/AppLayout";
 import NotFound from "../pages/NotFound";
@@ -67,13 +43,16 @@ import Ai from "../pages/Ai";
 import CyberSecurity from "../pages/CyberSecurity";
 import CloudComputing from "../pages/CloudComputing";
 import HomeLacturer from "../pages/HomeLacturer";
+import HomeStudent from "../pages/HomeStudent"; // נוספנו את דף ה-HomeStudent
 import SignIn from "../components/SignIn";
+import SignUp from "../components/SignUp"; // ✅ ייבוא קומפוננטת SignUp
 
 const routes: RouteObject[] = [
   {
-    element: <AppLayout />, // AppLayout הוא המעטפת הכללית
+    element: <AppLayout />,
     children: [
-      { index: true, path: '/', element: <SignIn /> },  // נתיב ראשי שמפנה ל-SignIn
+      { index: true, path: '/', element: <SignIn /> },
+      { path: "SignUp", element: <SignUp /> },
       {
         path: "HomeLacturer",
         children: [
@@ -83,7 +62,8 @@ const routes: RouteObject[] = [
           { path: "CloudComputing", element: <CloudComputing /> },
         ],
       },
-      { path: "*", element: <NotFound /> },  // נתיב שיבצע הפניה לדף NotFound אם אין נתיב מתאים
+      { path: "HomeStudent", element: <HomeStudent /> }, // הוספנו את הנתיב ל-HomeStudent
+      { path: "*", element: <NotFound /> },
     ],
   },
 ];
@@ -91,5 +71,3 @@ const routes: RouteObject[] = [
 const router = createBrowserRouter(routes);
 
 export default router;
-
-

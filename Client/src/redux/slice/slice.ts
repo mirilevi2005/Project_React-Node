@@ -5,6 +5,7 @@ import { Video } from "../../interface/VideoMaterial";
 const initialState = {  
   VideoList: [] as Video[],  // הגדרה ישירה של מערך מסוג Video
   uploadedVideo: null as Video | null, // משתנה זמני להעלאה
+
 };
 
 const materialSlice = createSlice({

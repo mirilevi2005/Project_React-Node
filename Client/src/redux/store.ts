@@ -3,12 +3,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import  apiSlice from "./slice/api/apiSlice";
 import materialsApi from "./slice/api/materialsApi";
-import recipesReducer from "./slice/slice";
+import VideoReducer from "./slice/slice";
+import UserInfoReducer from "../redux/slice/authStateSlice";
 
 const store = configureStore({
     reducer: {
         [materialsApi.reducerPath]: apiSlice.reducer,
-        videos: recipesReducer,
+        videos: VideoReducer,
+        userInfo:UserInfoReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(apiSlice.middleware),
