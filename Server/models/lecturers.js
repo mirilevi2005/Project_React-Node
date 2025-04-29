@@ -1,16 +1,12 @@
 const mongoose = require('mongoose');
 
 const LectureSchema = new mongoose.Schema({
-    name: {
+    _id:{
+            type:mongoose.Schema.Types.ObjectId
+        },
+    userName: {
         type: String,
         required: true
-    },
-    username: {
-        type: String,
-        lowercase: true,
-        required: true,
-        index: true,
-        unique: true
     },
     password: {
         type: String,

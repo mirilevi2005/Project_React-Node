@@ -3,7 +3,7 @@ import HomePage from '../components/HomePage'
 const HomeStudent = () => {
   return (
     <div>
-      <HomePage/>
+      <h1>Student</h1>
     </div>
   )
 }
