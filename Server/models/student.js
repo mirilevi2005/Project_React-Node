@@ -1,10 +1,10 @@
 
 const mongoose=require('mongoose')
 const studentSchema=new mongoose.Schema({
-     _id:{
+    _id:{
             type:mongoose.Schema.Types.ObjectId
         },
-        userName:{
+    userName:{
         type:String,
         required:true
     },
