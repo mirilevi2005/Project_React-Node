@@ -27,7 +27,7 @@ const signIn = async (req, res) => {
     //     path: '/',
     //     maxAge: 24 * 60 * 60 * 1000, // יום אחד//יותר נכון לעשות שהמשתמש יוצא מהמערכת אז נגמר הזמן שנשמר בcookies
     // });
-    res.json({ accessToken, user: userInfo })
+    res.json({ accessToken, userInfo })
 }
 
 //הרשמה
@@ -53,8 +53,6 @@ const signUp = async (req, res) => {
         roles: role,
     };
     const newUser = await User.create(userObject);
-   
-    
     if (newUser) {
         return res.status(201).json({ message: `New user ${newUser.userName} created as ${role}` ,newUser});
     } else {

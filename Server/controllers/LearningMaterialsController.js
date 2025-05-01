@@ -42,39 +42,26 @@ exports.addMaterial = async (req, res) => {
     }
 };
 
-  
 
-exports.getAllMaterials = async (req, res) => {
-    try {
-        const materials = await Material.find();
-        console.log(materials);
-        res.json(materials);
-    } catch (error) {
-        console.error('Failed to get materials:', error);
-        res.status(500).json({ message: 'Failed to get materials' });
-    }
-
-  };
-
-//   exports.getMaterialsByCourseName = async (req, res) => {
+// exports.getFinshDateByVideoName=async (req,res)=>{
 //     try {
-//         const { nameCours } = req.params;
-//         console.log("Fetching materials for course:", nameCours);
+//         const { videoName } = req.params; // מקבל את שם הסרטון מתוך ה-URL
 
-//         // חיפוש במסד הנתונים לפי שם הקורס
-//         const materials = await Material.find({ nameCours });
+//         // חיפוש הסרטון לפי שם הסרטון
+//         const material = await Material.findOne({ videoName });
 
-//         if (!materials || materials.length === 0) {
-//             return res.status(404).json({ message: "No videos found for this course" });
+//         if (!material) {
+//             return res.status(404).json({ message: "Video not found" });
 //         }
 
-//         // מחזירים את הנתונים ללקוח
-//         res.json(materials);
+//         // החזרת התאריך finishDate
+//         res.status(200).json({ finishDate: material.finishDate });
+
 //     } catch (error) {
-//         console.error("Error fetching materials:", error);
+//         console.error("Error fetching finishDate:", error);
 //         res.status(500).json({ message: "Internal Server Error", error: error.message });
 //     }
-// };
+// }
 
 exports.getMaterialsByCourseName = async (req, res) => {
     try {
