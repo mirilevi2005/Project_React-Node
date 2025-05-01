@@ -1,11 +1,24 @@
-import React from 'react'
+import { useState, useEffect } from "react";
 
+import "../../css/VideoOfMaterial.css";
+
+import VideoList from "../student/VideoList";
 const VideoOfMaterial = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+    const [uploadedCourse, setUploadedCourse] = useState<string | null>(null);
+    const urlParts = window.location.pathname.split('/');
+    const courseName = urlParts[urlParts.length - 1]; 
+   
 
-export default VideoOfMaterial
+    useEffect(() => {
+        setUploadedCourse(courseName); // עדכון סטייט בצורה תקינה
+    }, [courseName]);
+
+    return (
+        <div className="upload-container">
+            {/* הצגת רשימת הסרטונים רק כאשר יש שם קורס */}
+            {uploadedCourse && <VideoList courseName={uploadedCourse} />}
+        </div>
+    );
+};
+
+export default VideoOfMaterial;

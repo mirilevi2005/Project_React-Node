@@ -4,7 +4,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useDispatch } from "react-redux";
 import "../css/VideoOfMaterial.css";
 import { useAddMaterialMutation } from "../redux/slice/api/materialsApi";
-import { addVideo } from "../redux/slice/slice";
+import { addVideo } from "../redux/slice/videoSlice";
 import VideoList from "./VideoList";
 
 const VideoOfMaterial = () => {
@@ -45,7 +45,7 @@ const VideoOfMaterial = () => {
 
         const formData = new FormData();
         const uploadDate = new Date().toISOString();
-        const finishDate = '2025-12-31';
+       
         
         formData.append("video", selectedFile);
         formData.append("nameCours", courseName);

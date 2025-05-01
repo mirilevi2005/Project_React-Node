@@ -21,10 +21,12 @@ const materialSlice = createSlice({
     setUploadVideo: (state, action: PayloadAction<Video | null>) => {
       state.uploadedVideo = action.payload;
     },
-    deleteVideo: (state, action: PayloadAction<{ videoPath: string }>) => {
-      state.VideoList = state.VideoList.filter(video => video.videoPath !== action.payload.videoPath);
-    },
-    
+    // deleteVideo: (state, action: PayloadAction<{ videoPath: string }>) => {
+    //   state.VideoList = state.VideoList.filter(video => video.videoPath !== action.payload.videoPath);
+    // },
+    deleteVideo: (state, action: PayloadAction<string>) => {
+      state.VideoList = state.VideoList.filter(video => video._id !== action.payload);
+    }
     
     
   },
