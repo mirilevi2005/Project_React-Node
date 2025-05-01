@@ -39,6 +39,10 @@ const signUp = async (req, res) => {
     if (foundUser) {
         return res.status(409).json({ message: "Duplicate username" });
     }
+    const foundUserEmail = await User.findOne({ email }).lean();
+    if (foundUserEmail) {
+        return res.status(409).json({ message: "Duplicate email" });
+    }
     const hashedPwd = await bcrypt.hash(password, 10);
     // קביעת תפקיד לפי קוד מורה
     const role = (adminCode  === process.env.TEACHER_SECRET) ? 'lacturer' : 'student';

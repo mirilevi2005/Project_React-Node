@@ -1,8 +1,8 @@
-import HomePage from "../components/HomePage";
+import HomePagelacturer from "../components/HomePagelacturer";
 const HomeLacturer = () => {
   return (
     <>
-    <HomePage/>
+    <HomePagelacturer/>
     </>
   );
 }

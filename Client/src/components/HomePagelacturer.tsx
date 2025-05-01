@@ -48,7 +48,7 @@ interface PaperItem {
   title: string;
 }
 
-const HomePage: React.FC = () => {
+const HomePagelacturer: React.FC = () => {
   return (
     <div>
       <label>"Advance the field of Computer Science"</label>
@@ -75,4 +75,4 @@ const HomePage: React.FC = () => {
   );
 }
 
-export default HomePage;
+export default HomePagelacturer;

@@ -282,6 +282,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useDeleteMaterialMutation, useGetAllMaterialsByNameCourseQuery } from "../redux/slice/api/materialsApi";
 import { useDispatch } from "react-redux";
 import { deleteVideo } from "../redux/slice/slice";
+import VideoOfMaterial from "./VideoOfMaterial";
 
 interface Props {
   courseName: string;
