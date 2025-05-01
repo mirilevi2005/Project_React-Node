@@ -41,16 +41,13 @@ const onSubmit = async (data: LoginType) => {
 
     if (res.ok) {
       reset(); // איפוס הטופס
-   console.log
-    (result.newUser
-.roles);
       // ודא ש- user קיים לפני שאתה שולף ממנו מידע
       if (result.newUser) {
         const { roles } = result.newUser; // אם השרת מחזיר את ה-role של המשתמש
-        console.log(roles);
-        // עדכון ה-state הגלובלי עם פרטי המשתמש
-        dispatch(setUser({ ...result, roles }));
         
+        // עדכון ה-state הגלובלי עם פרטי המשתמש
+        dispatch(setUser(result.newUser));
+        console.log(result.newUser.userName);
         
         // ניווט לפי ה-role
         if (roles === 'student') {

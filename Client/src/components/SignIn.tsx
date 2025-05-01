@@ -18,6 +18,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie"; // <-- נוספה שורה זו
 import { z } from "zod";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slice/authStateSlice";
 
 const SignInSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -38,6 +40,7 @@ const SignIn = () => {
   const [magicEmail, setMagicEmail] = useState("");
   const navigate = useNavigate();
   const [cookies, setCookie] = useCookies(["token"]); // <-- נוספה שורה זו
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -62,6 +65,7 @@ const SignIn = () => {
       });
 
       const result = await res.json();
+        dispatch(setUser(result.newUser));
 
       if (res.ok) {
         reset();

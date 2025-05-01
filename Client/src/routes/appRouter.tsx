@@ -62,7 +62,13 @@ const routes: RouteObject[] = [
           { path: "CloudComputing", element: <CloudComputing /> },
         ],
       },
-      { path: "HomeStudent", element: <HomeStudent /> }, // הוספנו את הנתיב ל-HomeStudent
+      { path: "HomeStudent", element: <HomeStudent />,
+        children:[
+          { path: "Ai", element: <Ai /> },
+          { path: "CyberSecurity", element: <CyberSecurity /> },
+          { path: "CloudComputing", element: <CloudComputing /> },
+        ]
+       }, // הוספנו את הנתיב ל-HomeStudent
       { path: "*", element: <NotFound /> },
     ],
   },
