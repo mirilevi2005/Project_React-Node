@@ -1,30 +1,9 @@
-import { Video } from '../../../interface/VideoMaterial';
+import { Video, VideosResponse } from '../../../interface/VideoMaterial';
 import apiSlice from './apiSlice';
 
 const materialsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // הוספת חומר (סרטון)
-    // addMaterial: builder.mutation({
-    //    query: ({ file, nameCours, uploadDate, finishDate, videoPath, videoName }) => {
-    //     const formData = new FormData(); 
-    //     // הוספת קובץ הווידאו
-    //     formData.append("video", file);     
-    //     // הוספת פרטי הקורס
-    //     formData.append("nameCours", nameCours);
-    //     formData.append("uploadDate", uploadDate); // אם אתה רוצה גם את תאריך העלאה
-    //     formData.append("finishDate", finishDate);
-    //     formData.append("videoPath", videoPath);
-    //     formData.append("videoName", videoName);
-        
-    //     return {
-    //       url: `/HomeLacturer/${nameCours}`,
-    //       method: "POST", // במקרה של העלאה, השתמש ב-POST
-    //       body: formData,
-    //     };
-    //   },
-    //   invalidatesTags: ["Material"],
-    // }),
-   
+
     addMaterial: builder.mutation({
       query: ({ formData, nameCours }) => ({
         url: `/HomeLacturer/${nameCours}`,  // שם הקורס נכנס ב-URL
@@ -37,10 +16,15 @@ const materialsApiSlice = apiSlice.injectEndpoints({
 
 
     // קבלת כל הסרטונים לפי שם קורס
-    getAllMaterialsByNameCourse: builder.query<Video[], string>({
-      query: (courseName) => `/HomeLacturer/${courseName}`, // בקשה לקורס הדינמי
-      providesTags: ["Material"]
+    // getAllMaterialsByNameCourse: builder.query<Video[], string>({
+    //   query: (courseName) => `/HomeLacturer/${courseName}`, // בקשה לקורס הדינמי
+    //   providesTags: ["Material"]
+    // }),
+    getAllMaterialsByNameCourse: builder.query<VideosResponse, string>({
+      query: (courseName) => `/HomeLacturer/${courseName}`,
+      providesTags: ["Material"],
     }),
+    
 
 
     // קבלת סרטון לפי מזהה
@@ -62,6 +46,7 @@ const materialsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Material"],
     }),
     
+  
     
 
     // מחיקת חומר (סרטון)
@@ -72,6 +57,8 @@ const materialsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Material"],
     }),
+
+    
   })
 });
 

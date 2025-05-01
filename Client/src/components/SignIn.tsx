@@ -78,8 +78,11 @@ const SignIn = () => {
           secure: false // שימי true אם את עובדת עם https
         });
      console.log(result);
-     const { roles } = result.user;
-console.log(roles); 
+      dispatch(setUser(result.userInfo));
+      console.log(result.userInfo);
+      
+     const { roles } = result.userInfo;
+     console.log(roles);
         if (roles === "student") {
           navigate("/HomeStudent");
         } else  if(roles === "lacturer"){

@@ -39,9 +39,9 @@
 import { createBrowserRouter, RouteObject } from "react-router";
 import AppLayout from "../components/AppLayout";
 import NotFound from "../pages/NotFound";
-import Ai from "../pages/Ai";
-import CyberSecurity from "../pages/CyberSecurity";
-import CloudComputing from "../pages/CloudComputing";
+import Ai from "../pages/material/Ai";
+import CyberSecurity from "../pages/material/CyberSecurity";
+import CloudComputing from "../pages/material/CloudComputing";
 import HomeLacturer from "../pages/HomeLacturer";
 import HomeStudent from "../pages/HomeStudent"; // נוספנו את דף ה-HomeStudent
 import SignIn from "../components/SignIn";
@@ -62,8 +62,10 @@ const routes: RouteObject[] = [
           { path: "CloudComputing", element: <CloudComputing /> },
         ],
       },
-      { path: "HomeStudent", element: <HomeStudent />,
-        children:[
+      { path: "HomeStudent",
+        children:
+        [
+          { index: true, element: <HomeStudent /> },
           { path: "Ai", element: <Ai /> },
           { path: "CyberSecurity", element: <CyberSecurity /> },
           { path: "CloudComputing", element: <CloudComputing /> },

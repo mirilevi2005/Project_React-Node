@@ -3,7 +3,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import  apiSlice from "./slice/api/apiSlice";
 import materialsApi from "./slice/api/materialsApi";
-import VideoReducer from "./slice/slice";
+import VideoReducer from "../redux/slice/videoSlice";
 import UserInfoReducer from "../redux/slice/authStateSlice";
 
 const store = configureStore({

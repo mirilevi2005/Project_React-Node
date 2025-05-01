@@ -48,7 +48,7 @@ interface PaperItem {
   title: string;
 }
 
-const HomePagelacturer: React.FC = () => {
+const HomePagelacturer= () => {
   return (
     <div>
       <label>"Advance the field of Computer Science"</label>

@@ -6,9 +6,17 @@ export interface Video{
     videoPath:String ,
     videoName:String
 }
-export interface VideoApiResponse {
-    videos: Video[]; 
-  }
+
 export  interface VideoListProps {
     courseName: string;
   }
+export interface VideosResponse {
+    videos: Video[];
+  }
+  
+
+
+
+  // export interface VideoApiResponse {
+//     videos: Video[]; 
+//   }

@@ -5,6 +5,7 @@ import HomePageStudent from '../components/student/HomePageStudent';
 
 const HomeStudent = () => {
   const user = useSelector((state: RootState) => selectCurrentUser(state));
+console.log(user?.userName);
 
   return (
     <div>
