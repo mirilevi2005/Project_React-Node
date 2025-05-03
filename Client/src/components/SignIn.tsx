@@ -71,18 +71,17 @@ const SignIn = () => {
         reset();
 
         // שמירת הטוקן בעוגייה
-        setCookie("token", result.token, {
+        setCookie("token", result.accessToken, {
           path: "/",
           maxAge: 3600,
           sameSite: "lax",
           secure: false // שימי true אם את עובדת עם https
         });
-     console.log(result);
-      dispatch(setUser(result.userInfo));
-      console.log(result.userInfo);
+     console.log(result.user.roles+"result.user");
+      dispatch(setUser(result.user));
       
-     const { roles } = result.userInfo;
-     console.log(roles);
+     const { roles } = result.user;
+   
         if (roles === "student") {
           navigate("/HomeStudent");
         } else  if(roles === "lacturer"){
