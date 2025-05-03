@@ -34,27 +34,19 @@ const VideoList = ({ courseName }: Props) => {
   return (
     <div className="video-list">
       {videos.map((video) => {
-        const currentDate = new Date();
-        const finishDate = new Date(video.finishDate);
-        const isVideoExpired = currentDate > finishDate;
+       
+       
 
         return (
           <div key={video._id} className="video-item" style={{ position: "relative", marginBottom: "24px" }}>
             <h3>{video.videoName}</h3>
 
             <div style={{ position: "relative", display: "inline-block" }}>
-              <video
-                width="600"
-                controls={!isVideoExpired}
-                style={{ pointerEvents: isVideoExpired ? "none" : "auto" }}
-              >
-                <source src={`http://localhost:8080/uploads/${courseName}/${video.videoPath}`} type="video/mp4" />
-                הדפדפן שלך לא תומך בווידאו.
-              </video>
+            <video width="600" controls>
+  <source src={`http://localhost:8080/uploads/${courseName}/${video.videoPath}`} type="video/mp4" />
+  הדפדפן שלך לא תומך בווידאו.
+</video>
             </div>
-
-    
-
             <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
               <IconButton onClick={() => handleDelete(video._id)} aria-label="delete" size="large">
                 <DeleteIcon />
