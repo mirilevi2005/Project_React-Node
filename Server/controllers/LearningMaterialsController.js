@@ -107,7 +107,25 @@ exports.getMaterialsByCourseName = async (req, res) => {
     }
 };
 
-
+exports.updateMaterial = async (req, res) => {
+    try {
+      const { _id, videoName } = req.body;
+  
+      const updated = await Material.findByIdAndUpdate(
+        _id,
+        { videoName },
+        { new: true }
+      );
+  
+      if (!updated) return res.status(404).json({ message: "Material not found" });
+  
+      res.json(updated);
+    } catch (err) {
+      console.error("Update error:", err);
+      res.status(500).json({ message: "Server error updating material" });
+    }
+  };
+  
 
 exports.deleteMaterial = async (req, res) => {
     try {
