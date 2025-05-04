@@ -34,9 +34,21 @@ const materialsApiSlice = apiSlice.injectEndpoints({
     }),
    
     // עדכון חומר (סרטון)
+    // upDateMaterial: builder.mutation<Video, FormData>({
+    //   query: (formData) => {
+    //     const nameCours = formData.get("nameCours") as string;  // ודא שאתה מקבל את שם הקורס כראוי
+    //     return {
+    //       url: `/HomeLacturer/${nameCours}`,
+    //       method: "PUT",
+    //       body: formData,
+    //     };
+    //   },
+    //   invalidatesTags: ["Material"],
+    // }),
+    
     upDateMaterial: builder.mutation<Video, FormData>({
       query: (formData) => {
-        const nameCours = formData.get("nameCours") as string;  // ודא שאתה מקבל את שם הקורס כראוי
+        const nameCours = formData.get("nameCours") as string;
         return {
           url: `/HomeLacturer/${nameCours}`,
           method: "PUT",
@@ -46,7 +58,6 @@ const materialsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Material"],
     }),
     
-  
     
 
     // מחיקת חומר (סרטון)
