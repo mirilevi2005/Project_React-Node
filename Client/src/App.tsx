@@ -1,29 +1,21 @@
+
+
+
+
+
+
 // import './App.css';
-// import { useEffect } from 'react';
 // import { RouterProvider } from 'react-router';
 // import router from '../src/routes/appRouter';
 // import { Provider, useDispatch } from 'react-redux';
 // import store from '../src/redux/store';
-// import { getCookie } from 'typescript-cookie';
-// import { setUser } from '../src/redux/slice/authStateSlice';
-// import { jwtDecode } from 'jwt-decode';
-// import { userInfo } from '../src/interface/authTypes';
-// import { CookiesProvider } from 'react-cookie'; // 👈 הוספה חשובה
+
+// import { CookiesProvider } from 'react-cookie';
 
 // function App() {
 //   const dispatch = useDispatch();
 
-//   useEffect(() => {
-//     const token = getCookie('token');
-//     if (token) {
-//       try {
-//         const decoded: userInfo = jwtDecode(token);
-//         dispatch(setUser(decoded));
-//       } catch (error) {
-//         console.error("Failed to decode token:", error);
-//       }
-//     }
-//   }, [dispatch]);
+
 
 //   return (
 //     <RouterProvider router={router} />
@@ -33,7 +25,7 @@
 // export default function AppWithProvider() {
 //   return (
 //     <Provider store={store}>
-//       <CookiesProvider> {/* 👈 עטיפה ב-CookiesProvider */}
+//       <CookiesProvider>
 //         <App />
 //       </CookiesProvider>
 //     </Provider>
@@ -41,53 +33,32 @@
 // }
 
 
-
-
-
-
-
-
-
-
 import './App.css';
-import { useEffect } from 'react';
 import { RouterProvider } from 'react-router';
-import router from '../src/routes/appRouter';
-import { Provider, useDispatch } from 'react-redux';
-import store from '../src/redux/store';
-import { getCookie } from 'typescript-cookie';
-import { setUser } from '../src/redux/slice/authStateSlice';
-import { jwtDecode } from 'jwt-decode';
-import { userInfo } from '../src/interface/authTypes';
-import { CookiesProvider } from 'react-cookie';
+import router from './routes/appRouter';
+import { useEffect } from 'react';
+import { useCookies, CookiesProvider } from 'react-cookie';
+import { useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import { setUser } from './redux/slice/authStateSlice';
 
 function App() {
   const dispatch = useDispatch();
+  const [cookies] = useCookies(['token', 'userName', 'email', 'roles']);
 
-  // useEffect(() => {
-  //   const token = getCookie('token');
-    
-  //   // הדפסת הטוקן לצורך בדיקה
-  //   console.log("Token from cookie:", token);
+  useEffect(() => {
+    if (cookies?.token && cookies?.userName && cookies?.roles) {
+      dispatch(setUser({
+        token: cookies.token,
+        userName: cookies.userName,
+        email: cookies.email || '',
+        roles: cookies.roles,
+      }));
+    }
+  }, [cookies, dispatch]);
 
-  //   if (token) {
-  //     try {
-  //       // אם הטוקן לא בתצורה תקינה (שלושה חלקים)
-  //       if (token.split('.').length !== 3) {
-  //         throw new Error('Invalid token format');
-  //       }
-
-  //       const decoded: userInfo = jwtDecode(token);
-  //       dispatch(setUser(decoded));
-  //     } catch (error) {
-  //       console.error("Failed to decode token:", error);
-  //     }
-  //   }
-  // }, [dispatch]);
-
-  return (
-    <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default function AppWithProvider() {

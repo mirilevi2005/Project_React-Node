@@ -20,13 +20,6 @@ const signIn = async (req, res) => {
         roles: foundUser.roles,
     }
     const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
-    // res.cookie('token', accessToken, {
-    //     httpOnly: true,
-    //     secure: process.env.NODE_ENV !== 'development', 
-    //     sameSite: 'Strict',
-    //     path: '/',
-    //     maxAge: 24 * 60 * 60 * 1000, // יום אחד//יותר נכון לעשות שהמשתמש יוצא מהמערכת אז נגמר הזמן שנשמר בcookies
-    // });
     res.json({ accessToken, user: userInfo })
 }
 
@@ -62,4 +55,43 @@ const signUp = async (req, res) => {
     }
 };
 
-module.exports = { signIn, signUp }
+// התחברות עם Google
+const googleLogin = async (req, res) => {
+    const { email, userName } = req.body;
+
+    if (!email || !userName) {
+        return res.status(400).json({ message: "Missing email or userName" });
+    }
+
+    try {
+        let user = await User.findOne({ email }).lean();
+
+        // אם לא קיים, צור משתמש חדש
+        if (!user) {
+            const newUser = await User.create({
+                userName,
+                email,
+                roles: 'student', // ברירת מחדל
+            });
+
+            user = newUser.toObject(); // כדי להחזיר אותו אח"כ
+        }
+
+        const userInfo = {
+            _id: user._id,
+            userName: user.userName,
+            email: user.email,
+            roles: user.roles,
+        };
+
+        const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+
+        return res.json({ accessToken, user: userInfo });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Server error" });
+    }
+};
+
+
+module.exports = { signIn, signUp ,googleLogin}

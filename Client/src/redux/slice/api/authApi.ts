@@ -19,8 +19,16 @@ const authApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
+    googleSignIn: builder.mutation<AuthResponse, { email: string; userName: string }>({
+      query: (googleUser) => ({
+        url: "/google-login",
+        method: "POST",
+        body: googleUser,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
-export const { useSignInMutation, useSignUpMutation } = authApi;
+export const { useSignInMutation, useSignUpMutation,useGoogleSignInMutation } = authApi;
 export default authApi;

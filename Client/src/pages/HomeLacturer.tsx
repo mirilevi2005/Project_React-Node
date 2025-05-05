@@ -1,16 +1,16 @@
+import { useSelector } from 'react-redux';
+import HomePagelacturer from '../components/HomePagelacturer';
+import { selectCurrentUser } from '../redux/slice/authStateSlice';
 
-import HomePagelacturer from "../components/HomePagelacturer";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../redux/slice/authStateSlice";
-import { RootState } from "../redux/store";
 const HomeLacturer = () => {
-  const user=useSelector((state: RootState) => selectCurrentUser(state))
+  const user = useSelector(selectCurrentUser);
+
   return (
     <>
-    <h1>Lacturer {user?.userName}</h1>
-    <HomePagelacturer/>
+      <h1>Lacturer {user?.userName}</h1>
+      <HomePagelacturer />
     </>
   );
-}
+};
 
 export default HomeLacturer;

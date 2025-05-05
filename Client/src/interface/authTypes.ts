@@ -1,8 +1,5 @@
 // בתוך: src/interface/authTypes.ts
-// export interface userInfo {
-//   userName: string;
-//   roles: string;
-// }
+
 
 export interface SignInRequest {
   email: string;
@@ -17,7 +14,7 @@ export interface SignUpRequest {
 }
 
 export interface userInfo {
-  _id: string;
+  token: string;
   userName: string;
   email: string;
   roles: string;

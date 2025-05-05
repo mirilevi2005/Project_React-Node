@@ -16,10 +16,11 @@ import { auth, provider } from "../firebase";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie"; // <-- נוספה שורה זו
+import { useCookies } from "react-cookie";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slice/authStateSlice";
+import { useGoogleSignInMutation } from "../redux/slice/api/authApi";
 
 const SignInSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -39,8 +40,10 @@ const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [magicEmail, setMagicEmail] = useState("");
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(["token"]); // <-- נוספה שורה זו
+  const [cookies, setCookie] = useCookies(["token", "userName", "email", "roles", "userId"]);
   const dispatch = useDispatch();
+  const [googleSignIn] = useGoogleSignInMutation();
+
 
   const {
     register,
@@ -65,26 +68,23 @@ const SignIn = () => {
       });
 
       const result = await res.json();
-        dispatch(setUser(result.newUser));
 
       if (res.ok) {
         reset();
+        const { accessToken, user } = result;
 
-        // שמירת הטוקן בעוגייה
-        setCookie("token", result.accessToken, {
-          path: "/",
-          maxAge: 3600,
-          sameSite: "lax",
-          secure: false // שימי true אם את עובדת עם https
-        });
-     console.log(result.user.roles+"result.user");
-      dispatch(setUser(result.user));
-      
-     const { roles } = result.user;
-   
-        if (roles === "student") {
+        // שמירת הנתונים בעוגיות
+        setCookie("token", accessToken, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+        setCookie("userName", user.userName, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+        setCookie("email", user.email, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+        setCookie("roles", user.roles, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+        setCookie("userId", user._id, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+
+        dispatch(setUser(user));
+
+        if (user.roles === "student") {
           navigate("/HomeStudent");
-        } else  if(roles === "lacturer"){
+        } else if (user.roles === "lacturer") {
           navigate("/HomeLacturer");
         }
       } else {
@@ -115,12 +115,35 @@ const SignIn = () => {
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log("Signed in user:", user);
+      const { displayName, email, uid } = result.user;
+  
+      if (!displayName || !email || !uid) {
+        alert("Missing data from Google account.");
+        return;
+      }
+  
+      const response = await googleSignIn({
+        email,
+        userName: displayName
+      }).unwrap();
+  
+      const { accessToken: apiToken, user } = response;
+  
+      // שמירת הנתונים בעוגיות
+      setCookie("token", apiToken, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("userName", user.userName, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("email", user.email, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("roles", user.roles, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });  
+      dispatch(setUser(user));
+  
+      navigate(user.roles === "student" ? "/HomeStudent" : "/HomeLacturer");
+  
     } catch (error) {
       console.error("Google login failed", error);
+      alert("Google login failed");
     }
   };
+  
 
   return (
     <Paper elevation={3} sx={{ mt: 4, p: 3, maxWidth: 500, mx: "auto" }}>
@@ -240,11 +263,6 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
-
-
-
-
 
 
 

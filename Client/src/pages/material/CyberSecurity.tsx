@@ -1,20 +1,20 @@
-import VideoOfMaterial from "../../components/VideoOfMaterial"
-import { selectCurrentUser } from '../../redux/slice/authStateSlice';
-import { RootState } from '../../redux/store';
 import { useSelector } from 'react-redux';
-import VideoOfMaterialStudent from '../../components/student/VideoOfMaterial'
+import VideoOfMaterial from '../../components/VideoOfMaterial';
+import VideoOfMaterialStudent from '../../components/student/VideoOfMaterial';
+import { selectCurrentUser } from '../../redux/slice/authStateSlice';
+
 const CyberSecurity = () => {
-    const user = useSelector((state: RootState) => selectCurrentUser(state))!;
-  
+  const user = useSelector(selectCurrentUser);
+
   return (
     <div>
-      <h1>welcome to CyberSecurity course</h1>
-      {user.roles==='lacturer'?
-      (<VideoOfMaterial/>)
-      : <VideoOfMaterialStudent/>
-      }
+      <h1>Welcome to Ai course</h1>
+      {user?.roles === 'lacturer' ? (
+        <VideoOfMaterial />
+      ) : (
+        <VideoOfMaterialStudent />
+      )}
     </div>
-  )
-}
-
+  );
+};
 export default CyberSecurity

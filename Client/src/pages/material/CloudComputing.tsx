@@ -1,20 +1,21 @@
-import VideoOfMaterial from "../../components/VideoOfMaterial"
-import { selectCurrentUser } from '../../redux/slice/authStateSlice';
-import { RootState } from '../../redux/store';
 import { useSelector } from 'react-redux';
-import VideoOfMaterialStudent from '../../components/student/VideoOfMaterial'
+import VideoOfMaterial from '../../components/VideoOfMaterial';
+import VideoOfMaterialStudent from '../../components/student/VideoOfMaterial';
+import { selectCurrentUser } from '../../redux/slice/authStateSlice';
+
 const CloudComputing = () => {
-    const user = useSelector((state: RootState) => selectCurrentUser(state))!;
-  
+  const user = useSelector(selectCurrentUser);
+
   return (
     <div>
-      <h1>welcome to Cloud Computing course</h1>
-      {user.roles==='lacturer'?
-      (<VideoOfMaterial/>)
-      : <VideoOfMaterialStudent/>
-      }
+      <h1>Welcome to Ai course</h1>
+      {user?.roles === 'lacturer' ? (
+        <VideoOfMaterial />
+      ) : (
+        <VideoOfMaterialStudent />
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default CloudComputing

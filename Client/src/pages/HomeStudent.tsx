@@ -1,19 +1,16 @@
+
+import HomePageStudent from '../components/student/HomePageStudent';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../redux/slice/authStateSlice';
-import { RootState } from '../redux/store';
-import HomePageStudent from '../components/student/HomePageStudent';
 
 const HomeStudent = () => {
-  const user = useSelector((state: RootState) => selectCurrentUser(state));
-console.log(user?.userName);
-
+  const user = useSelector(selectCurrentUser);
   return (
-    <div>
-      <h1>Student {user?.userName}</h1>
-      <HomePageStudent/>
-    </div>
+    <>
+      <h1>student {user?.userName}</h1>
+      <HomePageStudent />
+    </>
   );
 };
 
 export default HomeStudent;
-
