@@ -20,7 +20,8 @@ import { useCookies } from "react-cookie";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slice/authStateSlice";
-import { useGoogleSignInMutation } from "../redux/slice/api/authApi";
+import { useGoogleSignInMutation} from "../redux/slice/api/authApi";
+import { useSignInMutation } from "../redux/slice/api/authApi";
 
 const SignInSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -43,6 +44,9 @@ const SignIn = () => {
   const [cookies, setCookie] = useCookies(["token", "userName", "email", "roles", "userId"]);
   const dispatch = useDispatch();
   const [googleSignIn] = useGoogleSignInMutation();
+  const [signIn] = useSignInMutation();
+
+
 
 
   const {
@@ -61,43 +65,32 @@ const SignIn = () => {
   const handlePasswordLogin = async (data: SignInForm) => {
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:8080", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-
-      const result = await res.json();
-
-      if (res.ok) {
-        reset();
-        const { accessToken, user } = result;
-
-        // שמירת הנתונים בעוגיות
-        setCookie("token", accessToken, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-        setCookie("userName", user.userName, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-        setCookie("email", user.email, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-        setCookie("roles", user.roles, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-        setCookie("userId", user._id, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-
-        dispatch(setUser(user));
-
-        if (user.roles === "student") {
-          navigate("/HomeStudent");
-        } else if (user.roles === "lacturer") {
-          navigate("/HomeLacturer");
-        }
-      } else {
-        alert(result.message || "Login failed");
+      const result = await signIn(data).unwrap();
+  
+      const { accessToken, user } = result;
+  
+      // שמירת הנתונים בעוגיות
+      setCookie("token", accessToken, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("userName", user.userName, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("email", user.email, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("roles", user.roles, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+  
+      dispatch(setUser(user));
+      reset();
+  
+      if (user.roles === "student") {
+        navigate("/HomeStudent");
+      } else if (user.roles === "lacturer") {
+        navigate("/HomeLacturer");
       }
-    } catch (err) {
-      console.error("Error:", err);
-      alert("Server error");
+    } catch (err: any) {
+      console.error("Login error", err);
+      alert(err?.data?.message || "Login failed");
     } finally {
       setIsLoading(false);
     }
   };
-
+  
   const handleMagicLinkLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);

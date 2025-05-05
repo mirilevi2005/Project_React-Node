@@ -1,71 +1,58 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { setUser } from "../redux/slice/authStateSlice"; // עדכון ה-state
+
+import { setUser } from '../redux/slice/authStateSlice';
+import { useSignUpMutation } from '../redux/slice/api/authApi';
+import { LoginType } from '../schema/SignUpSchama';
+import SignUpSchama from '../schema/SignUpSchama';
 import '../css/SignUp.css';
-import SignUpSchama, { LoginType } from '../schema/SignUpSchama';
 
 const SignUp = () => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<LoginType>({
-    resolver: zodResolver(SignUpSchama),  // החיבור עם zodResolver
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<LoginType>({
+    resolver: zodResolver(SignUpSchama),
     defaultValues: {
       userName: '',
       email: '',
       password: '',
-      adminCode: ''
-    }
+      adminCode: '',
+    },
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => setShowPassword(prev => !prev);
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // פונקציית onSubmit
-const onSubmit = async (data: LoginType) => {
-  try {
-    const res = await fetch('http://localhost:8080/SignUp', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data),
-      credentials: 'include' // זהו הכרחי אם אתה משתמש ב-CORS עם cookies
-    });
+  const [signUp] = useSignUpMutation();
 
-    const result = await res.json();
+  const onSubmit = async (data: LoginType) => {
+    try {
+      const result = await signUp(data).unwrap(); // result is of type AuthResponse
+      dispatch(setUser(result.newUser));
+      console.log(result.newUser);
+      
+      reset();
 
-    if (res.ok) {
-      reset(); // איפוס הטופס
-      // ודא ש- user קיים לפני שאתה שולף ממנו מידע
-      if (result.newUser) {
-        const { roles } = result.newUser; // אם השרת מחזיר את ה-role של המשתמש
-        
-        // עדכון ה-state הגלובלי עם פרטי המשתמש
-        dispatch(setUser(result.newUser));
-        console.log(result.newUser.userName);
-        
-        // ניווט לפי ה-role
-        if (roles === 'student') {
-          navigate("/HomeStudent");
-        } else if (roles === 'lacturer') {
-          navigate("/HomeLacturer");
-        } 
-      } else {
-        alert("User data is missing.");
-      }
-    } else {
-      alert(result.message || "Registration failed");
+      const role = result.newUser.roles;
+
+      if (role === 'student') navigate('/HomeStudent');
+      else if (role === 'lacturer') navigate('/HomeLacturer');
+    } catch (err: any) {
+      console.error('Sign up error:', err);
+      alert(err?.data?.message || 'Registration failed');
     }
-  } catch (err) {
-    console.error("Error:", err);
-    alert("Server error");
-  }
-};
+  };
 
   return (
     <div className="login-container">
@@ -76,7 +63,7 @@ const onSubmit = async (data: LoginType) => {
           <TextField
             label="Username"
             variant="outlined"
-            {...register("userName")}
+            {...register('userName')}
             error={!!errors.userName}
             helperText={errors.userName?.message}
             fullWidth
@@ -85,7 +72,7 @@ const onSubmit = async (data: LoginType) => {
           <TextField
             label="Email"
             variant="outlined"
-            {...register("email")}
+            {...register('email')}
             error={!!errors.email}
             helperText={errors.email?.message}
             fullWidth
@@ -95,7 +82,7 @@ const onSubmit = async (data: LoginType) => {
             label="Password"
             type={showPassword ? 'text' : 'password'}
             variant="outlined"
-            {...register("password")}
+            {...register('password')}
             error={!!errors.password}
             helperText={errors.password?.message}
             fullWidth
@@ -106,14 +93,14 @@ const onSubmit = async (data: LoginType) => {
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
-              )
+              ),
             }}
           />
 
           <TextField
             label="Admin Code"
             variant="outlined"
-            {...register("adminCode")}
+            {...register('adminCode')}
             error={!!errors.adminCode}
             helperText={errors.adminCode?.message}
             fullWidth
@@ -124,7 +111,10 @@ const onSubmit = async (data: LoginType) => {
           </Button>
 
           <Typography variant="body2" sx={{ marginTop: 2 }}>
-            Already have an account? <span onClick={() => navigate("/")} style={{ color: 'blue', cursor: 'pointer' }}>Sign In</span>
+            Already have an account?{' '}
+            <span onClick={() => navigate('/')} style={{ color: 'blue', cursor: 'pointer' }}>
+              Sign In
+            </span>
           </Typography>
         </form>
       </div>
