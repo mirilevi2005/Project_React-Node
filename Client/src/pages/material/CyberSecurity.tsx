@@ -8,7 +8,7 @@ const CyberSecurity = () => {
 
   return (
     <div>
-      <h1>Welcome to Ai course</h1>
+      <h1>Welcome to CyberSecurity course</h1>
       {user?.roles === 'lacturer' ? (
         <VideoOfMaterial />
       ) : (

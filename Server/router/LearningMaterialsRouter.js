@@ -1,7 +1,14 @@
 
 // const express = require("express");
 // const router = express.Router();
-// const { addMaterial, getMaterialsByCourseName,getAllMaterials, deleteMaterial } = require("../controllers/LearningMaterialsController");
+// const {
+//   addMaterial,
+//   getMaterialsByCourseName,
+//   getAllMaterials,
+//   deleteMaterial,
+//   updateMaterial, // 👈 נוסיף את הפונקציה הזו
+// } = require("../controllers/LearningMaterialsController");
+
 // const multer = require("multer");
 // const fs = require("fs");
 // const path = require("path");
@@ -9,47 +16,45 @@
 // // 📌 הגדרת אחסון Multer לפי שם קורס
 // const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
-//     const courseName = req.params.nameCours;  
+//     const courseName = req.params.nameCours;
 //     const uploadPath = path.join(__dirname, "..", "uploads", courseName);
-
 //     fs.mkdir(uploadPath, { recursive: true }, (err) => {
 //       if (err) return cb(err, uploadPath);
 //       cb(null, uploadPath);
 //     });
 //   },
 //   filename: (req, file, cb) => {
-//     const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname);
+//     const uniqueName =
+//       Date.now() + "-" + Math.round(Math.random() * 1e9) + path.extname(file.originalname);
 //     cb(null, uniqueName);
-//   }
+//   },
 // });
 
 // const upload = multer({ storage });
 
-// // 📌 נתיב להעלאה לפי שם קורס
+// // 📌 העלאת סרטון חדש לפי שם קורס
 // router.post("/:nameCours", upload.single("video"), addMaterial);
 
-// // 📌 נתיב לקבלת כל הסרטונים של קורס מסוים
+// // 📌 קבלת כל הסרטונים של קורס מסוים
 // router.get("/:nameCours", getMaterialsByCourseName);
 
-// // 📌 נתיב למחיקת סרטון לפי מזהה
+// // 📌 מחיקת סרטון לפי מזהה
 // router.delete("/material/:MaterialId", deleteMaterial);
 
+// // ✅ עדכון שם סרטון לפי מזהה
+// router.put("/:nameCours", upload.none(), updateMaterial); // לא נשלחת קובץ, רק FormData
+
 // module.exports = router;
+
+
+
 const express = require("express");
 const router = express.Router();
-const {
-  addMaterial,
-  getMaterialsByCourseName,
-  getAllMaterials,
-  deleteMaterial,
-  updateMaterial, // 👈 נוסיף את הפונקציה הזו
-} = require("../controllers/LearningMaterialsController");
-
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const { addMaterial, getMaterialsByCourseName, deleteMaterial, updateMaterial } = require("../controllers/LearningMaterialsController");
 
-// 📌 הגדרת אחסון Multer לפי שם קורס
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const courseName = req.params.nameCours;
@@ -78,7 +83,8 @@ router.get("/:nameCours", getMaterialsByCourseName);
 router.delete("/material/:MaterialId", deleteMaterial);
 
 // ✅ עדכון שם סרטון לפי מזהה
-router.put("/:nameCours", upload.none(), updateMaterial); // לא נשלחת קובץ, רק FormData
+router.put("/:nameCours", upload.none(), updateMaterial);
 
 module.exports = router;
+
 

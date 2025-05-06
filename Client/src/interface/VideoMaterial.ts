@@ -6,12 +6,25 @@ export interface Video{
     videoPath:String ,
     videoName:String
 }
+export interface VideosResponse {
+  videos: Video[];
+}
 
-export  interface VideoListProps {
+  
+  export interface VideoListProps {
     courseName: string;
   }
-export interface VideosResponse {
-    videos: Video[];
+  
+  export interface NewVideoNotification {
+    title: string;
+    url: string;
+  }
+  
+  export interface MaterialState {
+    VideoList: Video[];
+    uploadedVideo: Video | null;
+    newVideo: NewVideoNotification | null;
+    snackbarOpen: boolean;
   }
   
 
