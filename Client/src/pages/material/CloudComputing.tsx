@@ -8,7 +8,7 @@ const CloudComputing = () => {
 
   return (
     <div>
-      <h1>Welcome to Ai course</h1>
+      <h1>Welcome to CloudComputing course</h1>
       {user?.roles === 'lacturer' ? (
         <VideoOfMaterial />
       ) : (
