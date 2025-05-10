@@ -1,14 +1,14 @@
-
-
 import { configureStore } from "@reduxjs/toolkit";
 import  apiSlice from "./slice/api/apiSlice";
 import materialsApi from "./slice/api/materialsApi";
 import VideoReducer from "../redux/slice/videoSlice";
 import UserInfoReducer from "../redux/slice/authStateSlice";
+import testApi from "./slice/api/testApi";
 
 const store = configureStore({
     reducer: {
         [materialsApi.reducerPath]: apiSlice.reducer,
+        [testApi.reducerPath]:apiSlice.reducer,
         videos: VideoReducer,
         userInfo:UserInfoReducer
     },

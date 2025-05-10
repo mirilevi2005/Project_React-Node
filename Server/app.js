@@ -30,8 +30,11 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));///לדעת
 const LearningMaterialsRouter = require('./router/LearningMaterialsRouter');
 const singIn = require('./router/signIn'); // ✅ ייבוא ראוט של התחברות והרשמה
 const signUp=require('./router/signUp')
+const Test = require('./router/TestRouter');
+
 
 // שימוש בראוטים
+app.use('/test',Test)
 app.use('/HomeLacturer', LearningMaterialsRouter);
 app.use('/', singIn);
 app.use('/SignUp', signUp);
