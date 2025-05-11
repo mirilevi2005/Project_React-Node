@@ -13,10 +13,4 @@ export  interface VideoListProps {
 export interface VideosResponse {
     videos: Video[];
   }
-  
 
-
-
-  // export interface VideoApiResponse {
-//     videos: Video[]; 
-//   }

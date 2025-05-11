@@ -5,7 +5,6 @@ import { Button, IconButton, InputAdornment, TextField, Typography } from '@mui/
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-
 import { setUser } from '../redux/slice/authStateSlice';
 import { useSignUpMutation } from '../redux/slice/api/authApi';
 import { LoginType } from '../schema/SignUpSchama';

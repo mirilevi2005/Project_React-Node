@@ -3,13 +3,14 @@ const Test = require('../models/Test'); // אם המודל נמצא בתיקיה
 // 1. יצירת מבחן חדש
 exports.createTest = async (req, res) => {
     try {
-        const { title, questions, teacherId, lastDate } = req.body;
+        const { title, questions, teacherId, lastDate ,courseName} = req.body;
 
         const newTest = new Test({
             title,
             questions,
             teacherId,
-            lastDate
+            lastDate,
+            courseName
         });
 
         await newTest.save();
@@ -45,6 +46,21 @@ exports.getTestById = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Failed to retrieve test', error });
+    }
+};
+exports.getTestByCourse = async (req, res) => {
+    try {
+        const { courseName } = req.params; 
+        const tests = await Test.find({ courseName });
+
+        if (tests.length === 0) {
+            return res.status(404).json({ message: 'No tests found for this course' });
+        }
+
+        res.status(200).json({ tests });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to retrieve tests', error });
     }
 };
 

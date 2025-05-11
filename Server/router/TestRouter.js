@@ -3,10 +3,12 @@ const router = express.Router();
 const testController = require('../controllers/TestController');
 
 // ניהול המבחנים
-router.post('/tests', testController.createTest);
-router.get('/tests', testController.getTests);
-router.get('/tests/:id', testController.getTestById);
-router.put('/tests/:id', testController.updateTest);
-router.delete('/tests/:id', testController.deleteTest);
+router.post('/', testController.createTest);
+// router.get('/', testController.getTests);
+router.get('/:courseName', testController.getTestByCourse);
+
+router.get('/:id', testController.getTestById);
+router.put('/:id', testController.updateTest);
+router.delete('/:id', testController.deleteTest);
 
 module.exports = router;
