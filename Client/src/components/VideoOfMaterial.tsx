@@ -145,7 +145,7 @@ const VideoOfMaterial: React.FC = () => {
   const [addMaterial] = useAddMaterialMutation();
   const [createTest] = useCreateTestMutation();
 
-  const [cookies] = useCookies(['token', 'userId']);
+  const [cookies] = useCookies(['token', '_id']);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
   const [openTestDialog, setOpenTestDialog] = useState(false);
@@ -253,7 +253,7 @@ const VideoOfMaterial: React.FC = () => {
         correctAnswer: q.answers[q.correct],
         timeLimit: parseInt(q.timeLimit.toString()),
       })),
-      teacherId: userId,
+      teacherId:userId,
       courseName: courseName,
     };
 
