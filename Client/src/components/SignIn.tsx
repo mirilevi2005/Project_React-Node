@@ -73,8 +73,8 @@ const SignIn = () => {
       setCookie("token", accessToken, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
       setCookie("userName", user.userName, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
       setCookie("email", user.email, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-      setCookie("roles", user.roles, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-      setCookie("userId", user.userId, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("roles", user.roles, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });  
+      setCookie("userId", user._id, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
   
       dispatch(setUser(user));
       reset();
