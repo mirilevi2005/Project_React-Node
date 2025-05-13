@@ -45,7 +45,7 @@ import { setUser } from './redux/slice/authStateSlice';
 
 function App() {
   const dispatch = useDispatch();
-  const [cookies] = useCookies(['token', 'userName', 'email', 'roles']);
+  const [cookies] = useCookies(['token', 'userName', 'email', 'roles','_id']);
 
   useEffect(() => {
     if (cookies?.token && cookies?.userName && cookies?.roles) {
@@ -54,6 +54,7 @@ function App() {
         userName: cookies.userName,
         email: cookies.email || '',
         roles: cookies.roles,
+        _id:cookies._id,
       }));
     }
   }, [cookies, dispatch]);

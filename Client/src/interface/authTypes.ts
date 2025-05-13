@@ -18,9 +18,10 @@ export interface userInfo {
   userName: string;
   email: string;
   roles: string;
+  _id:string;
 }
 
 export interface AuthResponse {
   accessToken: string;
-  user: userInfo;
+  newUser: userInfo;
 }
