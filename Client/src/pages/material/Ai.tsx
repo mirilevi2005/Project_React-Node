@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import VideoOfMaterial from '../../components/VideoOfMaterial';
+import VideoOfMaterial from '../../components/video/VideoOfMaterial';
 import VideoOfMaterialStudent from '../../components/student/VideoOfMaterial';
 import { selectCurrentUser } from '../../redux/slice/authStateSlice';
 

@@ -74,9 +74,9 @@ import {
   useDeleteMaterialMutation,
   useGetAllMaterialsByNameCourseQuery,
   useUpDateMaterialMutation,
-} from "../redux/slice/api/materialsApi";
-import { deleteVideo } from "../redux/slice/videoSlice";
-import { Video } from "../interface/VideoMaterial";
+} from "../../redux/slice/api/materialsApi";
+import { deleteVideo } from "../../redux/slice/videoSlice";
+import { Video } from "../../interface/VideoMaterial";
 
 interface Props {
   courseName: string;

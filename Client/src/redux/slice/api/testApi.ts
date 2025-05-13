@@ -15,16 +15,33 @@ const testApi = apiSlice.injectEndpoints({
       providesTags: ['Test'], // חזרה עם טאג עבור המבחנים
     }),
     getTestById: builder.query({
-      query: (id) => `/test${id}`, // קריאה לקבלת מבחן לפי ID
+      query: (id) => `/test/${id}`, // קריאה לקבלת מבחן לפי ID
       providesTags: ['Test'],
     }),
      getTestsByCourse: builder.query({
   query: (courseName) => `/test/${courseName}`,
   providesTags: ['Test'],
+  }),
+  updateTest: builder.mutation({
+  query: ({ id, updatedData }) => ({
+    url: `/test/${id}`,
+    method: 'PUT',
+    body: updatedData,
+  }),
+  invalidatesTags: ['Test'],
 }),
+deleteTest: builder.mutation({
+  query: (id) => ({
+    url: `/test/${id}`,
+    method: 'DELETE',
+  }),
+  invalidatesTags: ['Test'],
+}),
+
   }),
 
 });
 
-export const { useCreateTestMutation, useGetTestsQuery, useGetTestByIdQuery,useGetTestsByCourseQuery } = testApi;
+export const { useCreateTestMutation, useGetTestsQuery, useGetTestByIdQuery,useGetTestsByCourseQuery ,useUpdateTestMutation,
+useDeleteTestMutation,} = testApi;
 export default testApi;
