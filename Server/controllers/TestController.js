@@ -10,7 +10,8 @@ exports.createTest = async (req, res) => {
             questions,
             teacherId,
             lastDate,
-            courseName
+            courseName,
+            studentsStarted:[]
         });
 
         await newTest.save();
@@ -50,14 +51,27 @@ exports.getTestById = async (req, res) => {
 };
 exports.getTestByCourse = async (req, res) => {
     try {
-        const { courseName } = req.params; 
+        const { courseName } = req.params;
+        const { studentId } = req.query;
+
         const tests = await Test.find({ courseName });
 
         if (tests.length === 0) {
             return res.status(404).json({ message: 'No tests found for this course' });
         }
 
-        res.status(200).json({ tests });
+        const updatedTests = tests.map((test) => {
+            const alreadyStarted = test.studentsStarted.some(
+                (entry) => entry.studentId.toString() === studentId
+            );
+
+            return {
+                ...test.toObject(),
+                alreadyStarted,
+            };
+        });
+
+        res.status(200).json({ tests: updatedTests });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Failed to retrieve tests', error });
@@ -101,5 +115,36 @@ exports.deleteTest = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Failed to delete test', error });
+    }
+};
+
+exports.startTest = async (req, res) => {
+    const { testId } = req.params;
+    const { studentId } = req.body;
+
+    console.log("Received testId:", testId);
+    console.log("Received studentId:", studentId);
+
+    try {
+        const test = await Test.findById(testId);
+        if (!test) {
+            return res.status(404).json({ message: 'Test not found' });
+        }
+
+        const alreadyStarted = test.studentsStarted.some(
+            (entry) => entry.studentId.toString() === studentId
+        );
+        if (alreadyStarted) {
+            return res.status(200).json({ alreadyStarted: true });
+          }
+          return res.status(200).json({ alreadyStarted: false });
+          
+        test.studentsStarted.push({ studentId });
+        await test.save();
+
+        return res.status(200).json({ message: 'Test started successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Failed to start test', error });
     }
 };

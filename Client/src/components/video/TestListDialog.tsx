@@ -6,15 +6,23 @@ interface TestListDialogProps {
   open: boolean;
   onClose: () => void;
 }
+interface TestListDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onEditTest: (test: any) => void; // או טיפוס מדויק
+}
 
-const TestListDialog = ({ open, onClose }: TestListDialogProps) => {
+const TestListDialog = ({ open, onClose, onEditTest }: TestListDialogProps) => {
   const [selectedTest, setSelectedTest] = useState<any | null>(null);
-    const urlParts = window.location.pathname.split('/');
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editingTestId, setEditingTestId] = useState<string | null>(null);
+  const [openTestDialog, setOpenTestDialog] = useState(false);
+  const urlParts = window.location.pathname.split('/');
   const courseName = urlParts[urlParts.length - 1];
   const [deleteTest] = useDeleteTestMutation();
   const { data, refetch } = useGetTestsByCourseQuery(courseName);
-
   const testList = data?.tests ?? [];
+
 
 const handleDeleteTest = async (testId: string) => {
   try {
@@ -25,6 +33,8 @@ const handleDeleteTest = async (testId: string) => {
     console.error("Error deleting test:", error);
   }
 };
+
+
   return (
     <div>
     <Dialog open={open} onClose={() => { onClose(); setSelectedTest(null); }} >
@@ -57,7 +67,7 @@ const handleDeleteTest = async (testId: string) => {
             <CardContent>
               <Typography variant="h6">{test.TestName}</Typography>
               <Typography>{test.title}</Typography>
-
+         <Button onClick={() => onEditTest(test)}>ערוך</Button>
             </CardContent>
           </Card>
         )) : (
@@ -74,15 +84,14 @@ const handleDeleteTest = async (testId: string) => {
   ) : null}
   <Button onClick={() => { onClose(); setSelectedTest(null); }} color="secondary">סגור</Button>
 </DialogActions>
-
   </DialogContent>
   <DialogActions>
     {selectedTest ? (
       <Button onClick={() => setSelectedTest(null)} color="primary">חזרה לרשימה</Button>
     ) : null}
-    {/* <Button onClick={() => { onClose(); setSelectedTest(null); }} color="secondary">סגור</Button> */}
   </DialogActions>
 </Dialog>
+
 </div>
 )}
 

@@ -20,7 +20,7 @@ const signIn = async (req, res) => {
         roles: foundUser.roles,
     }
     const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
-    res.json({ accessToken, user: userInfo })
+    res.json({ accessToken, newUser:userInfo })
 }
 
 //הרשמה
@@ -46,8 +46,6 @@ const signUp = async (req, res) => {
         roles: role,
     };
     const newUser = await User.create(userObject);
-   
-    
     if (newUser) {
         return res.status(201).json({ message: `New user ${newUser.userName} created as ${role}` ,newUser});
     } else {
@@ -85,8 +83,7 @@ const googleLogin = async (req, res) => {
         };
 
         const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-
-        return res.json({ accessToken, user: userInfo });
+        return res.json({ accessToken, newUser:userInfo });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Server error" });
