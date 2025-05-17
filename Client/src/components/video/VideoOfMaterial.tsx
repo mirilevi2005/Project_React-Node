@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 import { Box, Button } from '@mui/material';
 import VideoUpload from './VideoUpload';
 import Test from './Test';

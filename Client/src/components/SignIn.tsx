@@ -67,21 +67,22 @@ const SignIn = () => {
     try {
       const result = await signIn(data).unwrap();
   
-      const { accessToken, user } = result;
-  
-      // שמירת הנתונים בעוגיות
+      const { accessToken, newUser } = result;
+      console.log(result);
+      
+       // שמירת הנתונים בעוגיות
       setCookie("token", accessToken, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-      setCookie("userName", user.userName, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-      setCookie("email", user.email, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-      setCookie("roles", user.roles, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });  
-      setCookie("userId", user._id, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("userName", newUser.userName, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("email", newUser.email, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("roles", newUser.roles, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });  
+      setCookie("userId", newUser._id, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
   
-      dispatch(setUser(user));
+      dispatch(setUser(newUser));
       reset();
   
-      if (user.roles === "student") {
+      if (newUser.roles === "student") {
         navigate("/HomeStudent");
-      } else if (user.roles === "lacturer") {
+      } else if (newUser.roles === "lacturer") {
         navigate("/HomeLacturer");
       }
     } catch (err: any) {
@@ -121,18 +122,18 @@ const SignIn = () => {
         userName: displayName
       }).unwrap();
   
-      const { accessToken: apiToken, user } = response;
+      const { accessToken: apiToken, newUser } = response;
   
       // שמירת הנתונים בעוגיות
       setCookie("token", apiToken, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-      setCookie("userName", user.userName, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-      setCookie("email", user.email, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
-      setCookie("roles", user.roles, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });  
-      setCookie("userId", user._id, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("userName", newUser.userName, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("email", newUser.email, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
+      setCookie("roles", newUser.roles, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });  
+      setCookie("userId", newUser._id, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
 
-      dispatch(setUser(user));
+      dispatch(setUser(newUser));
   
-      navigate(user.roles === "student" ? "/HomeStudent" : "/HomeLacturer");
+      navigate(newUser.roles === "student" ? "/HomeStudent" : "/HomeLacturer");
   
     } catch (error) {
       console.error("Google login failed", error);

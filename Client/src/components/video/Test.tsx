@@ -13,6 +13,9 @@ const Test= () => {
   const [openTestsDialog, setOpenTestsDialog] = useState(false);
   const [selectedTest, setSelectedTest] = useState<any | null>(null);
   const [signature, setSignature] = useState<any>(null);
+  const [editingTestId, setEditingTestId] = useState<string | null>(null);
+const [isEditMode, setIsEditMode] = useState(false);
+
   const urlParts = window.location.pathname.split('/');
   const courseName = urlParts[urlParts.length - 1];
   const [cookies] = useCookies(['token', 'userId']);
@@ -21,7 +24,7 @@ const Test= () => {
   const [uploadedCourse, setUploadedCourse] = useState<string | null>(null);
   const [createTest] = useCreateTestMutation();
 
-   const { register, control, handleSubmit, formState: { errors } } = useForm<IFormInput>({
+   const { register, control, handleSubmit, formState: { errors }, reset } = useForm<IFormInput>({
     defaultValues: {
       TestName: "",
       LastDate: "",
@@ -38,6 +41,8 @@ const Test= () => {
   useEffect(() => {
     setUploadedCourse(courseName);
   }, [courseName])
+
+  
 
   const { fields, append } = useFieldArray({
   control,
@@ -97,6 +102,24 @@ const Test= () => {
     }
   };
   
+  const handleUpdateTest = (test: any) => {
+  reset({
+    TestName: test.title,
+    LastDate: new Date(test.lastDate).toISOString().slice(0, 16),
+    questions: test.questions.map((q: any) => ({
+      text: q.questionText,
+      answers: q.options,
+      correct: q.options.indexOf(q.correctAnswer),
+      timeLimit: q.timeLimit,
+    })),
+  });
+
+  setEditingTestId(test._id);
+  setIsEditMode(true);
+  setOpenTestDialog(true);
+};
+
+
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={() => setOpenTestDialog(true)} sx={{ ml: 2 }}>
@@ -105,10 +128,12 @@ const Test= () => {
       <Button variant="outlined" color="primary" onClick={() => setOpenTestsDialog(true)} sx={{ ml: 2 }}>
        הצגת כל המבחנים לקורס זה
      </Button>
-     <TestListDialog
-        open={openTestsDialog}
-        onClose={() => setOpenTestsDialog(false)}
-      />
+   <TestListDialog
+  open={openTestsDialog}
+  onClose={() => setOpenTestsDialog(false)}
+  onEditTest={handleUpdateTest}
+/>
+
        <Dialog open={openTestDialog} onClose={() => setOpenTestDialog(false)} maxWidth="lg" fullWidth>
        <DialogTitle>יצירת מבחן חדש</DialogTitle>
        <DialogContent>

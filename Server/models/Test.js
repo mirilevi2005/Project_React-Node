@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const TestSchema  = new mongoose.Schema({
     title: { type: String, required: true }, 
     questions: [{
@@ -10,7 +9,13 @@ const TestSchema  = new mongoose.Schema({
     }],
     teacherId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },   
     lastDate: { type: Date, required: true },
-    courseName:{type:String,required: true}
+    courseName:{type:String,required: true},
+    studentsStarted: [
+    {
+      studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+      startedAt: { type: Date, default: Date.now, required: true},
+    },
+  ],
 });
 
 module.exports = mongoose.model('Test', TestSchema );

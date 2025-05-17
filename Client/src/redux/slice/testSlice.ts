@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initVal = {
   TestArr: [
     {
+      id:"",
       TestName: "", 
       LastDate: "", 
       LimitTest: "", 
@@ -32,8 +33,9 @@ const TestSlice = createSlice({
   initialState: initVal,
   reducers: {
     addTest: (state, action) => {
-      const { TestName, LastDate, LimitTest, questions } = action.payload;
+      const {id, TestName, LastDate, LimitTest, questions } = action.payload;
       const newTest = { 
+        id,
         TestName, 
         LastDate, 
         LimitTest, 
@@ -43,7 +45,7 @@ const TestSlice = createSlice({
     },
     updateTest: (state, action) => {
       const { id, updatedData } = action.payload;
-      const index = state.TestArr.findIndex(test => test.editingTestId=== id); // או חפשי לפי מזהה אחר
+      const index = state.TestArr.findIndex(test => test.id=== id); // או חפשי לפי מזהה אחר
       if (index !== -1) {
         state.TestArr[index] = { ...state.TestArr[index], ...updatedData };
       }

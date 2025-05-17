@@ -20,8 +20,19 @@ export interface userInfo {
   roles: string;
   _id:string;
 }
+// export interface user {
+//   token: string;
+//   userName: string;
+//   email: string;
+//   roles: string;
+//   _id:string;
+// }
 
 export interface AuthResponse {
   accessToken: string;
   newUser: userInfo;
+  //user:user;
 }
+
+
+
