@@ -20,10 +20,16 @@ const testApi = apiSlice.injectEndpoints({
       query: (id) => `/test/${id}`, // תוקן ה-URL
       providesTags: ['Test'],
     }),
+    // getTestsByCourse: builder.query({
+    //   query: (courseName) => `/test/course/${courseName}`, // ברור יותר
+    //   providesTags: ['Test'],
+    // }),
     getTestsByCourse: builder.query({
-      query: (courseName) => `/test/course/${courseName}`, // ברור יותר
-      providesTags: ['Test'],
-    }),
+  query: ({ courseName, studentId }) =>
+    `/test/course/${courseName}?studentId=${studentId}`,
+  providesTags: ['Test'],
+}),
+
     updateTest: builder.mutation({
       query: ({ id, updatedData }) => ({
         url: `/test/${id}`,
@@ -39,9 +45,6 @@ const testApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Test'],
     }),
-    
-
-
     startTest: builder.mutation({
       query: ({ testId, studentId }) => ({
         url: `/student-submissions/start/${testId}`,

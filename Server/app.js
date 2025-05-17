@@ -30,7 +30,6 @@ app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 connectDB();
 
 // קבצים סטטיים (כגון וידאוים שהועלו)
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));///לדעתי פה צריכים למחוק את המילה uploads
 
 // ייבוא ראוטים
 const LearningMaterialsRouter = require('./router/LearningMaterialsRouter');
