@@ -43,7 +43,7 @@ app.use('/test',Test)
 app.use('/HomeLacturer', LearningMaterialsRouter);
 app.use('/', singIn);
 app.use('/SignUp', signUp);
-app.use("/student-submissions", Test);
+// app.use("/student-submissions", Test);
 
 // חיבור למסד נתונים והרצת השרת
 mongoose.connection.once('open', () => {

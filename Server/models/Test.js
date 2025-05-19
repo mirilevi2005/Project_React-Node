@@ -1,21 +1,56 @@
+// const mongoose = require('mongoose');
+// const TestSchema  = new mongoose.Schema({
+//     title: { type: String, required: true }, 
+//     questions: [{
+//         questionText: { type: String, required: true }, 
+//         options: [{ type: String, required: true }], 
+//         correctAnswer: { type: String, required: true }, 
+//         timeLimit: { type: Number, default: 0 }
+//     }],
+//     teacherId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },   
+//     lastDate: { type: Date, required: true },
+//     courseName:{type:String,required: true},
+//     studentsStarted: [
+//     {
+//       studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+//       startedAt: { type: Date, default: Date.now, required: true},
+//     },
+//   ],
+// });
+
+// module.exports = mongoose.model('Test', TestSchema );
+
+
+// models/Test.js (או איך שקראת לו)
 const mongoose = require('mongoose');
-const TestSchema  = new mongoose.Schema({
-    title: { type: String, required: true }, 
-    questions: [{
-        questionText: { type: String, required: true }, 
-        options: [{ type: String, required: true }], 
-        correctAnswer: { type: String, required: true }, 
-        timeLimit: { type: Number, default: 0 }
-    }],
-    teacherId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },   
-    lastDate: { type: Date, required: true },
-    courseName:{type:String,required: true},
-    studentsStarted: [
+
+const testSchema = new mongoose.Schema({
+  title: String,
+  questions: Array,
+  teacherId: mongoose.Schema.Types.ObjectId,
+  lastDate: Date,
+  courseName: String,
+  studentsStarted: [
     {
-      studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-      startedAt: { type: Date, default: Date.now, required: true},
-    },
+      studentId: mongoose.Schema.Types.ObjectId,
+      startedAt: { type: Date, default: Date.now }
+    }
   ],
+  // studentsScores: [
+  //   {
+  //     studentId: mongoose.Schema.Types.ObjectId,
+  //     score: Number,
+  //     finishedAt: { type: Date, default: Date.now }
+  //   }
+  // ]
+  studentsScores: [
+  {
+    studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // או 'Student' לפי איך שהמודל שלך נקרא
+    score: Number,
+    finishedAt: { type: Date, default: Date.now }
+  }
+]
+
 });
 
-module.exports = mongoose.model('Test', TestSchema );
+module.exports = mongoose.model('Test', testSchema);

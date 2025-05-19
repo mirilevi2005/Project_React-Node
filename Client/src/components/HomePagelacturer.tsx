@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom';  // תיקון היבוא
 import '../css/HomeLacturer.css';  // כולל את ה-CSS החיצוני
 import papersData from '../data/HomeLacturerData';  // ייבוא הנתונים
 
-// הגדרת ממשק לסוג הנתונים
 interface PaperItem {
   link: string;
   image: string;
   title: string;
+  courseName: string; // ✅ חובה אם את משתמשת בזה בקוד
 }
 
 const HomePagelacturer= () => {
