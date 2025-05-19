@@ -1,6 +1,6 @@
 import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Typography } from "@mui/material"
 import { useState } from "react";
-import { useDeleteTestMutation, useGetTestsByCourseQuery } from "../../redux/slice/api/testApi";
+import { useDeleteTestMutation, useGetTestsByCourseForTeacherQuery } from "../../redux/slice/api/testApi";
 import { IFormInput } from "../../interface/VideoMaterial";
 interface TestListDialogProps {
   open: boolean;
@@ -20,7 +20,7 @@ const TestListDialog = ({ open, onClose, onEditTest }: TestListDialogProps) => {
   const urlParts = window.location.pathname.split('/');
   const courseName = urlParts[urlParts.length - 1];
   const [deleteTest] = useDeleteTestMutation();
-  const { data, refetch } = useGetTestsByCourseQuery(courseName);
+  const { data, refetch } = useGetTestsByCourseForTeacherQuery(courseName);
   const testList = data?.tests ?? [];
 
 

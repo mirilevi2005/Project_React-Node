@@ -36,13 +36,7 @@ const testSchema = new mongoose.Schema({
       startedAt: { type: Date, default: Date.now }
     }
   ],
-  // studentsScores: [
-  //   {
-  //     studentId: mongoose.Schema.Types.ObjectId,
-  //     score: Number,
-  //     finishedAt: { type: Date, default: Date.now }
-  //   }
-  // ]
+
   studentsScores: [
   {
     studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // או 'Student' לפי איך שהמודל שלך נקרא

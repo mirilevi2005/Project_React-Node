@@ -1,40 +1,4 @@
 
-// import {  useGetAllMaterialsByNameCourseQuery } from "../../redux/slice/api/materialsApi";
-
-// interface Props {
-//   courseName: string;
-// }
-
-// const VideoList = ({ courseName }: Props) => {
-//   const { data, isError, isLoading } = useGetAllMaterialsByNameCourseQuery(courseName);
- 
-
-//   // 🔹 וידוא שהנתונים לא undefined
-//   const videos = data?.videos || [];
-
-
-
-//   if (isLoading) return <p>Loading...</p>;
-//   if (isError) return <p>Error loading videos.</p>;
-//   if (videos.length === 0) return <p>No videos available</p>;
-
-//   return (
-//     <div className="video-list">
-//       {videos.map((video) => (
-//         <div key={video._id} className="video-item">
-//           <h3>{video.videoName}</h3>
-//           <video controls width="600">
-//             <source src={`http://localhost:8080/uploads/${courseName}/${video.videoPath}`} type="video/mp4" />
-//             הדפדפן שלך לא תומך בווידאו.
-//           </video>
-//           <p>{video.finishDate}</p>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default VideoList;
 
 import { useGetAllMaterialsByNameCourseQuery } from "../../redux/slice/api/materialsApi";
 import { Video } from "../../interface/VideoMaterial";

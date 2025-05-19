@@ -1,224 +1,3 @@
-// const Test = require('../models/Test'); // אם המודל נמצא בתיקיה models
-// // 1. יצירת מבחן חדש
-// exports.createTest = async (req, res) => {
-//     try {
-//         const { title, questions, teacherId, lastDate ,courseName} = req.body;
-
-//         const newTest = new Test({
-//             title,
-//             questions,
-//             teacherId,
-//             lastDate,
-//             courseName,
-//             studentsStarted:[]
-//         });
-
-//         await newTest.save();
-//         res.status(201).json({ message: 'Test created successfully', test: newTest });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Failed to create test', error });
-//     }
-// };
-
-// // 2. קבלת כל המבחנים
-// exports.getTests = async (req, res) => {
-//     try {
-//         const tests = await Test.find();
-//         res.status(200).json({ tests });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Failed to retrieve tests', error });
-//     }
-// };
-
-// // 3. קבלת מבחן לפי ID
-// exports.getTestById = async (req, res) => {
-//     try {
-//         const testId = req.params.id;
-//         const test = await Test.findById(testId);
-
-//         if (!test) {
-//             return res.status(404).json({ message: 'Test not found' });
-//         }
-
-//         res.status(200).json({ test });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Failed to retrieve test', error });
-//     }
-// };
-// // exports.getTestByCourse = async (req, res) => {
-// //     try {
-// //         const { courseName } = req.params;
-// //         const { studentId } = req.query;
-
-// //         const tests = await Test.find({ courseName });
-
-// //         if (tests.length === 0) {
-// //             return res.status(404).json({ message: 'No tests found for this course' });
-// //         }
-
-// //         const updatedTests = tests.map((test) => {
-// //             const alreadyStarted = test.studentsStarted.some(
-// //                 (entry) => entry.studentId.toString() === studentId
-// //             );
-
-// //             return {
-// //                 ...test.toObject(),
-// //                 alreadyStarted,
-// //             };
-// //         });
-
-// //         res.status(200).json({ tests: updatedTests });
-// //     } catch (error) {
-// //         console.error(error);
-// //         res.status(500).json({ message: 'Failed to retrieve tests', error });
-// //     }
-// // };
-
-
-
-
-
-
-
-
-// // ודא שזה הנתיב הנכון
-
-// // מבחנים לפי קורס, עם בדיקה אם התלמיד התחיל
-// exports.getTestByCourse = async (req, res) => {
-//   const { courseName } = req.params;
-//   const { studentId } = req.query;
-
-//   try {
-//     const tests = await Test.find({ courseName });
-
-//     const updatedTests = tests.map(test => {
-//       const alreadyStarted = test.studentsStarted.some(
-//         s => s.studentId.toString() === studentId
-//       );
-
-//       return {
-//         ...test.toObject(),
-//         alreadyStarted, // מוסיפים שדה חדש למידע אם התחיל
-//       };
-//     });
-
-//     res.json({ tests: updatedTests });
-//   } catch (error) {
-//     console.error("שגיאה בשליפת מבחנים לפי קורס:", error);
-//     res.status(500).json({ message: 'שגיאה בשליפת מבחנים' });
-//   }
-// };
-
-// // module.exports = {
-// //   createTest,
-// //   getTests,
-// //   getTestByCourse, // ← זה הקונטרולר שאת עורכת
-// //   getTestById,
-// //   updateTest,
-// //   deleteTest,
-// //   startTest
-// // };
-
-// // 4. עדכון מבחן
-// exports.updateTest = async (req, res) => {
-//     try {
-//         const testId = req.params.id;
-//         const { title, questions, teacherId, lastDate } = req.body;
-
-//         const updatedTest = await Test.findByIdAndUpdate(
-//             testId,
-//             { title, questions, teacherId, lastDate },
-//             { new: true } // מחזיר את המבחן המעודכן
-//         );
-
-//         if (!updatedTest) {
-//             return res.status(404).json({ message: 'Test not found' });
-//         }
-
-//         res.status(200).json({ message: 'Test updated successfully', test: updatedTest });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Failed to update test', error });
-//     }
-// };
-
-// // 5. מחיקת מבחן
-// exports.deleteTest = async (req, res) => {
-//     try {
-//         const testId = req.params.id;
-//         const deletedTest = await Test.findByIdAndDelete(testId);
-
-//         if (!deletedTest) {
-//             return res.status(404).json({ message: 'Test not found' });
-//         }
-
-//         res.status(200).json({ message: 'Test deleted successfully' });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Failed to delete test', error });
-//     }
-// // };
-
-// // exports.startTest = async (req, res) => {
-// //     const { testId } = req.params;
-// //     const { studentId } = req.body;
-
-// //     console.log("Received testId:", testId);
-// //     console.log("Received studentId:", studentId);
-
-// //     try {
-// //         const test = await Test.findById(testId);
-// //         if (!test) {
-// //             return res.status(404).json({ message: 'Test not found' });
-// //         }
-
-// //         const alreadyStarted = test.studentsStarted.some(
-// //             (entry) => entry.studentId.toString() === studentId
-// //         );
-// //         if (alreadyStarted) {
-// //             return res.status(200).json({ alreadyStarted: true });
-// //           }
-// //           return res.status(200).json({ alreadyStarted: false });
-          
-// //         test.studentsStarted.push({ studentId });
-// //         await test.save();
-
-// //         return res.status(200).json({ message: 'Test started successfully' });
-// //     } catch (error) {
-// //         console.error(error);
-// //         return res.status(500).json({ message: 'Failed to start test', error });
-// //     }
-// // };
-// exports.startTest = async (req, res) => {
-//     const { testId } = req.params;
-//     const { studentId } = req.body;
-
-//     try {
-//         const test = await Test.findById(testId);
-//         if (!test) {
-//             return res.status(404).json({ message: 'Test not found' });
-//         }
-
-//         const alreadyStarted = test.studentsStarted.some(
-//             (entry) => entry.studentId.toString() === studentId
-//         );
-
-//         if (alreadyStarted) {
-//             return res.status(200).json({ alreadyStarted: true });
-//         }
-
-//         test.studentsStarted.push({ studentId });
-//         await test.save();
-
-//         return res.status(200).json({ message: 'Test started successfully', alreadyStarted: false });
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ message: 'Failed to start test', error });
-//     }
-
 
 const Test = require('../models/Test'); // אם המודל נמצא בתיקיה models
 
@@ -272,6 +51,8 @@ exports.getTestById = async (req, res) => {
     }
 };
 
+
+
 // 4. מבחנים לפי קורס, עם בדיקה אם התלמיד התחיל
 exports.getTestByCourse = async (req, res) => {
   const { courseName } = req.params;
@@ -300,7 +81,23 @@ exports.getTestByCourse = async (req, res) => {
     console.error("שגיאה בשליפת מבחנים לפי קורס:", error);
     res.status(500).json({ message: 'שגיאה בשליפת מבחנים' });
   }
+}
+
+
+
+// 4. שליפת מבחנים לפי קורס - למורה
+exports.getTestsByCourseForTeacher = async (req, res) => {
+  const { courseName } = req.params;
+
+  try {
+    const tests = await Test.find({ courseName });
+    res.json({ tests });
+  } catch (error) {
+    console.error("שגיאה בשליפת מבחנים לפי קורס:", error);
+    res.status(500).json({ message: 'שגיאה בשליפת מבחנים' });
+  }
 };
+
 
 // 5. עדכון מבחן
 exports.updateTest = async (req, res) => {
@@ -342,36 +139,6 @@ exports.deleteTest = async (req, res) => {
     }
 };
 
-// exports.startTest = async (req, res) => {
-//     try {
-//         const { testId } = req.params;
-//         const { studentId } = req.body;
-
-//         const test = await Test.findById(testId);
-
-//         if (!test) {
-//             return res.status(404).json({ message: 'Test not found' });
-//         }
-
-//         // בדיקה אם הסטודנט כבר התחיל את המבחן
-//         if (test.studentsStarted.includes(studentId)) {
-//             return res.status(400).json({ message: 'Test already started by this student' });
-//         }
-//         const alreadyStarted = test.studentsStarted.some(
-//            s => s.studentId.toString() === studentId
-//           );
-
-
-//         // הוספת הסטודנט לרשימת אלו שהתחילו את המבחן
-//         test.studentsStarted.push(studentId);
-//         await test.save();
-
-//         res.status(200).json({ message: 'Test started successfully' });
-//     } catch (error) {
-//         console.error('Error starting test:', error);
-//         res.status(500).json({ message: 'Failed to start test' });
-//     }
-// };
 
 exports.startTest = async (req, res) => {
   try {
@@ -427,34 +194,6 @@ exports.getTestScores = async (req, res) => {
 };
 
 
-// 7. סימון התחלת מבחן ע"י תלמיד
-// exports.startTest = async (req, res) => {
-//     const { testId } = req.params;
-//     const { studentId } = req.body;
-
-//     try {
-//         const test = await Test.findById(testId);
-//         if (!test) {
-//             return res.status(404).json({ message: 'Test not found' });
-//         }
-
-//         const alreadyStarted = test.studentsStarted.some(
-//             (entry) => entry.studentId.toString() === studentId
-//         );
-
-//         if (alreadyStarted) {
-//             return res.status(200).json({ alreadyStarted: true });
-//         }
-
-//         test.studentsStarted.push({ studentId });
-//         await test.save();
-
-//         return res.status(200).json({ message: 'Test started successfully', alreadyStarted: false });
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ message: 'Failed to start test', error });
-//     }
-// };
 exports.submitScore = async (req, res) => {
   const { testId } = req.params;
   const { studentId, score } = req.body;

@@ -1,38 +1,6 @@
 
 
 
-
-
-
-// import './App.css';
-// import { RouterProvider } from 'react-router';
-// import router from '../src/routes/appRouter';
-// import { Provider, useDispatch } from 'react-redux';
-// import store from '../src/redux/store';
-
-// import { CookiesProvider } from 'react-cookie';
-
-// function App() {
-//   const dispatch = useDispatch();
-
-
-
-//   return (
-//     <RouterProvider router={router} />
-//   );
-// }
-
-// export default function AppWithProvider() {
-//   return (
-//     <Provider store={store}>
-//       <CookiesProvider>
-//         <App />
-//       </CookiesProvider>
-//     </Provider>
-//   );
-// }
-
-
 import './App.css';
 import { RouterProvider } from 'react-router';
 import router from './routes/appRouter';
