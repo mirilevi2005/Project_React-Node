@@ -1,4 +1,3 @@
-
 import {
   Box,
   Button,
@@ -14,6 +13,8 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
+import CourseScoresChart from "../CourseScoresChart"; // נתיב מתאים לפי מבנה התיקיות שלך
+
 import { useCookies } from "react-cookie";
 import {
   useGetTestsByCourseForTeacherQuery,
@@ -64,18 +65,18 @@ const defaultQuestion: QuestionInput = {
   timeLimit: 30,
 };
 const Test = () => {
-  // מצב דיאלוגים
+  // דיאלוגים
   const [openTestDialog, setOpenTestDialog] = useState(false);
   const [openTestsDialog, setOpenTestsDialog] = useState(false);
   const [openGradesDialog, setOpenGradesDialog] = useState(false);
 
-  // ציוני מבחנים לפי מבחן
+  // ציונים לפי מבחן
   const [selectedGrades, setSelectedGrades] = useState<{ [testId: string]: StudentScore[] }>({});
 
   // קבלת שם הקורס מתוך ה-URL
   const courseName = window.location.pathname.split("/").pop() || "";
 
-  // קבלת קוקיז
+  // קוקיז
   const [cookies] = useCookies(["token", "userId"]);
 
   // שאילת מבחנים
@@ -86,7 +87,7 @@ const Test = () => {
   const [createTest] = useCreateTestMutation();
   const [updateTest] = useUpdateTestMutation();
   const [deleteTest] = useDeleteTestMutation();
-const [triggerGetTestScores] = useLazyGetTestScoresQuery();
+  const [triggerGetTestScores] = useLazyGetTestScoresQuery();
   // react-hook-form
   const {
     register,
@@ -100,22 +101,20 @@ const [triggerGetTestScores] = useLazyGetTestScoresQuery();
       TestName: "",
       LastDate: "",
       questions: [defaultQuestion],
-      _id: "",
-      title: "",
+      _id: undefined,
     },
   });
 
   const { fields, append } = useFieldArray({ control, name: "questions" });
 
-  // הוספת שאלה אם הרשימה ריקה
+  // אם אין שאלות, להוסיף שאלה ברירת מחדל
   useEffect(() => {
     if (fields.length === 0) append(defaultQuestion);
   }, [append, fields.length]);
 
-  // הוספת שאלה חדשה
   const addQuestion = () => append(defaultQuestion);
 
-  // שמירת מבחן (יצירה / עדכון)
+  // שמירת מבחן (יצירה או עדכון)
   const onSubmit: SubmitHandler<IFormInput> = async (formData) => {
     const token = cookies.token;
     const userId = cookies.userId;
@@ -151,7 +150,7 @@ const [triggerGetTestScores] = useLazyGetTestScoresQuery();
     }
   };
 
-  // מילוי הטופס לעריכה
+  // מילוי טופס לעריכה
   const handleUpdateTest = (testToEdit: TestType) => {
     reset({
       TestName: testToEdit.title,
@@ -163,7 +162,6 @@ const [triggerGetTestScores] = useLazyGetTestScoresQuery();
         timeLimit: q.timeLimit,
       })),
       _id: testToEdit._id,
-      title: testToEdit.title,
     });
     setOpenTestDialog(true);
   };
@@ -180,51 +178,50 @@ const [triggerGetTestScores] = useLazyGetTestScoresQuery();
     }
   };
 
+  // טעינת ציוני מבחנים
+  const handleOpenGradesDialog = async () => {
+   const grades: { [testId: string]: StudentScore[] } = {};
 
-const handleOpenGradesDialog = async () => {
-  const grades: { [testId: string]: StudentScore[] } = {};
-
-  for (const test of testList) {
-    try {
-      // const response = await triggerGetTestScores(test._id).unwrap(); // response.scores!!
-      // grades[test._id] = response.scores ?? [];
-      const response = await triggerGetTestScores(test._id).unwrap();
-     grades[test._id] = response.scores ?? [];
-
-
-    } catch (err) {
-      console.error("שגיאה בטעינת ציונים למבחן:", test.title, err);
-      grades[test._id] = [];
+    for (const test of testList) {
+      try {
+        const response = await triggerGetTestScores(test._id).unwrap();
+        grades[test._id] = response.scores ?? [];
+      } catch (err) {
+        console.error("שגיאה בטעינת ציונים למבחן:", test.title, err);
+        grades[test._id] = [];
+      }
     }
-  }
 
-  setSelectedGrades(grades);
-  setOpenGradesDialog(true);
-};
-
+    setSelectedGrades(grades);
+    setOpenGradesDialog(true);
+  };
+const aggregatedScores = testList.map((test) => {
+  const scores = selectedGrades[test._id] ?? [];
+  const avgScore =
+    scores.reduce((sum, s) => sum + s.score, 0) / (scores.length || 1);
+  return {
+    testTitle: test.title,
+    averageScore: avgScore,
+  };
+});
   return (
     <Box sx={{ p: 2 }}>
-      {/* <Button variant="outlined" color="primary" onClick={() => setOpenTestDialog(true)} sx={{ mr: 2 }}>
-        צור מבחן
-      </Button> */}
       <Button
-  variant="outlined"
-  color="primary"
-  onClick={() => {
-    reset({
-      TestName: "",
-      LastDate: "",
-      questions: [defaultQuestion],
-      _id: "",
-      title: "",
-    });
-    setOpenTestDialog(true);
-  }}
-  sx={{ mr: 2 }}
->
-  צור מבחן
-</Button>
-
+        variant="outlined"
+        color="primary"
+        onClick={() => {
+          reset({
+            TestName: "",
+            LastDate: "",
+            questions: [defaultQuestion],
+            _id: undefined,
+          });
+          setOpenTestDialog(true);
+        }}
+        sx={{ mr: 2 }}
+      >
+        צור מבחן
+      </Button>
 
       <Button variant="outlined" color="primary" onClick={() => setOpenTestsDialog(true)} sx={{ mr: 2 }}>
         הצגת כל המבחנים
@@ -233,6 +230,13 @@ const handleOpenGradesDialog = async () => {
       <Button variant="outlined" color="primary" onClick={handleOpenGradesDialog}>
         צפייה בציוני מבחנים
       </Button>
+<Box sx={{ mt: 4 }}>
+  {aggregatedScores.length === 0 ? (
+    <Typography>אין ציונים להצגת גרף</Typography>
+  ) : (
+    <CourseScoresChart aggregatedScores={aggregatedScores}  />
+  )}
+</Box>
 
       {/* דיאלוג יצירת/עריכת מבחן */}
       <Dialog open={openTestDialog} onClose={() => setOpenTestDialog(false)} maxWidth="md" fullWidth>
@@ -315,70 +319,62 @@ const handleOpenGradesDialog = async () => {
           </form>
         </DialogContent>
       </Dialog>
+
       {/* דיאלוג הצגת כל המבחנים */}
       <Dialog open={openTestsDialog} onClose={() => setOpenTestsDialog(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>כל המבחנים בקורס</DialogTitle>
+        <DialogTitle>כל המבחנים בקורס {courseName}</DialogTitle>
         <DialogContent>
-          <List>
-            {testList.length === 0 && <Typography>אין מבחנים בקורס זה.</Typography>}
-            {testList.map((test) => (
-              <ListItem
-                key={test._id}
-                secondaryAction={
-                  <Box>
-                    <Button size="small" onClick={() => handleUpdateTest(test)}>
-                      ערוך
-                    </Button>
-                    <Button size="small" color="error" onClick={() => handleDeleteTest(test._id)}>
-                      מחק
-                    </Button>
-                  </Box>
-                }
-              >
-                <ListItemText
-                  primary={test.title}
-                  secondary={`תאריך אחרון: ${new Date(test.lastDate).toLocaleString()}`}
-                />
-              </ListItem>
-            ))}
-          </List>
-          <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-            <Button onClick={() => setOpenTestsDialog(false)}>סגור</Button>
-          </Box>
+          {testList.length === 0 ? (
+            <Typography>לא נמצאו מבחנים בקורס זה</Typography>
+          ) : (
+            <List>
+              {testList.map((test) => (
+                <ListItem key={test._id} divider>
+                  <ListItemText
+                    primary={test.title}
+                    secondary={`תאריך אחרון: ${new Date(test.lastDate).toLocaleString()}`}
+                  />
+                  <Button onClick={() => handleUpdateTest(test)} sx={{ mr: 1 }}>
+                    ערוך
+                  </Button>
+                  <Button color="error" onClick={() => handleDeleteTest(test._id)}>
+                    מחק
+                  </Button>
+                </ListItem>
+              ))}
+            </List>
+          )}
         </DialogContent>
       </Dialog>
 
-<Dialog open={openGradesDialog} onClose={() => setOpenGradesDialog(false)} maxWidth="md" fullWidth>
-  <DialogTitle>ציוני מבחנים</DialogTitle>
-  <DialogContent>
-    {testList.map((test) => (
-      <Box key={test._id} sx={{ mb: 4 }}>
-        <Typography variant="h6" gutterBottom>{test.title}</Typography>
-        {selectedGrades[test._id]?.length ? (
-          <List sx={{ pl: 2 }}>
-            {selectedGrades[test._id].map((score) => (
-              <ListItem key={score.studentId} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mb: 2, borderBottom: '1px solid #ccc', pb: 1 }}>
-                <Typography variant="body1">
-                  <strong> userName:</strong> {score.userName || score.studentId}
-
-                </Typography>
-                <Typography variant="body1">
-                  <strong> Done at:</strong> {score.finishedAt ? new Date(score.finishedAt).toLocaleString('he-IL') : "לא סיימה"}
-                </Typography>
-                <Typography variant="body1">
-                  <strong>score:</strong> {score.score}
-                </Typography>
-              </ListItem>
-            ))}
-          </List>
-        ) : (
-          <Typography variant="body2" color="text.secondary">אין ציונים להצגה</Typography>
-        )}
-      </Box>
-    ))}
-  </DialogContent>
-</Dialog>
-
+      {/* דיאלוג הצגת ציוני מבחנים */}
+      <Dialog open={openGradesDialog} onClose={() => setOpenGradesDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>ציוני מבחנים</DialogTitle>
+        <DialogContent>
+          {testList.length === 0 && <Typography>אין מבחנים להצגת ציונים</Typography>}
+          {testList.map((test) => (
+            <Box key={test._id} sx={{ mb: 3 }}>
+              <Typography variant="h6">{test.title}</Typography>
+              {!selectedGrades[test._id] || selectedGrades[test._id].length === 0 ? (
+                <Typography>אין ציונים עבור מבחן זה</Typography>
+              ) : (
+                <List>
+                  {selectedGrades[test._id].map(({ studentId, userName, score, finishedAt }) => (
+                    <ListItem key={studentId} divider>
+                      <ListItemText
+                        primary={userName}
+                        secondary={`ציון: ${score} | תאריך סיום: ${
+                          finishedAt ? new Date(finishedAt).toLocaleString() : "לא הושלם"
+                        }`}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+            </Box>
+          ))}
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };
