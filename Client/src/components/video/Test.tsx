@@ -204,9 +204,27 @@ const handleOpenGradesDialog = async () => {
 
   return (
     <Box sx={{ p: 2 }}>
-      <Button variant="outlined" color="primary" onClick={() => setOpenTestDialog(true)} sx={{ mr: 2 }}>
+      {/* <Button variant="outlined" color="primary" onClick={() => setOpenTestDialog(true)} sx={{ mr: 2 }}>
         צור מבחן
-      </Button>
+      </Button> */}
+      <Button
+  variant="outlined"
+  color="primary"
+  onClick={() => {
+    reset({
+      TestName: "",
+      LastDate: "",
+      questions: [defaultQuestion],
+      _id: "",
+      title: "",
+    });
+    setOpenTestDialog(true);
+  }}
+  sx={{ mr: 2 }}
+>
+  צור מבחן
+</Button>
+
 
       <Button variant="outlined" color="primary" onClick={() => setOpenTestsDialog(true)} sx={{ mr: 2 }}>
         הצגת כל המבחנים
@@ -329,7 +347,7 @@ const handleOpenGradesDialog = async () => {
           </Box>
         </DialogContent>
       </Dialog>
-      
+
 <Dialog open={openGradesDialog} onClose={() => setOpenGradesDialog(false)} maxWidth="md" fullWidth>
   <DialogTitle>ציוני מבחנים</DialogTitle>
   <DialogContent>
@@ -341,14 +359,14 @@ const handleOpenGradesDialog = async () => {
             {selectedGrades[test._id].map((score) => (
               <ListItem key={score.studentId} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mb: 2, borderBottom: '1px solid #ccc', pb: 1 }}>
                 <Typography variant="body1">
-                  <strong>שם תלמידה:</strong> {score.userName || score.studentId}
+                  <strong> userName:</strong> {score.userName || score.studentId}
 
                 </Typography>
                 <Typography variant="body1">
-                  <strong>מועד סיום:</strong> {score.finishedAt ? new Date(score.finishedAt).toLocaleString('he-IL') : "לא סיימה"}
+                  <strong> Done at:</strong> {score.finishedAt ? new Date(score.finishedAt).toLocaleString('he-IL') : "לא סיימה"}
                 </Typography>
                 <Typography variant="body1">
-                  <strong>ציון:</strong> {score.score}
+                  <strong>score:</strong> {score.score}
                 </Typography>
               </ListItem>
             ))}
@@ -360,7 +378,6 @@ const handleOpenGradesDialog = async () => {
     ))}
   </DialogContent>
 </Dialog>
-
 
     </Box>
   );
