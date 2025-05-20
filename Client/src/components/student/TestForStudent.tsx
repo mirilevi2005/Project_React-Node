@@ -15,6 +15,7 @@ import {
 import {
   useGetTestsByCourseQuery,
   useStartTestMutation,
+  useSubmitScoreMutation,
 } from "../../redux/slice/api/testApi";
 import { Exam } from "../../interface/Exam";
 
@@ -39,6 +40,7 @@ const TestForStudent = ({ courseName, studentId }: Props) => {
   });
 
   const [startTest] = useStartTestMutation();
+  const [submitScore] = useSubmitScoreMutation();
   const exams: Exam[] = data?.tests || [];
 
   const handleClickOpen = () => setOpen(true);
@@ -79,22 +81,8 @@ const TestForStudent = ({ courseName, studentId }: Props) => {
     setFeedback(isCorrect ? "תשובה נכונה ✅" : "תשובה שגויה ❌");
   };
 
-  const goToNextQuestion = () => {
-    if (!selectedExam) return;
-    setFeedback(null);
-    const nextIndex = currentQuestionIndex + 1;
-
-    if (nextIndex < selectedExam.questions.length) {
-      setCurrentQuestionIndex(nextIndex);
-      setTimeLeft(selectedExam.questions[nextIndex].timeLimit);
-    } else {
-      calculateScore();
-      setExamCompleted(true);
-    }
-  };
-
   const calculateScore = () => {
-    if (!selectedExam) return;
+    if (!selectedExam) return 0;
     const totalQuestions = selectedExam.questions.length;
     const pointsPerQuestion = 100 / totalQuestions;
     let correctCount = 0;
@@ -104,7 +92,34 @@ const TestForStudent = ({ courseName, studentId }: Props) => {
       if (selected === q.correctAnswer) correctCount++;
     });
 
-    setScore(correctCount * pointsPerQuestion);
+    return correctCount * pointsPerQuestion;
+  };
+
+  const goToNextQuestion = async () => {
+    if (!selectedExam) return;
+    setFeedback(null);
+    const nextIndex = currentQuestionIndex + 1;
+
+    if (nextIndex < selectedExam.questions.length) {
+      setCurrentQuestionIndex(nextIndex);
+      setTimeLeft(selectedExam.questions[nextIndex].timeLimit);
+    } else {
+      const finalScore = calculateScore();
+      setScore(finalScore);
+      setExamCompleted(true);
+
+      try {
+        await submitScore({
+          testId: selectedExam._id,
+          studentId,
+          score: finalScore,
+        }).unwrap();
+        alert("הציון נשלח בהצלחה");
+      } catch (err) {
+        console.error("שגיאה בשליחת הציון:", err);
+        alert("שגיאה בשליחת הציון");
+      }
+    }
   };
 
   useEffect(() => {
