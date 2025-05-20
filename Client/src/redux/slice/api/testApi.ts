@@ -115,7 +115,7 @@ import apiSlice from './apiSlice';
 export interface TestScore {
   testId: string;
   studentId: string;
-  score: number;
+  scores: number;
   submittedAt?: string;
   studentName?: string; // נוח לתצוגה בממשק
 }
