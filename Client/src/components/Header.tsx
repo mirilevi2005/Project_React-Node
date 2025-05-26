@@ -433,6 +433,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { selectCurrentUser, logout } from '../redux/slice/authStateSlice';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { UserInfo } from 'firebase/auth';
 
 // Styled components
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -490,7 +491,17 @@ const Header: React.FC = () => {
     dispatch(logout());
     navigate('/');
   };
-
+  // const getHomePath=(role:string)=>{
+  // switch (role) {
+  //   case 'lacturer':
+  //     return '/HomeLacturer';
+  //   case 'student':
+  //     return '/HomeStudent';
+  //   default:
+  //     return '/';
+  // }
+  // }
+  //  const user123=useSelector(selectCurrentUser);
   return (
     <>
       <ElevationScroll>
@@ -499,6 +510,7 @@ const Header: React.FC = () => {
             <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 <NavLink to="/" style={{ textDecoration: 'none' }}>
+                {/* <NavLink to={getHomePath(user123?.roles)} style={{ textDecoration: 'none' }}> */}
                   <LogoText variant="h5">EduTech</LogoText>
                 </NavLink>
               </Box>

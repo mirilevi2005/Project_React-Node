@@ -1,7 +1,9 @@
 import { useSelector } from 'react-redux';
-import VideoOfMaterial from '../../components/video/VideoOfMaterial';
-import VideoOfMaterialStudent from '../../components/student/VideoOfMaterial';
+import VideoOfMaterialLacturer from '../../components/video/VideoOfMaterialLacturer';
+import VideoOfMaterialStudent from '../../components/student/VideoOfMaterialStudent';
 import { selectCurrentUser } from '../../redux/slice/authStateSlice';
+import LecturerCourseMaterialsManager from '../../components/LecturerCourseMaterialsManager';
+import StudentCourseMaterialsManager from '../../components/student/StudentCourseMaterialsManager';
 
 const CloudComputing = () => {
   const user = useSelector(selectCurrentUser);
@@ -10,9 +12,11 @@ const CloudComputing = () => {
     <div>
       <h1>Welcome to CloudComputing course</h1>
       {user?.roles === 'lacturer' ? (
-        <VideoOfMaterial />
+        // <VideoOfMaterialLacturer />
+        <LecturerCourseMaterialsManager/>
       ) : (
-        <VideoOfMaterialStudent />
+        // <VideoOfMaterialStudent />
+        <StudentCourseMaterialsManager/>
       )}
     </div>
   );

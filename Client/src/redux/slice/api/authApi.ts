@@ -1,4 +1,4 @@
-import { userInfo, SignInRequest, SignUpRequest, AuthResponse } from '../../../interface/authTypes'; // עדכני את הנתיב
+import {  SignInRequest, SignUpRequest, AuthResponse } from '../../../interface/authTypes'; // עדכני את הנתיב
 import apiSlice from './apiSlice';
 
 const authApi = apiSlice.injectEndpoints({
@@ -9,6 +9,7 @@ const authApi = apiSlice.injectEndpoints({
         method: 'POST',
         body: credentials,
       }),
+    
       invalidatesTags: ['User'],
     }),
     signUp: builder.mutation<AuthResponse, SignUpRequest>({
@@ -16,6 +17,7 @@ const authApi = apiSlice.injectEndpoints({
         url: '/signup',
         method: 'POST',
         body: newUser,
+
       }),
       invalidatesTags: ['User'],
     }),
@@ -24,9 +26,12 @@ const authApi = apiSlice.injectEndpoints({
         url: "/google-login",
         method: "POST",
         body: googleUser,
+
       }),
+      
       invalidatesTags: ["User"],
     }),
+   
   }),
 });
 

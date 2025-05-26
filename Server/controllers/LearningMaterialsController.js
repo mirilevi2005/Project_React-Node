@@ -135,3 +135,17 @@ exports.deleteMaterial = async (req, res) => {
     }
 };
 
+exports.getNewVideosSince = async (req, res) => {
+  try {
+    const since = new Date(req.params.timestamp);
+
+    const newVideos = await Material.find({
+      uploadDate: { $gt: since }
+    }).select('nameCours uploadDate videoName originalVideoName'); // הוספתי את originalVideoName
+
+    res.json(newVideos);
+  } catch (error) {
+    console.error("Error fetching new videos:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};

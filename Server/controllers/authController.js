@@ -3,26 +3,66 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 // התחברות
+// const signIn = async (req, res) => { 
+//     const { email, password } = req.body  
+//     console.log(email        ,     password );
+    
+//     if (!email || !password)
+//         return res.status(400).json({ message: "Please fill all the required parameters" })
+//     const foundUser = await User.findOne({ email }).lean()
+//     if (!foundUser)
+//         return res.status(401).json({ message: "Unauthorized123" })
+//     const match = await bcrypt.compare(password, foundUser.password)
+//     if (!match)
+//         return res.status(401).json({ message: "Unauthorized123" })
+//     const userInfo = {
+//         _id: foundUser._id,
+//         userName: foundUser.userName,
+//         email: foundUser.email,
+//         roles: foundUser.roles,
+//     }
+//     const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
+//     res.json({ accessToken, newUser:userInfo })
+// }
+
+
 const signIn = async (req, res) => { 
-    const { email, password } = req.body  
-    console.log(email        ,     password );
+    const { email, password } = req.body;
+    console.log(email, password);
     
     if (!email || !password)
-        return res.status(400).json({ message: "Please fill all the required parameters" })
-    const foundUser = await User.findOne({ email }).lean()
+        return res.status(400).json({ message: "Please fill all the required parameters" });
+
+    const foundUser = await User.findOne({ email });
     if (!foundUser)
-        return res.status(401).json({ message: "Unauthorized123" })
-    const match = await bcrypt.compare(password, foundUser.password)
+        return res.status(401).json({ message: "Unauthorized" });
+
+    const match = await bcrypt.compare(password, foundUser.password);
     if (!match)
-        return res.status(401).json({ message: "Unauthorized123" })
+        return res.status(401).json({ message: "Unauthorized" });
+
+    // שמירת זמן התחברות קודם אם סטודנט
+    let previousLogin = null;
+    if (foundUser.roles === 'student') {
+        previousLogin = foundUser.lastLogin || new Date(0); // אם אין עדיין ערך
+        foundUser.lastLogin = new Date();
+        await foundUser.save();
+    }
+
     const userInfo = {
         _id: foundUser._id,
         userName: foundUser.userName,
         email: foundUser.email,
         roles: foundUser.roles,
-    }
-    const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
-    res.json({ accessToken, newUser:userInfo })
+    };
+
+    const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
+
+    res.json({ 
+        accessToken, 
+        newUser: userInfo,
+        previousLogin: foundUser.roles === 'student' ? previousLogin : null
+    });
 }
 
 //הרשמה

@@ -54,6 +54,20 @@ const materialsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Material"],
     }),
 
+getNewVideos: builder.query<Video[], string>({
+  query: (lastLogin) => `/users/new-videos?since=${lastLogin}`,
+  providesTags: ['User'],
+}),
+
+
+    // עדכון תאריך התחברות - זו מוטציה, לכן invalidatesTags בסדר
+    updateLastLogin: builder.mutation<void, void>({
+      query: () => ({
+        url: '/users/update-last-login',
+        method: 'PUT',
+      }),
+      invalidatesTags: ['User'],
+    }),
     
   })
 });
@@ -64,7 +78,9 @@ export const {
   useGetAllMaterialsByNameCourseQuery,
   useGetMaterialByIdQuery,
   useUpDateMaterialMutation,
-  useDeleteMaterialMutation
+  useDeleteMaterialMutation,
+  useGetNewVideosQuery,
+  useUpdateLastLoginMutation,
 } = materialsApiSlice;
 
 export default materialsApiSlice;

@@ -19,8 +19,12 @@ const testSchema = new mongoose.Schema({
     studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // או 'Student' לפי איך שהמודל שלך נקרא
     score: Number,
     finishedAt: { type: Date, default: Date.now }
+  }],
+  
+  createdAt :{
+    type: Date,
+    default: Date.now
   }
-]
 
 });
 

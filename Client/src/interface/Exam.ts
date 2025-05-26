@@ -4,6 +4,8 @@ export interface Exam {
     lastDate: string;
     questions: Question[];
     alreadyStarted:boolean;
+    createdAt :Date;
+courseName:string
 
   }
   

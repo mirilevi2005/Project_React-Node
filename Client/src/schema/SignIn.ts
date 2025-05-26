@@ -1,9 +1,6 @@
-
-
-
 import { z } from "zod";
 
-const SignUp = z.object({
+const SignIn = z.object({
   userName: z.string().min(1, { message: "Name must be at least 1 character" }),
   email: z.string().email({ message: "Invalid email" }),
   password: z.string()
@@ -14,6 +11,10 @@ const SignUp = z.object({
   adminCode: z.string().min(4, { message: "Admin code is required" }), // ✅ חדש
 });
 
-export type LoginType = z.infer<typeof SignUp>;
-export default SignUp;
+export type LoginType = z.infer<typeof SignIn>;
+export default SignIn;
+
+
+
+
 

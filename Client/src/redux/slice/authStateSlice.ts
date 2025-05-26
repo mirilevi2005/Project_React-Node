@@ -80,10 +80,14 @@ import { RootState } from '../../redux/store';
 
 interface AuthState {
   user: userInfo | null;
+  previousLogin: null, // נוסיף את זה
+
 }
 
 const initialState: AuthState = {
   user: null,
+    previousLogin: null, // נוסיף את זה
+
 };
 
 const authStateSlice = createSlice({
@@ -108,10 +112,13 @@ const authStateSlice = createSlice({
       // Clear user state
       state.user = null;
     },
+     setPreviousLogin(state, action) {
+      state.previousLogin = action.payload;
+    },
   },
 });
 
 export const selectCurrentUser = (state: RootState) => state.userInfo.user;
 
-export const { setUser, clearUser, logout } = authStateSlice.actions;
+export const { setUser, clearUser, logout,setPreviousLogin } = authStateSlice.actions;
 export default authStateSlice.reducer;
