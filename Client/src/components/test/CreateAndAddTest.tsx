@@ -450,6 +450,9 @@ const CreateAndAddTest = ({courseName,refetchTests}:Props) => {
               <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
                 שמור
               </Button>
+                 <Button onClick={() => { setOpenTestDialog(false); reset(); }} color="secondary" variant="outlined">
+                  סגור
+                </Button>
             </Stack>
           </form>
         </DialogContent>

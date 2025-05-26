@@ -133,6 +133,7 @@ const HomePage= () => {
   });
     const { data, error, isLoading } = useGetStatsQuery();
    const user=useSelector(selectCurrentUser)
+console.log(user?.roles);
 
   // Get current date
   const currentDate = new Date().toLocaleDateString('en-US', {
@@ -219,7 +220,8 @@ const HomePage= () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4, backgroundColor: '#fafafa', minHeight: '100vh' }}>
-      {user?.roles==='student'? <NewContentPopup/>:"nfsj" }
+      {user?.roles==='student'? <NewContentPopup/> : null }
+
       {/* Current date */}
       <Typography 
         variant="body1" 
