@@ -16,26 +16,25 @@ const corsOptions = require("./config/corsOptions");
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
-app.use(function(req, res, next) {
-  res.setTimeout(5000000, function(){
-    console.log('Request has timed out.');
-    res.send(408); // Error 408 is request timeout
-  });
-  next();
-});
-app.use(express.json({ limit: '100mb' }));
-app.use(express.urlencoded({ extended: true, limit: '100mb' }));
+
 
 // התחברות למסד הנתונים
 connectDB();
 
-// קבצים סטטיים (כגון וידאוים שהועלו)
+// app.get('*', (req, res) => {
+// res.sendFile(path.resolve(__dirname, '../client/components/HomePage'));
+// });
 
 // ייבוא ראוטים
 const LearningMaterialsRouter = require('./router/LearningMaterialsRouter');
 const singIn = require('./router/signIn'); // ✅ ייבוא ראוט של התחברות והרשמה
 const signUp=require('./router/signUp')
 const Test = require('./router/TestRouter');
+const statsRouter = require('./router/statsRouter');
+const newMaterial = require('./router/newMaterial');
+
+// קבצים סטטיים (כגון וידאוים שהועלו)
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
@@ -44,7 +43,9 @@ app.use('/test',Test)
 app.use('/HomeLacturer', LearningMaterialsRouter);
 app.use('/', singIn);
 app.use('/SignUp', signUp);
-// app.use("/student-submissions", Test);
+app.use('/stats', statsRouter);
+app.use('/users', newMaterial);///צריך להחילף את הניתוב של הuser
+
 
 // חיבור למסד נתונים והרצת השרת
 mongoose.connection.once('open', () => {

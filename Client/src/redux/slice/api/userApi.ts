@@ -10,7 +10,6 @@ const apiSlice = createApi({
   endpoints: (builder) => ({
     getUserProfile: builder.query({
       query: () => '/user', // שלח בקשה לנתיב של פרטי המשתמש
-      providesTags: ['User'],
     }),
     createUser: builder.mutation({
       query: (newUser) => ({
@@ -20,9 +19,12 @@ const apiSlice = createApi({
       }),
       invalidatesTags: ['User'],
     }),
+     getStats: builder.query<{ studentsCount: number; videosCount: number }, void>({
+      query: () => '/stats',
+    }),
   }),
 });
 
-export const { useGetUserProfileQuery, useCreateUserMutation } = apiSlice;
+export const { useGetUserProfileQuery, useCreateUserMutation ,useGetStatsQuery} = apiSlice;
 
 export default apiSlice;

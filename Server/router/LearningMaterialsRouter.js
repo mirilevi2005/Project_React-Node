@@ -1,17 +1,14 @@
 
 const express = require("express");
 const router = express.Router();
-const {
-  addMaterial,
-  getMaterialsByCourseName,
-  getAllMaterials,
-  deleteMaterial,
-  updateMaterial, // 👈 נוסיף את הפונקציה הזו
-} = require("../controllers/LearningMaterialsController");
+
+  // 👈 נוסיף את הפונקציה הזו
+const LearningMaterialsController= require("../controllers/LearningMaterialsController");
 
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const verifyJWT = require("../middelware/verifyJWT");
 
 // 📌 הגדרת אחסון Multer לפי שם קורס
 const storage = multer.diskStorage({
@@ -33,15 +30,18 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // 📌 העלאת סרטון חדש לפי שם קורס
-router.post("/:nameCours", upload.single("video"), addMaterial);
+router.post("/:nameCours", upload.single("video"), LearningMaterialsController.addMaterial);
 
 // 📌 קבלת כל הסרטונים של קורס מסוים
-router.get("/:nameCours", getMaterialsByCourseName);
+router.get("/:nameCours", LearningMaterialsController.getMaterialsByCourseName);
 
 // 📌 מחיקת סרטון לפי מזהה
-router.delete("/material/:MaterialId", deleteMaterial);
+router.delete("/material/:MaterialId", LearningMaterialsController.deleteMaterial);
 
 // ✅ עדכון שם סרטון לפי מזהה
-router.put("/:nameCours", upload.none(), updateMaterial); // לא נשלחת קובץ, רק FormData
+router.put("/:nameCours", upload.none(), LearningMaterialsController.updateMaterial); // לא נשלחת קובץ, רק FormData
+
+
+router.get('/material/:timestamp', verifyJWT, LearningMaterialsController.getNewVideosSince);
 
 module.exports = router;

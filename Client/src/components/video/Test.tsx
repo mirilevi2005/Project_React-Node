@@ -23,6 +23,7 @@ import {
   useDeleteTestMutation,
   useLazyGetTestScoresQuery,
 } from "../../redux/slice/api/testApi";
+import ExistingTestsManagement from "../test/ExistingTestsManagement";
 
 interface StudentScore {
   studentId: string;
@@ -67,7 +68,7 @@ const defaultQuestion: QuestionInput = {
 const Test = () => {
   // דיאלוגים
   const [openTestDialog, setOpenTestDialog] = useState(false);
-  const [openTestsDialog, setOpenTestsDialog] = useState(false);
+  const [openTestsDialog, setOpenTestsDialog] = useState(false);///מירי
   const [openGradesDialog, setOpenGradesDialog] = useState(false);
 
   // ציונים לפי מבחן
@@ -235,6 +236,7 @@ const aggregatedScores = testList.map((test) => {
     <Typography>אין ציונים להצגת גרף</Typography>
   ) : (
     <CourseScoresChart aggregatedScores={aggregatedScores}  />
+
   )}
 </Box>
 

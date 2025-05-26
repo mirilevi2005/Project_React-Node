@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import "../../css/VideoOfMaterial.css";
 
-import VideoList from "../student/VideoList";
+import VideoList from "./VideoList";
 import TestForStudent from "./TestForStudent";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../redux/slice/authStateSlice";
 
-const VideoOfMaterial = () => {
+const VideoOfMaterialStudent = () => {
   const [uploadedCourse, setUploadedCourse] = useState<string | null>(null);
   const urlParts = window.location.pathname.split("/");
   const courseName = urlParts[urlParts.length - 1];
@@ -31,4 +31,5 @@ const VideoOfMaterial = () => {
   );
 };
 
-export default VideoOfMaterial;
+export default VideoOfMaterialStudent;
+

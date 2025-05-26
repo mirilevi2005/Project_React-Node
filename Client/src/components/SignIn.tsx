@@ -22,7 +22,6 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slice/authStateSlice";
 import { useGoogleSignInMutation} from "../redux/slice/api/authApi";
 import { useSignInMutation } from "../redux/slice/api/authApi";
-
 const SignInSchema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(8, "Password must be at least 8 characters")
@@ -30,8 +29,9 @@ const SignInSchema = z.object({
 
 type SignInForm = z.infer<typeof SignInSchema>;
 
+
 const actionCodeSettings = {
-  url: "http://localhost:8080/HomeLacturer",
+  url: "http://localhost:8080",
   handleCodeInApp: true
 };
 
@@ -45,10 +45,6 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const [googleSignIn] = useGoogleSignInMutation();
   const [signIn] = useSignInMutation();
-
-
-
-
   const {
     register,
     handleSubmit,

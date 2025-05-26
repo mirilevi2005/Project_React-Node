@@ -6,6 +6,7 @@ const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080' }), // נניח שכל הנתיבים שלך מתחילים ב-/test
   tagTypes: ["Material", "User", "Test"],
   endpoints: () => ({})
+
 });
 
 export default apiSlice;

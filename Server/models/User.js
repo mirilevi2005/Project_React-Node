@@ -16,8 +16,12 @@ const UserSchema = new mongoose.Schema({
     roles: {
         type: String, 
         enum: ['lacturer', 'student'],
-        default: 'lacturer'
+        default: 'student'
     },
+    lastLogin: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model('User', UserSchema);

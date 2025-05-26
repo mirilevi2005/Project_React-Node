@@ -1,14 +1,22 @@
 
+import HomePage from '../components/HomePage';
 import HomePageStudent from '../components/student/HomePageStudent';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '../redux/slice/authStateSlice';
+import { Box, Container } from '@mui/material';
 
 const HomeStudent = () => {
-  const user = useSelector(selectCurrentUser);
   return (
     <>
-      <h1>student {user?.userName}</h1>
-      <HomePageStudent />
+       <Box sx={{ 
+        bgcolor: '#f8fafc', 
+        minHeight: '100vh',
+        pt: 4
+      }}>
+        <Container maxWidth="lg">   
+          {/* <HomePageStudent /> */}
+          <HomePage />
+
+        </Container>
+      </Box>
     </>
   );
 };
