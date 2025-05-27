@@ -19,7 +19,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/slice/authStateSlice";
+import { setPreviousLogin, setUser } from "../redux/slice/authStateSlice";
 import { useGoogleSignInMutation} from "../redux/slice/api/authApi";
 import { useSignInMutation } from "../redux/slice/api/authApi";
 const SignInSchema = z.object({
@@ -63,7 +63,7 @@ const SignIn = () => {
     try {
       const result = await signIn(data).unwrap();
   
-      const { accessToken, newUser } = result;
+      const { accessToken, newUser ,previousLogin} = result;
       console.log(result);
       
        // שמירת הנתונים בעוגיות
@@ -74,6 +74,8 @@ const SignIn = () => {
       setCookie("userId", newUser._id, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
   
       dispatch(setUser(newUser));
+       dispatch(setPreviousLogin(previousLogin));
+      localStorage.setItem("previousLogin", previousLogin);
       reset();
   
       if (newUser.roles === "student") {
@@ -118,7 +120,7 @@ const SignIn = () => {
         userName: displayName
       }).unwrap();
   
-      const { accessToken: apiToken, newUser } = response;
+      const { accessToken: apiToken, newUser ,previousLogin} = response;
   
       // שמירת הנתונים בעוגיות
       setCookie("token", apiToken, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
@@ -128,6 +130,9 @@ const SignIn = () => {
       setCookie("userId", newUser._id, { path: "/", maxAge: 3600, sameSite: "lax", secure: false });
 
       dispatch(setUser(newUser));
+            // שמירת previousLogin
+      dispatch(setPreviousLogin(previousLogin));
+      localStorage.setItem("previousLogin", previousLogin);
   
       navigate(newUser.roles === "student" ? "/HomeStudent" : "/HomeLacturer");
   

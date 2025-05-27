@@ -80,7 +80,7 @@ import { RootState } from '../../redux/store';
 
 interface AuthState {
   user: userInfo | null;
-  previousLogin: null, // נוסיף את זה
+  previousLogin:  null, // נוסיף את זה
 
 }
 

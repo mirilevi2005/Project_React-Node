@@ -11,6 +11,7 @@ router.get('/', testController.getTests);
 
 // מבחנים לפי קורס (לסטודנט)
 router.get('/course/:courseName', testController.getTestByCourse);
+router.get('/new/:lastLogin', testController.getNewTests);
 
 // מבחנים לפי קורס (למורה)
 router.get('/courseForTeacher/:courseName', testController.getTestsByCourseForTeacher);
@@ -26,8 +27,5 @@ router.put('/:id', testController.updateTest);
 router.delete('/:id', testController.deleteTest);
 // קבלת ציוני תלמידות למבחן לפי ID
 router.get('/scores/:testId', testController.getTestScores);
-
-
-router.get('/new/:lastLogin', testController.getNewTests);
 
 module.exports = router;

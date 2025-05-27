@@ -110,7 +110,8 @@
 
 // export default testApi;
 
-import { Exam } from '../../../interface/Exam';
+import { Exam, TestType } from '../../../interface/Exam';
+import { Test } from '../../../interface/VideoMaterial';
 import apiSlice from './apiSlice';
 
 export interface TestScore {
@@ -197,13 +198,16 @@ getTestScores: builder.query<TestScore[], string>({
 getNewTests: builder.query<Exam[], string>({
   query: (lastLogin) => `/test/new/${lastLogin}`,
 }),
+//  getNewTests: builder.query<TestType[], string>({
+//       query: (lastLogin) => `/new/${encodeURIComponent(lastLogin)}`
+//     }),
 
-updateLastLogin: builder.mutation<void, void>({
-  query: () => ({
-    url: 'test/students/update-last-login',
-    method: 'PUT',
-  }),
-}),
+// updateLastLogin: builder.mutation<void, void>({
+//   query: () => ({
+//     url: '/update-last-login',
+//     method: 'PUT',
+//   }),
+// }),
 
   }),
 
@@ -221,8 +225,8 @@ export const {
   useStartTestMutation,
   useSubmitScoreMutation,
   useGetTestScoresQuery,
-  useGetNewTestsQuery,
-  useUpdateLastLoginMutation
+   useGetNewTestsQuery,
+  // useUpdateLastLoginMutation
 
 
 } = testApi;

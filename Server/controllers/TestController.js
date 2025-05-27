@@ -241,17 +241,36 @@ exports.getTestScores = async (req, res) => {
         res.status(500).json({ message: 'Failed to retrieve scores' });
     }
 };
+// exports.getNewTests = async (req, res) => {
+//   const { lastLogin } = req.params;
+
+//   try {
+//     const newTests = await Test.find({
+//       createdAt: { $gt: new Date(lastLogin) }
+//     });
+
+//     res.status(200).json(newTests);
+//   } catch (error) {
+//     console.error('Error fetching new tests:', error);
+//     res.status(500).json({ message: 'Failed to retrieve new tests' });
+//   }
+// };
+
+// פונקציה חדשה - קבלת מבחנים שנוספו מאז ההתחברות האחרונה
 exports.getNewTests = async (req, res) => {
   const { lastLogin } = req.params;
 
-  try {
-    const newTests = await Test.find({
-      createdAt: { $gt: new Date(lastLogin) }
-    });
+  if (!lastLogin || isNaN(Date.parse(lastLogin))) {
+    return res.status(400).json({ message: 'Invalid last login date' });
+  }
 
-    res.status(200).json(newTests);
+  try {
+    const newTests = await Test.find({ createdAt: { $gt: new Date(lastLogin) } });
+    res.json(newTests);
   } catch (error) {
     console.error('Error fetching new tests:', error);
-    res.status(500).json({ message: 'Failed to retrieve new tests' });
+    res.status(500).json({ message: 'Server error' });
   }
 };
+
+

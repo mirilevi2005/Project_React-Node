@@ -44,7 +44,8 @@ app.use('/HomeLacturer', LearningMaterialsRouter);
 app.use('/', singIn);
 app.use('/SignUp', signUp);
 app.use('/stats', statsRouter);
-app.use('/users', newMaterial);///צריך להחילף את הניתוב של הuser
+app.use('/users', newMaterial);///צריך להחילףapp.
+// use(cookieParser()); //את הניתוב של הuser
 
 
 // חיבור למסד נתונים והרצת השרת

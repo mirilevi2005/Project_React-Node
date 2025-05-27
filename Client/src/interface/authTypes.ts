@@ -19,11 +19,12 @@ export interface userInfo {
   roles: string;
   _id:string;
 }
-
 export interface AuthResponse {
   accessToken: string;
   newUser: userInfo;
+  previousLogin:any
 }
+
 
 
 

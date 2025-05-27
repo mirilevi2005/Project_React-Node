@@ -55,7 +55,7 @@ const materialsApiSlice = apiSlice.injectEndpoints({
     }),
 
 getNewVideos: builder.query<Video[], string>({
-  query: (lastLogin) => `/users/new-videos?since=${lastLogin}`,
+  query: (lastLogin) => `/users/new-videos/${encodeURIComponent(lastLogin)}`,
   providesTags: ['User'],
 }),
 

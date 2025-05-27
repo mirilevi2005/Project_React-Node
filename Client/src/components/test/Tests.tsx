@@ -484,7 +484,7 @@ const Tests = () => {
             </List>
           )}
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
-            <Button
+            {/* <Button
               variant="contained"
               onClick={() => {
                 reset({
@@ -497,7 +497,7 @@ const Tests = () => {
               }}
             >
               צור מבחן חדש
-            </Button>
+            </Button> */}
             <Button onClick={() => setOpenTestsDialog(false)} color="secondary" variant="outlined">
               סגור
             </Button>
