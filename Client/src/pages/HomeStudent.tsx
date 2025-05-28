@@ -1,6 +1,5 @@
 
 import HomePage from '../components/HomePage';
-import HomePageStudent from '../components/student/HomePageStudent';
 import { Box, Container } from '@mui/material';
 
 const HomeStudent = () => {
