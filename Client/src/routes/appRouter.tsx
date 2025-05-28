@@ -11,6 +11,7 @@ import HomeLacturer from "../pages/HomeLacturer";
 import HomeStudent from "../pages/HomeStudent"; // נוספנו את דף ה-HomeStudent
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp"; // ✅ ייבוא קומפוננטת SignUp
+import HomePage from "../components/HomePage";
 
 const routes: RouteObject[] = [
   {
@@ -21,7 +22,8 @@ const routes: RouteObject[] = [
       {
         path: "HomeLacturer",
         children: [
-          { index: true, element: <HomeLacturer /> },
+          // { index: true, element: <HomeLacturer /> },
+          { index: true, element:<HomePage/>},
           { path: "Ai", element: <Ai /> },
           { path: "CyberSecurity", element: <CyberSecurity /> },
           { path: "CloudComputing", element: <CloudComputing /> },
@@ -30,7 +32,8 @@ const routes: RouteObject[] = [
       { path: "HomeStudent",
         children:
         [
-          { index: true, element: <HomeStudent /> },
+          // { index: true, element: <HomeStudent /> },
+          { index: true, element:<HomePage/>},
           { path: "Ai", element: <Ai /> },
           { path: "CyberSecurity", element: <CyberSecurity /> },
           { path: "CloudComputing", element: <CloudComputing /> },

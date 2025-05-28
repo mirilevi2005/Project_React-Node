@@ -23,10 +23,9 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import papersData from '../data/HomeLacturerData';
 import { styled } from '@mui/material/styles';
-import { useGetStatsQuery } from '../redux/slice/api/userApi';
+import { useGetCourseStatsQuery, useGetVideosCountQuery } from '../redux/slice/api/userApi';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../redux/slice/authStateSlice';
-import StudentCourseMaterialsManager from './student/StudentCourseMaterialsManager';
 import NewContentPopup from './student/NewContentPopup';
 
 // Course item type definition
@@ -37,7 +36,12 @@ interface CourseItem {
   image: string;
   link: string;
   courseName: string;
+  courseNameSee:string
 }
+type VideoInfo = {
+  name: string;
+  videos: number;
+};
 
 // Stats type definitions
 interface CourseStats {
@@ -45,6 +49,7 @@ interface CourseStats {
   totalCourses: number;
   totalVideos: number;
   viewPercentage: number;
+  videos:VideoInfo[];
 }
 
 // Updated styles for modern card design
@@ -111,16 +116,16 @@ const StatIcon = styled(Box)({
 
 // Background images for each course
 const backgroundImages: Record<string, string> = {
-  "AI": "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  "CYBER": "https://images.pexels.com/photos/5380642/pexels-photo-5380642.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  "CLOUD": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  "Ai": "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "CyberSecurity": "https://images.pexels.com/photos/5380642/pexels-photo-5380642.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "CloudComputing": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
 };
 
 // Upcoming assignments/events data
 const upcomingEvents = [
-  { title: "Assignment submission - AI", course: "AI", date: "May 25, 2025", daysTill: 5 },
-  { title: "Midterm Quiz - Cyber Security", course: "CYBER", date: "June 1, 2025", daysTill: 12 },
-  { title: "Guest Lecture", course: "CLOUD", date: "June 3, 2025", daysTill: 14 }
+  { title: "Assignment submission - AI", course: "ai", date: "May 25, 2025", daysTill: 5 },
+  { title: "Midterm Quiz - Cyber Security", course: "CyberSecurity", date: "June 1, 2025", daysTill: 12 },
+  { title: "Guest Lecture", course: "CloudComputing", date: "June 3, 2025", daysTill: 14 }
 ];
 
 const HomePage= () => {
@@ -129,11 +134,23 @@ const HomePage= () => {
     totalStudents: 0,
     totalCourses: 3,
     totalVideos: 0,
-    viewPercentage: 0
+    viewPercentage: 0,
+    videos: []  // חדש
   });
-    const { data, error, isLoading } = useGetStatsQuery();
-   const user=useSelector(selectCurrentUser)
-console.log(user?.roles);
+// const courseNames = papersData.length > 0 ? papersData.map(paper => paper.courseName) : [];
+const { data: dataAi, error: errorAi, isLoading: loadingAi } = useGetVideosCountQuery('Ai');
+const { data: dataCloudComputing, error: errorCloudComputing, isLoading: loadingCloudComputing } = useGetVideosCountQuery('CloudComputing');
+const { data: dataCyberSecurity, error: errorCyberSecurity, isLoading: loadingCyberSecurity } = useGetVideosCountQuery('CyberSecurity');
+const { data, error: error, isLoading: loading } = useGetCourseStatsQuery();
+console.log(dataAi+"dataAi");
+console.log(dataCloudComputing+"dataCloudComputing");
+console.log("dataAi:", dataAi);
+console.log("errorAi:", errorAi);
+console.log("isLoadingAi:", loadingAi);
+
+
+    const user=useSelector(selectCurrentUser)
+    console.log(user?.roles);
 
   // Get current date
   const currentDate = new Date().toLocaleDateString('en-US', {
@@ -147,9 +164,9 @@ console.log(user?.roles);
       setStats({
         totalStudents: data.studentsCount || 130,
         totalCourses: 3, // אם לא מגיע מהשרת, תשאיר קבוע או תוסיף ל-API
-        totalVideos: data.videosCount || 36,
+        totalVideos: data.videos || 36,
         viewPercentage: 94, // אותו דבר כמו למעלה
-      });
+        videos: Array.isArray(data.videos) ? data.videos : []      });
     }
   }, [data]);
 
@@ -163,32 +180,6 @@ console.log(user?.roles);
     if (month >= 6 && month <= 7) return `Summer ${year}`;
     return `Fall ${year}`;
   };
-
-  // Fetch statistics from backend
-//   useEffect(() => {
-//     const fetchStats = async () => {
-//       try {
-//         const response = await axios.get('/api/lecturer/stats');
-//         setStats({
-//           totalStudents: response.data.totalStudents || 127,
-//           totalCourses: response.data.totalCourses || 3,
-//           totalVideos: response.data.totalVideos || 36,
-//           viewPercentage: response.data.viewPercentage || 94
-//         });
-//       } catch (error) {
-//         console.error("Failed to fetch statistics:", error);
-//         setStats({
-//           totalStudents: 127,
-//           totalCourses: 3,
-//           totalVideos: 36,
-//           viewPercentage: 94
-//         });
-//       }
-//     };
-
-//     fetchStats();
-//   }, []);
-
 
   // Quick stats data with updated colors and icons
   const quickStats = [
@@ -221,7 +212,6 @@ console.log(user?.roles);
   return (
     <Container maxWidth="lg" sx={{ py: 4, backgroundColor: '#fafafa', minHeight: '100vh' }}>
       {user?.roles==='student'? <NewContentPopup/> : null }
-
       {/* Current date */}
       <Typography 
         variant="body1" 
@@ -296,6 +286,8 @@ console.log(user?.roles);
         ))}
       </Grid>
 
+      
+
       {/* Course list with updated design */}
       <Box 
         sx={{ 
@@ -340,16 +332,16 @@ console.log(user?.roles);
                   </Typography>
                   
                   <Chip 
-                    label={course.courseName} 
+                    label={course.courseNameSee} 
                     size="small" 
                     sx={{ 
                       bgcolor: 
-                        course.courseName === 'AI' ? '#dbeafe' : 
-                        course.courseName === 'CYBER' ? '#fee2e2' : 
+                        course.courseName === 'Ai' ? '#dbeafe' : 
+                        course.courseName === 'CyberSecurity' ? '#fee2e2' : 
                         '#dcfce7',
                       color: 
-                        course.courseName === 'AI' ? '#1e40af' : 
-                        course.courseName === 'CYBER' ? '#b91c1c' : 
+                        course.courseName === 'Ai' ? '#1e40af' : 
+                        course.courseName === 'CyberSecurity' ? '#b91c1c' : 
                         '#166534',
                       fontWeight: 'medium',
                       borderRadius: '12px',
@@ -383,16 +375,19 @@ console.log(user?.roles);
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', color: '#64748b' }}>
                     <VideoLibraryIcon sx={{ fontSize: 16, mr: 0.5 }} />
-                    <Typography variant="caption" sx={{ fontWeight: 500 }}>
-                      12 videos
-                    </Typography>
+                  <Typography variant="caption" sx={{ fontWeight: 500 }}>
+                   
+  {(course.courseName === 'Ai' && dataAi) ||
+   (course.courseName === 'CyberSecurity' && dataCyberSecurity) ||
+   (course.courseName === 'CloudComputing' && dataCloudComputing) || 0} videos
+</Typography>
                   </Box>
                   
                   <Box sx={{ display: 'flex', alignItems: 'center', color: '#64748b' }}>
                     <BarChartIcon sx={{ fontSize: 16, mr: 0.5 }} />
                     <Typography variant="caption" sx={{ fontWeight: 500 }}>
-                      {course.courseName === 'AI' ? '96%' : 
-                       course.courseName === 'CYBER' ? '88%' : '92%'} participation
+                      {course.courseName === 'Ai' ? '96%' : 
+                       course.courseName === 'CyberSecurity' ? '88%' : '92%'} participation
                     </Typography>
                   </Box>
                 </Box>
@@ -436,8 +431,8 @@ console.log(user?.roles);
                 >
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <FolderOpenIcon sx={{ color: 
-                      event.course === 'AI' ? '#1e40af' : 
-                      event.course === 'CYBER' ? '#b91c1c' : 
+                      event.course === 'Ai' ? '#1e40af' : 
+                      event.course === 'CyberSecurity' ? '#b91c1c' : 
                       '#166534',
                       mr: 2
                     }} />
@@ -460,8 +455,8 @@ console.log(user?.roles);
                       fontWeight: 'medium',
                       borderRadius: '12px',
                       bgcolor: event.daysTill > 7 ? 
-                        event.course === 'AI' ? '#dbeafe' : 
-                        event.course === 'CYBER' ? '#fee2e2' : 
+                        event.course === 'ai' ? '#dbeafe' : 
+                        event.course === 'CyberSecurity' ? '#fee2e2' : 
                         '#dcfce7' : 'transparent'
                     }}
                   />
