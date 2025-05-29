@@ -31,9 +31,34 @@ const authApi = apiSlice.injectEndpoints({
       
       invalidatesTags: ["User"],
     }),
+
+forgotPassword: builder.mutation<void, { email: string }>({
+      query: (body) => ({
+        url: "/forgot-password",
+        method: "POST",
+        body,
+      }),
+    }),
+    verifyTempPassword: builder.mutation<
+      { success: boolean; token: string; role: string; email: string },
+      { email: string; tempPassword: string }
+    >({
+      query: (body) => ({
+        url: "/verify-temp-password",
+        method: "POST",
+        body,
+      }),
+    }),
+    changePassword: builder.mutation<void, { email: string; newPassword: string }>({
+      query: (body) => ({
+        url: "/change-password",
+        method: "POST",
+        body,
+      }),
+    }),
    
   }),
 });
 
-export const { useSignInMutation, useSignUpMutation,useGoogleSignInMutation } = authApi;
+export const { useSignInMutation, useSignUpMutation,useGoogleSignInMutation,useForgotPasswordMutation,useChangePasswordMutation,useVerifyTempPasswordMutation } = authApi;
 export default authApi;
