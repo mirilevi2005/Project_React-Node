@@ -1,4 +1,3 @@
-
 // import React, { useState } from 'react';
 // import {
 //   Container,
@@ -193,11 +192,11 @@
 //                     },
 //                   }}
 //                 >
-//                   <VisibilityIcon 
-//                     sx={{ 
+//                   <VisibilityIcon
+//                     sx={{
 //                       color: isExpired ? '#9e9e9e' : 'primary.main',
-//                       fontSize: 24 
-//                     }} 
+//                       fontSize: 24
+//                     }}
 //                   />
 //                 </Box>
 //               </CardActions>
@@ -240,9 +239,8 @@
 //             </CardActions>
 //           </Card>
 //         </Grid>
-        
+
 //       </Grid>
-      
 
 //       <Box sx={{ mt: 4 }}>
 //         {activePanel === 'videos' && renderVideoContent()}
@@ -261,153 +259,340 @@
 
 // export default StudentCourseMaterialsManager;
 
+// ////רק הצגת סרטונים ומבחנים בלי תוגן
+// import  { useState } from 'react';
+// import {
+//   Container,
+//   Grid,
+//   Card,
+//   CardContent,
+//   CardActions,
+//   Button,
+//   Typography,
+//   Box,
+//   Snackbar,
+// } from '@mui/material';
+// import VideoIcon from '@mui/icons-material/OndemandVideo';
+// import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+// import { useTheme } from '@mui/material/styles';
+// import VideoList from './VideoList';
+// import TestForStudent from './TestForStudent';
+// import { useSelector } from 'react-redux';
+// import { selectCurrentUser } from '../../redux/slice/authStateSlice';
+// import NewContentPopup from './NewContentPopup';
 
+// const StudentCourseMaterialsManager = () => {
+//   const theme = useTheme();
+//   const [activePanel, setActivePanel] = useState<'videos' | 'tests' | null>(null);
+//   const [showSnackbar, setShowSnackbar] = useState(false);
 
+//   const urlParts = window.location.pathname.split("/");
+//   const courseName = urlParts[urlParts.length - 1];
 
+//    const student = useSelector(selectCurrentUser);
+//    console.log(student);
+//    const studentId = student?._id ;
+//   const renderVideoContent = () => {
+//     return (
+//       <Box>
+//         {/* כאן הקוד שלך להצגת סרטונים */}
+//         {/* <Typography>כאן יוצגו סרטוני הלימוד</Typography> */}
+//         <VideoList courseName={courseName}/>
+//       </Box>
+//     );
+//   };
 
+//   const renderTestContent = () => {
+//     return (
+//       <Box>
+//         {/* כאן הקוד שלך להצגת מבחנים */}
+//         {/* <Typography>כאן יוצגו המבחנים</Typography> */}
+//      <TestForStudent courseName={courseName} studentId={student?._id!} />
+//       </Box>
+//     );
+//   };
 
+//   return (
+//     <Container maxWidth="lg" sx={{ py: 4 }}>
+//       <Grid container spacing={3}>
+//         <Grid item xs={12} sm={6} md={4}>
+//           <Card
+//             sx={{
+//               height: '100%',
+//               display: 'flex',
+//               flexDirection: 'column',
+//               transition: 'transform 0.2s',
+//               '&:hover': { transform: 'translateY(-5px)' },
+//               border: activePanel === 'videos' ? `2px solid ${theme.palette.primary.main}` : 'none',
+//             }}
+//           >
+//             <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
+//               <VideoIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
+//               <Typography variant="h6">סרטוני לימוד</Typography>
+//               <Typography variant="body2" color="text.secondary">
+//                 צפייה בסרטוני הקורס
+//               </Typography>
+//             </CardContent>
+//             <CardActions>
+//               <Button
+//                 fullWidth
+//                 variant={activePanel === 'videos' ? 'contained' : 'outlined'}
+//                 onClick={() => setActivePanel(activePanel === 'videos' ? null : 'videos')}
+//               >
+//                 {activePanel === 'videos' ? 'הסתר' : 'הצג סרטונים'}
+//               </Button>
+//             </CardActions>
+//           </Card>
+//         </Grid>
 
+//         <Grid item xs={12} sm={6} md={4}>
+//           <Card
+//             sx={{
+//               height: '100%',
+//               display: 'flex',
+//               flexDirection: 'column',
+//               transition: 'transform 0.2s',
+//               '&:hover': { transform: 'translateY(-5px)' },
+//               border: activePanel === 'tests' ? `2px solid ${theme.palette.primary.main}` : 'none',
+//             }}
+//           >
+//             <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
+//               <CalendarTodayIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
+//               <Typography variant="h6">מבחנים</Typography>
+//               <Typography variant="body2" color="text.secondary">
+//                 צפייה במבחנים
+//               </Typography>
+//             </CardContent>
+//             <CardActions>
+//               <Button
+//                 fullWidth
+//                 variant={activePanel === 'tests' ? 'contained' : 'outlined'}
+//                 onClick={() => setActivePanel(activePanel === 'tests' ? null : 'tests')}
+//               >
+//                 {activePanel === 'tests' ? 'הסתר' : 'הצג מבחנים'}
+//               </Button>
+//             </CardActions>
+//           </Card>
+//         </Grid>
+//       </Grid>
 
+//       <Box sx={{ mt: 4 }}>
+//         {activePanel === 'videos' && renderVideoContent()}
+//         {activePanel === 'tests' && renderTestContent()}
+//       </Box>
 
+//       <Snackbar
+//         open={showSnackbar}
+//         autoHideDuration={3000}
+//         onClose={() => setShowSnackbar(false)}
+//         message="לא ניתן לצפות — הסרטון כבר לא זמין"
+//         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+//       />
+//       <NewContentPopup/>
 
-////רק הצגת סרטונים ומבחנים בלי תוגן
-import  { useState } from 'react';
+//     </Container>
+
+//   );
+// };
+
+// export default StudentCourseMaterialsManager;
+
+import React, { useState } from "react";
 import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
   Container,
   Grid,
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-  Typography,
-  Box,
   Snackbar,
-} from '@mui/material';
-import VideoIcon from '@mui/icons-material/OndemandVideo';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import { useTheme } from '@mui/material/styles';
-import VideoList from './VideoList';
-import TestForStudent from './TestForStudent';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '../../redux/slice/authStateSlice';
-import NewContentPopup from './NewContentPopup';
+  Typography,
+  useTheme,
+} from "@mui/material";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import VideoIcon from "@mui/icons-material/VideoLibrary";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../redux/slice/authStateSlice";
+import VideoList from "./VideoList";
+import TestForStudent from "./TestForStudent";
+import NewContentPopup from "./NewContentPopup";
+import StudentCourseScoresChart from "./StudentCourseScoresChart";
 
 const StudentCourseMaterialsManager = () => {
   const theme = useTheme();
-  const [activePanel, setActivePanel] = useState<'videos' | 'tests' | null>(null);
+  const [activePanel, setActivePanel] = useState<
+    "videos" | "tests" | "chart" | null
+  >(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
-  
+
   const urlParts = window.location.pathname.split("/");
   const courseName = urlParts[urlParts.length - 1];
+  const student = useSelector(selectCurrentUser);
+  const studentId = student?._id;
 
-   const student = useSelector(selectCurrentUser);
-   console.log(student);
-   const studentId = student?._id ;
-  const renderVideoContent = () => {
-    return (
-      <Box>
-        {/* כאן הקוד שלך להצגת סרטונים */}
-        {/* <Typography>כאן יוצגו סרטוני הלימוד</Typography> */}
-        <VideoList courseName={courseName}/>
-      </Box>
-    );
+  const togglePanel = (panel: "videos" | "tests" | "chart") => {
+    setActivePanel(activePanel === panel ? null : panel);
   };
 
-  const renderTestContent = () => {
-    return (
-      <Box>
-        {/* כאן הקוד שלך להצגת מבחנים */}
-        {/* <Typography>כאן יוצגו המבחנים</Typography> */}
-     <TestForStudent courseName={courseName} studentId={student?._id!} />
-      </Box>
-    );
+  const renderContent = () => {
+    switch (activePanel) {
+      case "videos":
+        return <VideoList courseName={courseName} />;
+      case "tests":
+        return (
+          <TestForStudent courseName={courseName} studentId={studentId!} />
+        );
+      case "chart":
+        // StudentCourseMaterialsManager.tsx
+        const StudentCourseMaterialsManager = ({
+          courseName,
+          studentId,
+        }: {
+          courseName: string;
+          studentId?: string;
+        }) => {
+          if (!studentId) {
+            return <div>טוען פרטי סטודנט...</div>;
+          }
+
+          return (
+            <StudentCourseScoresChart
+              courseName={courseName}
+              studentId={studentId}
+            />
+          );
+        };
+
+        return (
+          <StudentCourseScoresChart
+            courseName={courseName}
+            studentId={studentId!}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const cardStyle = (panel: string) => ({
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    transition: "transform 0.2s",
+    "&:hover": { transform: "translateY(-5px)" },
+    border:
+      activePanel === panel
+        ? `2px solid ${theme.palette.primary.main}`
+        : "none",
+  });
+
+  const buttonVariant = (panel: string) =>
+    activePanel === panel ? "contained" : "outlined";
+
+  const buttonText = (panel: string) => {
+    if (activePanel === panel) return "הסתר";
+    switch (panel) {
+      case "videos":
+        return "הצג סרטונים";
+      case "tests":
+        return "הצג מבחנים";
+      case "chart":
+        return "הצג גרף";
+      default:
+        return "";
+    }
   };
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Grid container spacing={3}>
+        {/* כרטיסיית סרטונים */}
         <Grid item xs={12} sm={6} md={4}>
-          <Card
-            sx={{
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              transition: 'transform 0.2s',
-              '&:hover': { transform: 'translateY(-5px)' },
-              border: activePanel === 'videos' ? `2px solid ${theme.palette.primary.main}` : 'none',
-            }}
-          >
-            <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
-              <VideoIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
+          <Card sx={cardStyle("videos")}>
+            <CardContent sx={{ textAlign: "center" }}>
+              <VideoIcon
+                sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }}
+              />
               <Typography variant="h6">סרטוני לימוד</Typography>
-              <Typography variant="body2" color="text.secondary">
-                צפייה בסרטוני הקורס
-              </Typography>
+              <Typography variant="body2">צפייה בסרטוני הקורס</Typography>
             </CardContent>
             <CardActions>
               <Button
                 fullWidth
-                variant={activePanel === 'videos' ? 'contained' : 'outlined'}
-                onClick={() => setActivePanel(activePanel === 'videos' ? null : 'videos')}
+                variant={buttonVariant("videos")}
+                onClick={() => togglePanel("videos")}
               >
-                {activePanel === 'videos' ? 'הסתר' : 'הצג סרטונים'}
+                {buttonText("videos")}
               </Button>
             </CardActions>
           </Card>
         </Grid>
 
+        {/* כרטיסיית מבחנים */}
         <Grid item xs={12} sm={6} md={4}>
-          <Card
-            sx={{
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              transition: 'transform 0.2s',
-              '&:hover': { transform: 'translateY(-5px)' },
-              border: activePanel === 'tests' ? `2px solid ${theme.palette.primary.main}` : 'none',
-            }}
-          >
-            <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
-              <CalendarTodayIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
+          <Card sx={cardStyle("tests")}>
+            <CardContent sx={{ textAlign: "center" }}>
+              <CalendarTodayIcon
+                sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }}
+              />
               <Typography variant="h6">מבחנים</Typography>
-              <Typography variant="body2" color="text.secondary">
-                צפייה במבחנים
+              <Typography variant="body2">צפייה במבחנים</Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                fullWidth
+                variant={buttonVariant("tests")}
+                onClick={() => togglePanel("tests")}
+              >
+                {buttonText("tests")}
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+
+        {/* כרטיסיית גרף ציונים */}
+        <Grid item xs={12} sm={6} md={4}>
+          <Card sx={cardStyle("chart")}>
+            <CardContent sx={{ textAlign: "center" }}>
+              <TrendingUpIcon
+                sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }}
+              />
+              <Typography variant="h6">גרף ציונים</Typography>
+              <Typography variant="body2">
+                השוואת ציוני התלמידה לממוצע
               </Typography>
             </CardContent>
             <CardActions>
               <Button
                 fullWidth
-                variant={activePanel === 'tests' ? 'contained' : 'outlined'}
-                onClick={() => setActivePanel(activePanel === 'tests' ? null : 'tests')}
+                variant={buttonVariant("chart")}
+                onClick={() => togglePanel("chart")}
               >
-                {activePanel === 'tests' ? 'הסתר' : 'הצג מבחנים'}
+                {buttonText("chart")}
               </Button>
             </CardActions>
           </Card>
         </Grid>
       </Grid>
 
-      <Box sx={{ mt: 4 }}>
-        {activePanel === 'videos' && renderVideoContent()}
-        {activePanel === 'tests' && renderTestContent()}
-      </Box>
+      <Box sx={{ mt: 4 }}>{renderContent()}</Box>
 
       <Snackbar
         open={showSnackbar}
         autoHideDuration={3000}
         onClose={() => setShowSnackbar(false)}
         message="לא ניתן לצפות — הסרטון כבר לא זמין"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       />
-      <NewContentPopup/>
 
+      <NewContentPopup />
     </Container>
-    
   );
 };
 
 export default StudentCourseMaterialsManager;
-
 
 ///עובד לי הצגת מבחנים
 
@@ -594,11 +779,11 @@ export default StudentCourseMaterialsManager;
 //                       },
 //                     }}
 //                   >
-//                     <VisibilityIcon 
-//                       sx={{ 
+//                     <VisibilityIcon
+//                       sx={{
 //                         color: isExpired ? '#9e9e9e' : 'primary.main',
-//                         fontSize: 24 
-//                       }} 
+//                         fontSize: 24
+//                       }}
 //                     />
 //                   </Box>
 //                 </CardActions>
@@ -701,4 +886,4 @@ export default StudentCourseMaterialsManager;
 // };
 
 // export default StudentCourseMaterialsManager;
-``
+``;
