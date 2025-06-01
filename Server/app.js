@@ -32,13 +32,14 @@ const signUp=require('./router/signUp')
 const Test = require('./router/TestRouter');
 const statsRouter = require('./router/statsRouter');
 const newMaterial = require('./router/newMaterial');
-
+// const magicLinkRouter=require('./router/auth')
 // קבצים סטטיים (כגון וידאוים שהועלו)
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 // שימוש בראוטים
+// app.use('/auth', magicLinkRouter);
 app.use('/test',Test)
 app.use('/HomeLacturer', LearningMaterialsRouter);
 app.use('/', singIn);

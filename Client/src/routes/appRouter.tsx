@@ -9,9 +9,10 @@ import CyberSecurity from "../pages/material/CyberSecurity";
 import CloudComputing from "../pages/material/CloudComputing";
 import HomeLacturer from "../pages/HomeLacturer";
 import HomeStudent from "../pages/HomeStudent"; // נוספנו את דף ה-HomeStudent
-import SignIn from "../components/SignIn";
+// import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp"; // ✅ ייבוא קומפוננטת SignUp
 import HomePage from "../components/HomePage";
+import SignIn from "../components/auth/SignIn";
 
 const routes: RouteObject[] = [
   {
