@@ -1,4 +1,4 @@
-import {  SignInRequest, SignUpRequest, AuthResponse } from '../../../interface/authTypes'; // עדכני את הנתיב
+import {  SignInRequest, SignUpRequest, AuthResponse, userInfo } from '../../../interface/authTypes'; // עדכני את הנתיב
 import apiSlice from './apiSlice';
 
 const authApi = apiSlice.injectEndpoints({
@@ -56,9 +56,23 @@ forgotPassword: builder.mutation<void, { email: string }>({
         body,
       }),
     }),
+    sendMagicLink: builder.mutation<userInfo, { email: string }>({
+  query: (body) => ({
+    url: "/send-magic-link",
+    method: "POST",
+    body,
+  }),
+  }),
    
   }),
+  
 });
 
-export const { useSignInMutation, useSignUpMutation,useGoogleSignInMutation,useForgotPasswordMutation,useChangePasswordMutation,useVerifyTempPasswordMutation } = authApi;
+export const { useSignInMutation,
+   useSignUpMutation,
+   useGoogleSignInMutation,
+   useForgotPasswordMutation,
+   useChangePasswordMutation,
+   useVerifyTempPasswordMutation,
+  useSendMagicLinkMutation } = authApi;
 export default authApi;

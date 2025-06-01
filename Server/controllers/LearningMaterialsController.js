@@ -149,3 +149,23 @@ exports.getNewVideosSince = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
+
+exports.getMaterialsExpiringSoon = async (req, res) => {
+  try {
+    const today = new Date();
+    const fiveDaysLater = new Date();
+    fiveDaysLater.setDate(today.getDate() + 5);
+
+    const materials = await Material.find({
+      finishDate: {
+        $gte: today,
+        $lte: fiveDaysLater
+      }
+    });
+
+    res.status(200).json(materials);
+  } catch (error) {
+    console.error("Error fetching materials expiring soon:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};

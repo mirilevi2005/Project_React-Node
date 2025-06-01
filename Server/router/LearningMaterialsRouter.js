@@ -44,4 +44,7 @@ router.put("/:nameCours", upload.none(), LearningMaterialsController.updateMater
 
 router.get('/material/:timestamp', verifyJWT, LearningMaterialsController.getNewVideosSince);
 
+router.get('/materials/expired-materials-last-5-days', LearningMaterialsController.getMaterialsExpiringSoon);
+
+
 module.exports = router;

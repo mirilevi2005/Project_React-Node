@@ -143,7 +143,7 @@ const LecturerCourseMaterialsManager = () => {
         title: 'ציוני תלמידים',
         subtitle: 'צפייה בציוני התלמידים',
         buttonLabel: 'ציונים',
-        component: <CourseScoresChart aggregatedScores={aggregatedScores} courseName={courseName}  />,
+        component: <CourseScoresChart courseName={courseName}  />,
       },
     ];
 

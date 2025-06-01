@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
+
 // התחברות
 // const signIn = async (req, res) => {
 //     const { email, password } = req.body
@@ -247,6 +248,168 @@ const changePassword = async (req, res) => {
     res.status(500).json({ error: "שגיאה בשרת" });
   }
 };
+
+const sendMagicLinkEmail = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+  try {
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+     const token = user.password;
+    if (!token) {
+      return res.status(404).json({ message: "Token not found for user" });
+    }
+    const role = user.roles; 
+    let link = `${process.env.CLIENT_URL}/login?token=${token}`;
+    let greetingName = user.name || "משתמש";
+    switch (role) {
+      case "lacturer":
+        link = `${process.env.CLIENT_URL}/HomeLacturer`;
+        break;
+      case "student":
+        link = `${process.env.CLIENT_URL}/HomeStudent`;
+        break;
+      case "admin":
+        link = `${process.env.CLIENT_URL}/HomeAdmin`;
+        break;
+      default:
+        link = `${process.env.CLIENT_URL}/Home`;
+    }
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+    const mailOptions = {
+      from: `EduThec <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "קישור התחברות למערכת",
+      html: `
+        <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+          <h2 style="color: #1976d2;">שלום ${greetingName},</h2>
+          <p>קיבלת קישור להתחברות למערכת שלנו. לחיצה על הכפתור תאפשר לך גישה מהירה ובטוחה:</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${link}" style="background-color: #1976d2; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold;" target="_blank">
+              התחבר למערכת
+            </a>
+          </div>
+          <p>אם לא ביקשת קישור זה, תוכל להתעלם מההודעה הזו.</p>
+          <p style="font-size: 14px; color: #999;">בברכה,<br>צוות התמיכה שלנו</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`Email sent to ${email}`);
+
+  res.json({
+  message: "Magic link sent",
+  user: {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.roles,
+  }
+});
+
+  } catch (error) {
+    console.error(`Failed to send email to ${email}:`, error);
+    res.status(500).json({ message: "Failed to send magic link" });
+  }
+};
+
+
+
+// const sendMagicLinkEmail = async (req, res) => {
+//   const { email } = req.body;
+//   if (!email) {
+//     return res.status(400).json({ message: "Email is required" });
+//   }
+//   try {
+//     const user = await User.findOne({ email: email });
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     // יצירת JWT עם מזהה המשתמש ותפקיד, עם תוקף קצר
+//     const token = jwt.sign(
+//       { userId: user._id, role: user.roles },
+//       process.env.JWT_SECRET,
+//       { expiresIn: '15m' } // תקף ל-15 דקות
+//     );
+
+//     // יצירת הקישור כולל הטוקן
+//     let path;
+//     switch (user.roles) {
+//       case "lacturer":
+//         path = "HomeLacturer";
+//         break;
+//       case "student":
+//         path = "HomeStudent";
+//         break;
+//       case "admin":
+//         path = "HomeAdmin";
+//         break;
+//       default:
+//         path = "Home";
+//     }
+//     const link = `${process.env.CLIENT_URL}/${path}?token=${token}`;
+
+//     // שליחת האימייל
+//     const transporter = nodemailer.createTransport({
+//       service: "gmail",
+//       auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASS,
+//       },
+//     });
+
+//     const mailOptions = {
+//       from: `EduThec <${process.env.EMAIL_USER}>`,
+//       to: email,
+//       subject: "קישור התחברות למערכת",
+//       html: `
+//         <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+//           <h2 style="color: #1976d2;">שלום ${user.name || "משתמש"},</h2>
+//           <p>קיבלת קישור להתחברות למערכת שלנו. לחיצה על הכפתור תאפשר לך גישה מהירה ובטוחה:</p>
+//           <div style="text-align: center; margin: 30px 0;">
+//             <a href="${link}" style="background-color: #1976d2; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold;" target="_blank">
+//               התחבר למערכת
+//             </a>
+//           </div>
+//           <p>אם לא ביקשת קישור זה, תוכל להתעלם מההודעה הזו.</p>
+//           <p style="font-size: 14px; color: #999;">בברכה,<br>צוות התמיכה שלנו</p>
+//         </div>
+//       `,
+//     };
+
+//     await transporter.sendMail(mailOptions);
+//     console.log(`Email sent to ${email}`);
+
+//     res.json({
+//       message: "Magic link sent",
+//       user: {
+//         id: user._id,
+//         name: user.name,
+//         email: user.email,
+//         role: user.roles,
+//       }
+//     });
+
+//   } catch (error) {
+//     console.error(`Failed to send email to ${email}:`, error);
+//     res.status(500).json({ message: "Failed to send magic link" });
+//   }
+// };
+
+
+
 module.exports = {
   signIn,
   signUp,
@@ -254,4 +417,5 @@ module.exports = {
   forgotPassword,
   changePassword,
   verifyTempPassword,
+  sendMagicLinkEmail
 };
