@@ -2,6 +2,8 @@
 const Test = require('../models/Test');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
+const mongoose = require('mongoose');
+
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -181,6 +183,7 @@ exports.startTest = async (req, res) => {
 
 // 8. קבלת ציוני מבחן כולל פרטי תלמידים
 exports.getTestScores = async (req, res) => {
+  
   try {
     const { testId } = req.params;
 
