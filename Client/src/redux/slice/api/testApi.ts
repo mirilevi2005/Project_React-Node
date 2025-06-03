@@ -8,7 +8,7 @@ export interface TestScore {
   studentId: string;
   scores: number;
   submittedAt?: string;
-  studentName?: string; // נוח לתצוגה בממשק
+  studentName?: string; 
 }
 
 const testApi = apiSlice.injectEndpoints({

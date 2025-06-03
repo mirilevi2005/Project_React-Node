@@ -75,16 +75,14 @@ const LecturerCourseMaterialsManager = () => {
   const [selectedGrades, setSelectedGrades] = useState<{ [testId: string]: StudentScore[] }>({});
 
 
-
-  // טען ציונים עבור כל מבחן ברגע שיש מבחנים ב-testList
   useEffect(() => {
     const fetchGrades = async () => {
       const grades: { [testId: string]: StudentScore[] } = {};
       for (const test of testList) {
         try {
           const response = await triggerGetTestScores(test._id).unwrap();
-          grades[test._id] = response.scores ?? [];
-        } catch (error) {
+          grades[test._id] = response.scores ?? []
+          } catch (error) {
           console.error("❌ שגיאה בטעינת ציונים:", error);
           grades[test._id] = [];
         }

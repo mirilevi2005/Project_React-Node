@@ -22,7 +22,8 @@ export interface userInfo {
 export interface AuthResponse {
   accessToken: string;
   newUser: userInfo;
-  previousLogin:any
+  // previousLogin:any
+  previousLogin:SignInRequest
 }
 
 

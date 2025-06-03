@@ -50,6 +50,7 @@ forgotPassword: builder.mutation<void, { email: string }>({
       }),
     }),
     changePassword: builder.mutation<void, { email: string; newPassword: string }>({
+    // changePassword: builder.mutation<void, SignInRequest>({
       query: (body) => ({
         url: "/change-password",
         method: "POST",

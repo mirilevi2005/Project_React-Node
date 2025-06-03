@@ -58,22 +58,26 @@ const signUp = async (req, res) => {
   }
   const hashedPwd = await bcrypt.hash(password, 10);
   // קביעת תפקיד לפי קוד מורה
-  const role =
-    adminCode === process.env.TEACHER_SECRET ? "lacturer" : "student";
-  const userObject = {
-    userName,
-    email,
-    password: hashedPwd,
-    roles: role,
-  };
-  const newUser = await User.create(userObject);
+ const role = adminCode === process.env.TEACHER_SECRET ? "lecturer" : "student";
+const userInfo = {
+  userName,
+  email,
+  password: hashedPwd,
+  roles: role,
+};
+  const newUser = await User.create(userInfo);
+  const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
   if (newUser) {
-    return res
-      .status(201)
-      .json({
-        message: `New user ${newUser.userName} created as ${role}`,
-        newUser,
-      });
+    // return res
+      // .status(201)
+      // .json({
+      //   message: `New user ${newUser.userName} created as ${role}`,
+      //   newUser,
+      // });
+    res.json({
+    accessToken,
+    newUser: userInfo
+  });
   } else {
     return res.status(400).json({ message: "Invalid user received" });
   }

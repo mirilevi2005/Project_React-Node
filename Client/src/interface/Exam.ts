@@ -5,9 +5,8 @@ export interface Exam {
     questions: Question[];
     alreadyStarted:boolean;
     createdAt :Date;
-courseName:string
-
-  }
+    courseName:string
+ }
   
   export interface Question {
     _id: string;

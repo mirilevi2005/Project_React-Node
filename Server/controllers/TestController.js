@@ -198,13 +198,24 @@ exports.getTestScores = async (req, res) => {
       return res.status(404).json({ message: 'Test not found' });
     }
 
-    const scores = test.studentsScores.map(entry => ({
-      studentId: entry.studentId._id.toString(),
-      userName: entry.studentId.userName,
-      email: entry.studentId.email,
-      score: entry.score,
-      finishedAt: entry.finishedAt
-    }));
+    // const scores = test.studentsScores.map(entry => ({
+    //   studentId: entry.studentId._id.toString(),
+    //   userName: entry.studentId.userName,
+    //   email: entry.studentId.email,
+    //   score: entry.score,
+    //   finishedAt: entry.finishedAt
+    // }));
+
+  const scores = test.studentsScores
+  .filter(entry => entry.studentId)
+  .map(entry => ({
+    studentId: entry.studentId._id.toString(),
+    userName: entry.studentId.userName,
+    email: entry.studentId.email,
+    score: entry.score,
+    finishedAt: entry.finishedAt
+  }));
+
 
     res.status(200).json({ scores });
   } catch (error) {

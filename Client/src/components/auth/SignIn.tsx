@@ -24,17 +24,14 @@ import {
   NewPasswordSchema,
   SignInForm,
   TempPasswordForm,
-  NewPasswordForm as NewPasswordFormType, // ניתן שם אחר למניעת התנגשות
-} from "../../schema/SignIn"; // עדכן נתיב
-import axios from "axios";
-
+  NewPasswordForm as NewPasswordFormType, 
+} from "../../schema/SignIn"; 
 // ייבוא הקומפוננטות הקטנות
 import PasswordSignInFormComponent from "./PasswordSignInForm";
 import MagicLinkFormComponent from "./MagicLinkForm";
 import ForgotPasswordFormComponent from "./ForgotPasswordForm";
 import TemporaryPasswordFormComponent from "./TemporaryPasswordForm";
 import NewPasswordFormComponent from "./NewPasswordForm";
-
 
 const SignIn = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -47,7 +44,7 @@ const SignIn = () => {
   const [magicLinkSent, setMagicLinkSent] = useState(false);
   const [sendMagicLink] = useSendMagicLinkMutation();
   const navigate = useNavigate();
-  const [, setCookie] = useCookies([ // 'cookies' לא בשימוש ישיר, לכן '_'
+  const [, setCookie] = useCookies([ 
     "token",
     "userName",
     "email",
@@ -143,7 +140,7 @@ const SignIn = () => {
 
       dispatch(setUser(newUser));
       dispatch(setPreviousLogin(previousLogin));
-      localStorage.setItem("previousLogin", String(previousLogin)); // לוודא שזה סטרינג
+      localStorage.setItem("previousLogin", String(previousLogin)); 
 
       signInMethods.reset();
       // alert(newUser.roles) // אפשר להסיר

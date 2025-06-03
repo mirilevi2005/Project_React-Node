@@ -33,11 +33,11 @@ export interface QuickStat {
   bgColor: string;
 }
 
-// עבור אובייקט המשתמש מ-Redux state
-export interface CurrentUser {
-  id: string; // או number, בהתאם למודל המשתמש שלך
-  userName: string;
-  email: string;
-  roles: string; // או string[] אם יש אפשרות למספר תפקידים
-  // ניתן להוסיף כאן מאפייני משתמש רלוונטיים נוספים
-}
+// // עבור אובייקט המשתמש מ-Redux state
+// export interface CurrentUser {
+//   id: string; // או number, בהתאם למודל המשתמש שלך
+//   userName: string;
+//   email: string;
+//   roles: string; // או string[] אם יש אפשרות למספר תפקידים
+//   // ניתן להוסיף כאן מאפייני משתמש רלוונטיים נוספים
+// }

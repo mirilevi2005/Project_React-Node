@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
-interface MagicLinkFormProps {
+interface Props {
   magicEmail: string;
   onMagicEmailChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onMagicLinkLogin: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
@@ -11,14 +11,8 @@ interface MagicLinkFormProps {
   isLoading: boolean;
 }
 
-const MagicLinkForm: React.FC<MagicLinkFormProps> = ({
-  magicEmail,
-  onMagicEmailChange,
-  onMagicLinkLogin,
-  magicLinkSent,
-  onSetMagicLinkSent,
-  isLoading,
-}) => {
+const MagicLinkForm=({magicEmail,onMagicEmailChange,onMagicLinkLogin,magicLinkSent,onSetMagicLinkSent,isLoading}:Props)=>
+{
   return (
     <Box sx={{ pt: 3 }}>
       {magicLinkSent ? (

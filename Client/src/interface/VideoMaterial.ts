@@ -18,15 +18,15 @@ export interface VideoListProps {
   courseName: string;
 }
 
-export interface Material {
-  _id: string;
-  courseName: string;
-  videoPath: string;
-  videoName: string;
-  uploadDate: Date;
-  finishDate?: Date;
-  cloudinaryPublicId: string; // ה-publicId מ-Cloudinary
-}
+// export interface Material {
+//   _id: string;
+//   courseName: string;
+//   videoPath: string;
+//   videoName: string;
+//   uploadDate: Date;
+//   finishDate?: Date;
+//   cloudinaryPublicId: string; // ה-publicId מ-Cloudinary
+// }
 
 
 export interface Question {

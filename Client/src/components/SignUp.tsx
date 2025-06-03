@@ -129,20 +129,16 @@ import { Button, IconButton, InputAdornment, TextField, Typography, Box } from '
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../redux/slice/authStateSlice';
+import { Cookies, useCookies } from "react-cookie";
+import { setUser,setPreviousLogin } from '../redux/slice/authStateSlice';
 import { useSignUpMutation } from '../redux/slice/api/authApi';
 import { LoginType } from '../schema/SignUpSchama';
 import SignUpSchama from '../schema/SignUpSchama';
-import '../css/SignUp.css'; // קובץ ה-CSS המקורי עדיין מיובא עבור הקלאסים הקיימים
 import * as styles from '../css/SignUp'; // ייבוא של קובץ הסטיילים החדש
 
 const SignUp = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<LoginType>({
+
+  const {register,handleSubmit,reset,formState: { errors },} = useForm<LoginType>({
     resolver: zodResolver(SignUpSchama),
     defaultValues: {
       userName: '',
@@ -151,7 +147,14 @@ const SignUp = () => {
       adminCode: '',
     },
   });
-
+  const [, setCookie] = useCookies([ 
+    "token",
+    "userName",
+    "email",
+    "roles",
+    "userId",
+  ]);
+  
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
@@ -162,14 +165,19 @@ const SignUp = () => {
 
   const onSubmit = async (data: LoginType) => {
     try {
-      const result = await signUp(data).unwrap(); // result is of type AuthResponse
+      const result = await signUp(data).unwrap();
+      const { accessToken, newUser} = result;
+            setCookie("token", accessToken, { path: "/", maxAge: 3600 });
+            setCookie("userName", newUser.userName, { path: "/", maxAge: 3600 });
+            setCookie("email", newUser.email, { path: "/", maxAge: 3600 });
+            setCookie("roles", newUser.roles, { path: "/", maxAge: 3600 });
+            setCookie("userId", newUser._id, { path: "/", maxAge: 3600 });
       dispatch(setUser(result.newUser));
-      console.log(result.newUser);
-      
+      console.log(result.newUser);  
       reset();
-
       const role = result.newUser.roles;
-
+      
+          
       if (role === 'student') navigate('/HomeStudent');
       else if (role === 'lacturer') navigate('/HomeLacturer');
     } catch (err: any) {
@@ -177,7 +185,6 @@ const SignUp = () => {
       alert(err?.data?.message || 'Registration failed');
     }
   };
-
   return (
     <div className="login-container">
       <div className="login-box">

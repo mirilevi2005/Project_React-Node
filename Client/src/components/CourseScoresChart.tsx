@@ -70,13 +70,15 @@ const CourseScoresChart = ({ courseName }: Props) => {
       for (const test of testsData.tests) {
         try {
           const response = await triggerGetTestScores(test._id).unwrap();
-          const scores: StudentScore[] = response.scores ?? [];
-
+          const scores: StudentScore[] = (response ?? []).map((item) => ({
+          studentId: item.studentId,
+          score: item.scores, // שימי לב להמרה בין השם 'scores' ל־ 'score'
+          userName: item.studentName ?? 'Unknown',
+          }));
           const average =
             scores.length > 0
               ? scores.reduce((sum, s) => sum + s.score, 0) / scores.length
               : 0;
-
           scoresArray.push({ testTitle: test.title, averageScore: average, testId: test._id });
           allScoresByTest[test._id] = scores;
         } catch (err) {
