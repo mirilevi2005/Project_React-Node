@@ -525,6 +525,17 @@ const SignIn = () => {
           />
         </FormProvider>
       )}
+       {/* טאב אימות אימייל */}
+       {tabValue === 1 && !showForgotPassword && !showTempPasswordInput && !tempPasswordVerified && (
+         <MagicLinkFormComponent
+            magicEmail={magicEmail}
+            onMagicEmailChange={(e) => setMagicEmail(e.target.value)}
+            onMagicLinkLogin={handleMagicLinkLogin}
+            magicLinkSent={magicLinkSent}
+            onSetMagicLinkSent={setMagicLinkSent}
+            isLoading={isLoading}
+          />
+      )}
 
       {/* (Other conditional forms go here...) */}
     </Paper>
