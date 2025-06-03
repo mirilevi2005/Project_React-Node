@@ -33,18 +33,12 @@ import {
   useGetTestsByCourseForTeacherQuery,
   useLazyGetTestScoresQuery,
 } from "../redux/slice/api/testApi";
+import { StudentScore } from "../interface/Exam";
 
 interface AggregatedScore {
   testTitle: string;
   averageScore: number;
   testId: string;
-}
-
-interface StudentScore {
-  studentId: string;
-  userName: string;
-  score: number;
-  finishedAt?: string;
 }
 
 interface Props {
@@ -72,12 +66,12 @@ const CourseScoresChart = ({ courseName }: Props) => {
           const response = await triggerGetTestScores(test._id).unwrap();
           const scores: StudentScore[] = (response ?? []).map((item) => ({
           studentId: item.studentId,
-          score: item.scores, // שימי לב להמרה בין השם 'scores' ל־ 'score'
+          scores: item.scores, // שימי לב להמרה בין השם 'scores' ל־ 'score'
           userName: item.studentName ?? 'Unknown',
           }));
           const average =
             scores.length > 0
-              ? scores.reduce((sum, s) => sum + s.score, 0) / scores.length
+              ? scores.reduce((sum, s) => sum + s.scores, 0) / scores.length
               : 0;
           scoresArray.push({ testTitle: test.title, averageScore: average, testId: test._id });
           allScoresByTest[test._id] = scores;
@@ -344,7 +338,7 @@ const CourseScoresChart = ({ courseName }: Props) => {
                                   {scoresByTest[test.testId].map((score) => (
                                     <TableRow key={score.studentId}>
                                       <TableCell>{score.userName}</TableCell>
-                                      <TableCell align="right">{score.score}</TableCell>
+                                      <TableCell align="right">{score.scores}</TableCell>
                                       <TableCell align="right">
                                         {score.finishedAt ? new Date(score.finishedAt).toLocaleDateString() : "-"}
                                       </TableCell>

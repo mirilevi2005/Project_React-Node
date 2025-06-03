@@ -122,6 +122,7 @@
 // export const { addTest, updateTest, setSelectedGrades, clearSelectedGrades } = TestSlice.actions;
 // export default TestSlice.reducer;
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { StudentScore } from '../../interface/Exam';
 
 interface Question {
   question: string;
@@ -138,12 +139,6 @@ interface Test {
   questions: Question[];
 }
 
-export interface StudentScore {
-  studentId: string;
-  userName: string;
-  score: number;
-  finishedAt?: string;
-}
 
 interface TestState {
   TestArr: Test[];

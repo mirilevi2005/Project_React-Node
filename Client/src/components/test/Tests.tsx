@@ -1,53 +1,16 @@
 
 import { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  TextField,
-  Typography,
-  IconButton,
-} from "@mui/material";
+import {Box,Button,Dialog,DialogContent,DialogTitle,List,ListItem,ListItemText,
+  Stack,TextField,Typography,IconButton,} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  useGetTestsByCourseForTeacherQuery,
-  useDeleteTestMutation,
-  useUpdateTestMutation,
+import {useGetTestsByCourseForTeacherQuery,useDeleteTestMutation,useUpdateTestMutation,
 } from "../../redux/slice/api/testApi";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { useCookies } from "react-cookie";
+import { IFormInput } from "../../interface/VideoMaterial";
+import { TestType,QuestionInput } from "../../interface/Exam";
 
-interface QuestionInput {
-  text: string;
-  answers: string[];
-  correct: number;
-  timeLimit: number;
-}
 
-interface TestType {
-  _id: string;
-  title: string;
-  lastDate: string;
-  questions: {
-    questionText: string;
-    options: string[];
-    correctAnswer: string;
-    timeLimit: number;
-  }[];
-}
-
-interface IFormInput {
-  TestName: string;
-  LastDate: string;
-  questions: QuestionInput[];
-  _id?: string;
-}
 
 const defaultQuestion: QuestionInput = {
   text: "",
@@ -67,15 +30,7 @@ const Tests = () => {
   const testList: TestType[] = testsData?.tests ?? [];
   const [cookies] = useCookies(["token", "userId"]);
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    watch,
-    setValue,
-  } = useForm<IFormInput>({
+  const {register, control, handleSubmit, formState: { errors }, reset, watch, setValue,} = useForm<IFormInput>({
     defaultValues: {
       TestName: "",
       LastDate: "",

@@ -7,6 +7,7 @@ export interface Exam {
     createdAt :Date;
     courseName:string
  }
+
   
   export interface Question {
     _id: string;
@@ -15,6 +16,8 @@ export interface Exam {
     timeLimit: number; 
     correctAnswer:string;
 }
+
+
 export interface TestType {
   _id: string;
   title: string;
@@ -24,6 +27,17 @@ export interface TestType {
   createdAt: Date;
   courseName: string;
 }
+// interface TestType {
+//   _id: string;
+//   title: string;
+//   lastDate: string;
+//   questions: {
+//     questionText: string;
+//     options: string[];
+//     correctAnswer: string;
+//     timeLimit: number;
+//   }[];
+// }
 
 export interface QuestionType {
   _id: string;
@@ -31,4 +45,38 @@ export interface QuestionType {
   options: string[];
   timeLimit: number;
   correctAnswer: string;
+}
+
+
+export interface TestScore {
+  testId: string;
+  studentId: string;
+  scores: number;
+  submittedAt?: string;
+  studentName?: string; 
+}
+
+
+export interface StudentScore {
+  studentId: string;
+  scores: number;
+  userName: string;
+  finishedAt?: string;
+}
+
+
+export interface QuestionInput {
+  text: string;
+  answers: string[];
+  correct: number;
+  timeLimit: number;
+}
+
+
+
+interface IFormInput {
+  TestName: string;
+  LastDate: string;
+  questions: QuestionInput[];
+  _id?: string;
 }

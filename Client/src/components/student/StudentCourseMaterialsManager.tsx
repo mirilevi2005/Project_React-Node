@@ -422,16 +422,12 @@ import StudentCourseScoresChart from "./StudentCourseScoresChart";
 
 const StudentCourseMaterialsManager = () => {
   const theme = useTheme();
-  const [activePanel, setActivePanel] = useState<
-    "videos" | "tests" | "chart" | null
-  >(null);
+  const [activePanel, setActivePanel] = useState<"videos" | "tests" | "chart" | null>(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
-
   const urlParts = window.location.pathname.split("/");
   const courseName = urlParts[urlParts.length - 1];
   const student = useSelector(selectCurrentUser);
   const studentId = student?._id;
-
   const togglePanel = (panel: "videos" | "tests" | "chart") => {
     setActivePanel(activePanel === panel ? null : panel);
   };

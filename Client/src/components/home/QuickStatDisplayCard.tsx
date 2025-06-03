@@ -3,11 +3,11 @@ import { Box, Typography, Grid } from '@mui/material';
 import { QuickStatPaper, StatIconBox } from '../../css/HomePage';
 import { QuickStat } from '../../interface/HomePage';
 
-interface QuickStatDisplayCardProps {
+interface Props {
   stat: QuickStat;
 }
 
-const QuickStatDisplayCard: React.FC<QuickStatDisplayCardProps> = ({ stat }) => {
+const QuickStatDisplayCard = ({ stat }:Props) => {
   return (
     <Grid item xs={12} sm={6} md={3}> {/* המפתח (key) יסופק על ידי פונקציית המיפוי בקומפוננטת האב */}
       <QuickStatPaper elevation={0}>

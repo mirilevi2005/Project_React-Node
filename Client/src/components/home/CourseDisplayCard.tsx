@@ -6,7 +6,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import { StyledCourseCard, backgroundImages } from '../../css/HomePage';
 import { CourseItem } from '../../interface/HomePage';
 
-interface CourseDisplayCardProps {
+interface Props {
   course: CourseItem;
   videoCount: number | string; // יכול להיות 'Loading...' או מספר
   participationRate: string;
@@ -14,25 +14,17 @@ interface CourseDisplayCardProps {
   onMouseLeave: () => void;
 }
 
-const CourseDisplayCard: React.FC<CourseDisplayCardProps> = ({
-  course,
-  videoCount,
-  participationRate,
-  onMouseEnter,
-  onMouseLeave,
-}) => {
+const CourseDisplayCard=({ course, videoCount, participationRate, onMouseEnter,onMouseLeave}:Props)=>{
   const chipBgColor =
     course.courseName === 'Ai' ? '#dbeafe' :
     course.courseName === 'CyberSecurity' ? '#fee2e2' :
     '#dcfce7';
-
   const chipColor =
     course.courseName === 'Ai' ? '#1e40af' :
     course.courseName === 'CyberSecurity' ? '#b91c1c' :
     '#166534';
 
   return (
-    // שימוש ב-Link של MUI עם component={RouterLink} לניווט תקין
     <Link component={RouterLink} to={`/HomeLacturer/${course.link}`} sx={{ textDecoration: 'none' }}>
       <StyledCourseCard
         elevation={0}

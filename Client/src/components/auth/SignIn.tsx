@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { Cookies, useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
-import { setPreviousLogin, setUser } from "../../redux/slice/authStateSlice"; // עדכן נתיב
+import { setPreviousLogin, setUser } from "../../redux/slice/authStateSlice";
 import {
   useGoogleSignInMutation,
   useSignInMutation,
@@ -15,8 +15,8 @@ import {
   useVerifyTempPasswordMutation,
   useChangePasswordMutation,
   useSendMagicLinkMutation,
-} from "../../redux/slice/api/authApi"; // עדכן נתיב
-import { paperStyle, tabBoxStyle } from "../../css/signInStyles"; // עדכן נתיב
+} from "../../redux/slice/api/authApi"; 
+import { paperStyle, tabBoxStyle } from "../../css/signInStyles"; 
 
 import {
   SignInSchema,
@@ -26,7 +26,6 @@ import {
   TempPasswordForm,
   NewPasswordForm as NewPasswordFormType, 
 } from "../../schema/SignIn"; 
-// ייבוא הקומפוננטות הקטנות
 import PasswordSignInFormComponent from "./PasswordSignInForm";
 import MagicLinkFormComponent from "./MagicLinkForm";
 import ForgotPasswordFormComponent from "./ForgotPasswordForm";
@@ -35,7 +34,7 @@ import NewPasswordFormComponent from "./NewPasswordForm";
 
 const SignIn = () => {
   const [tabValue, setTabValue] = useState(0);
-  const [isLoading, setIsLoading] = useState(false); // כללי, בעיקר ל-MagicLink
+  const [isLoading, setIsLoading] = useState(false); 
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [tempPasswordEmail, setTempPasswordEmail] = useState("");
   const [showTempPasswordInput, setShowTempPasswordInput] = useState(false);
@@ -73,7 +72,6 @@ const SignIn = () => {
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
-    // איפוס מצבים נלווים במעבר טאבים
     setShowForgotPassword(false);
     setShowTempPasswordInput(false);
     setTempPasswordVerified(false);
@@ -86,7 +84,7 @@ const SignIn = () => {
   const sendTempPasswordToEmail = async (email: string) => {
     try {
       await forgotPasswordMutation({ email }).unwrap();
-      alert('סיסמה זמנית נשלחה למייל שלך. בדוק את הדוא"ל והזן את הסיסמה הזמנית.');
+      // alert('סיסמה זמנית נשלחה למייל שלך. בדוק את הדוא"ל והזן את הסיסמה הזמנית.');
       setTempPasswordEmail(email);
       setShowForgotPassword(false);
       setShowTempPasswordInput(true);
@@ -101,7 +99,7 @@ const SignIn = () => {
         email: tempPasswordEmail,
         tempPassword: data.tempPassword,
       }).unwrap();
-      alert("הסיסמה הזמנית אומתה בהצלחה. כעת תוכל להגדיר סיסמה חדשה.");
+      // alert("הסיסמה הזמנית אומתה בהצלחה. כעת תוכל להגדיר סיסמה חדשה.");
       setTempPasswordVerified(true);
       tempPasswordMethods.reset();
     } catch (err: any) {
@@ -131,25 +129,21 @@ const SignIn = () => {
     try {
       const result = await signInMutation(data).unwrap();
       const { accessToken, newUser, previousLogin } = result;
-
       setCookie("token", accessToken, { path: "/", maxAge: 3600 });
       setCookie("userName", newUser.userName, { path: "/", maxAge: 3600 });
       setCookie("email", newUser.email, { path: "/", maxAge: 3600 });
       setCookie("roles", newUser.roles, { path: "/", maxAge: 3600 });
       setCookie("userId", newUser._id, { path: "/", maxAge: 3600 });
-
       dispatch(setUser(newUser));
       dispatch(setPreviousLogin(previousLogin));
       localStorage.setItem("previousLogin", String(previousLogin)); 
-
       signInMethods.reset();
-      // alert(newUser.roles) // אפשר להסיר
       if (newUser.roles === "student") {
         navigate("/HomeStudent");
-      } else if (newUser.roles === "lacturer") { // כדאי לוודא שהשם נכון lecturer
+      } else if (newUser.roles === "lacturer") { 
         navigate("/HomeLacturer");
       } else {
-        navigate("/"); // נתיב ברירת מחדל
+        navigate("/");
       }
     } catch (err: any) {
       alert(err?.data?.message || "התחברות נכשלה");
@@ -256,7 +250,7 @@ const handleMagicLinkLogin = async (event: React.FormEvent<HTMLFormElement>) => 
         </FormProvider>
       )}
 
-      {/* טאב אימות אימייל (קישור קסם) */}
+      {/* טאב אימות אימייל */}
       {tabValue === 1 && !showForgotPassword && !showTempPasswordInput && !tempPasswordVerified && (
          <MagicLinkFormComponent
             magicEmail={magicEmail}
