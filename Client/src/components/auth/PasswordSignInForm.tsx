@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { SignInForm, SignInSchema } from '../../schema/SignIn'; 
-import { formStyle, centerTextStyle } from '../../css/signInStyles'; 
+import { formStyle, centerTextStyle } from '../styles/signInStyles'; 
 
 interface Props {
   onPasswordLogin: SubmitHandler<SignInForm>;

@@ -246,13 +246,13 @@ const ExistingTestsManagement = ({courseName,openFormForEdit}:Props) => {
     for (const test of testList) {
       try {
         const response = await triggerGetTestScores(test._id).unwrap();
-        // grades[test._id] = response.scores ?? [];
-       grades[test._id] = response.map((item): StudentScore => ({
-      studentId: item.studentId,
-      userName: item.studentName ?? "", // ברירת מחדל אם אין studentName
-      scores: item.scores,
-     finishedAt: item.submittedAt,     // העתקת submittedAt ל־finishedAt
-      }));
+        grades[test._id] = response.scores ?? [];
+    //    grades[test._id] = response.map((item): StudentScore => ({
+    //   studentId: item.studentId,
+    //   userName: item.studentName ?? "", // ברירת מחדל אם אין studentName
+    //   scores: item.scores,
+    //  finishedAt: item.submittedAt,     // העתקת submittedAt ל־finishedAt
+    //   }));
         console.log("✅ response:", response);
       } catch (error) {
         console.error("❌ שגיאה בטעינת ציונים:", error);

@@ -11,7 +11,7 @@ const Ai = () => {
   return (
     <div>
       <h1>Welcome to Ai course</h1>
-      {user?.roles === 'lacturer' ? (
+      {user?.roles === 'lecturer' ? (
         // <VideoOfMaterialLacturer />
         <LecturerCourseMaterialsManager/>
       ) : (

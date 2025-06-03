@@ -44,44 +44,107 @@ const signIn = async (req, res) => {
 };
 
 //הרשמה
+// const signUp = async (req, res) => {
+//   const { userName, email, password, adminCode } = req.body;
+//   if (!userName || !password || !email)
+//     return res.status(400).json({ message: "All fields are required" });
+//   const foundUser = await User.findOne({ userName }).lean();
+//   if (foundUser) {
+//     return res.status(409).json({ message: "Duplicate username" });
+//   }
+//   const foundUserEmail = await User.findOne({ email }).lean();
+//   if (foundUserEmail) {
+//     return res.status(409).json({ message: "Duplicate email" });
+//   }
+//   const hashedPwd = await bcrypt.hash(password, 10);
+//   // קביעת תפקיד לפי קוד מורה
+//  const role = adminCode === process.env.TEACHER_SECRET ? "lecturer" : "student";
+
+//   const newUser = await User.create(userInfo);
+//   const userInfo = {
+//   userName,
+//   email,
+//   password: hashedPwd,
+//   roles: role,
+//   _id: newUser._id,
+// };
+//   const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
+
+//   if (newUser) {
+//     // return res
+//       // .status(201)
+//       // .json({
+//       //   message: `New user ${newUser.userName} created as ${role}`,
+//       //   newUser,
+//       // });
+//     res.json({
+//     accessToken,
+//     newUser: userInfo
+//   });
+//   } else {
+//     return res.status(400).json({ message: "Invalid user received" });
+//   }
+// };
+
+
 const signUp = async (req, res) => {
   const { userName, email, password, adminCode } = req.body;
-  if (!userName || !password || !email)
+
+  if (!userName || !password || !email) {
     return res.status(400).json({ message: "All fields are required" });
+  }
+
   const foundUser = await User.findOne({ userName }).lean();
   if (foundUser) {
     return res.status(409).json({ message: "Duplicate username" });
   }
+
   const foundUserEmail = await User.findOne({ email }).lean();
   if (foundUserEmail) {
     return res.status(409).json({ message: "Duplicate email" });
   }
+
   const hashedPwd = await bcrypt.hash(password, 10);
+
   // קביעת תפקיד לפי קוד מורה
- const role = adminCode === process.env.TEACHER_SECRET ? "lecturer" : "student";
-const userInfo = {
-  userName,
-  email,
-  password: hashedPwd,
-  roles: role,
-};
-  const newUser = await User.create(userInfo);
-  const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
-  if (newUser) {
-    // return res
-      // .status(201)
-      // .json({
-      //   message: `New user ${newUser.userName} created as ${role}`,
-      //   newUser,
-      // });
-    res.json({
-    accessToken,
-    newUser: userInfo
+  const role = adminCode === process.env.TEACHER_SECRET ? "lecturer" : "student";
+
+  // יצירת המשתמש במסד הנתונים
+  const newUser = await User.create({
+    userName,
+    email,
+    password: hashedPwd,
+    roles: role,
   });
-  } else {
+
+  if (!newUser) {
     return res.status(400).json({ message: "Invalid user received" });
   }
+
+  // יצירת accessToken - לא כולל סיסמה!
+  const accessToken = jwt.sign(
+    {
+      _id: newUser._id,
+      userName: newUser.userName,
+      email: newUser.email,
+      roles: newUser.roles,
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "1h" }
+  );
+
+  // שליחת תגובה ללקוח
+  res.status(201).json({
+    accessToken,
+    newUser: {
+      _id: newUser._id,
+      userName: newUser.userName,
+      email: newUser.email,
+      roles: newUser.roles,
+    },
+  });
 };
+
 
 // התחברות עם Google
 const googleLogin = async (req, res) => {
@@ -250,7 +313,7 @@ const sendMagicLinkEmail = async (req, res) => {
     let link = `${process.env.CLIENT_URL}/login?token=${token}`;
     let greetingName = user.name || "משתמש";
     switch (role) {
-      case "lacturer":
+      case "lecturer":
         link = `${process.env.CLIENT_URL}/HomeLacturer`;
         break;
       case "student":

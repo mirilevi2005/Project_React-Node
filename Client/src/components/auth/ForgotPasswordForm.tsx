@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { tempFormStyle } from '../../css/signInStyles'; 
+import { tempFormStyle } from '../styles/signInStyles'; 
 
 interface Props {
   onSendTempPassword: (email: string) => void;
