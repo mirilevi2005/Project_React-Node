@@ -350,7 +350,7 @@ const Tests = () => {
       questions: formData.questions.map((q) => ({
         questionText: q.text,
         options: q.answers,
-        correctAnswer: q.answers[q.correct],
+        correctAnswer: q.answers[q.correct-1],
         timeLimit: Number(q.timeLimit),
       })),
       teacherId: userId,

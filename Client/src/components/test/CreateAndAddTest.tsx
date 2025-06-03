@@ -531,7 +531,7 @@ const CreateAndAddTest = ({ courseName, refetchTests }: Props) => {
       questions: formData.questions.map((q) => ({
         questionText: q.text,
         options: q.answers,
-        correctAnswer: q.answers[q.correct - 1], // Adjust for 1-based indexing
+        correctAnswer: q.answers[q.correct - 1], 
         timeLimit: Number(q.timeLimit),
       })),
       teacherId: userId,
