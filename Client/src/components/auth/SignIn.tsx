@@ -178,11 +178,12 @@ const SignIn = () => {
 
       setCookie("token", apiToken, { path: "/", maxAge: 3600 });
       setCookie("userName", newUser.userName, { path: "/", maxAge: 3600 });
-      // ... שאר ה-cookies וה-dispatch
+      setCookie("email", newUser.email, { path: "/", maxAge: 3600 });
+      setCookie("roles", newUser.roles, { path: "/", maxAge: 3600 });
+      setCookie("userId", newUser._id, { path: "/", maxAge: 3600 });
       dispatch(setUser(newUser));
       dispatch(setPreviousLogin(previousLogin));
       localStorage.setItem("previousLogin", String(previousLogin));
-
       navigate(newUser.roles === "student" ? "/HomeStudent" : "/HomeLacturer");
     } catch (error: any) {
       console.error("Google login error:", error);

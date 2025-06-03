@@ -418,12 +418,12 @@ const CreateAndAddTest = ({courseName,refetchTests}:Props) => {
                     />
                   ))}
                   <TextField
-                    label="מספר תשובה נכונה (0-3)"
+                    label="מספר תשובה נכונה (1-4)"
                     type="number"
                     {...register(`questions.${index}.correct`, {
                       required: "תשובה נכונה חובה",
-                      min: { value: 0, message: "המספר צריך להיות מ-0 עד 3" },
-                      max: { value: 3, message: "המספר צריך להיות מ-0 עד 3" },
+                      min: { value: 1, message: "המספר צריך להיות מ-0 עד 1" },
+                      max: { value: 4, message: "המספר צריך להיות מ-0 עד 1" },
                     })}
                     error={!!errors.questions?.[index]?.correct}
                     helperText={errors.questions?.[index]?.correct?.message}

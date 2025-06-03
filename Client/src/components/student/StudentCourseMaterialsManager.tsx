@@ -456,7 +456,6 @@ const StudentCourseMaterialsManager = () => {
           if (!studentId) {
             return <div>טוען פרטי סטודנט...</div>;
           }
-
           return (
             <StudentCourseScoresChart
               courseName={courseName}

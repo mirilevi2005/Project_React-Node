@@ -58,8 +58,7 @@ const CourseScoresChart = ({ courseName }: Props) => {
   const [expandedTestId, setExpandedTestId] = useState<string | null>(null);
   const [triggerGetTestScores] = useLazyGetTestScoresQuery();
 
-  const { data: testsData, isLoading, isError } =
-    useGetTestsByCourseForTeacherQuery(courseName);
+  const { data: testsData, isLoading, isError } =useGetTestsByCourseForTeacherQuery(courseName);
 
   useEffect(() => {
     const fetchScores = async () => {
