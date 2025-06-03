@@ -39,6 +39,7 @@ interface CourseItem {
   image: string;
   link: string;
   courseName: string;
+  courseNameSee:string
 }
 
 const HomeLacturerData: CourseItem[] = [
@@ -48,7 +49,8 @@ const HomeLacturerData: CourseItem[] = [
     body: "AI is changing the world.", 
     image: paperDemoImage,
     link: "Ai",
-    courseName: "AI"
+    courseName: "Ai",
+    courseNameSee:'Ai'
   },
   { 
     title: "Cyber Security", 
@@ -56,7 +58,8 @@ const HomeLacturerData: CourseItem[] = [
     body: "Cyber security is crucial in today's digital world.", 
     image: paperDemoImage,
     link: "CyberSecurity",
-    courseName: "CYBER"
+    courseName: "CyberSecurity",
+     courseNameSee:'Cyber'
   },
   { 
     title: "Cloud Computing", 
@@ -64,7 +67,8 @@ const HomeLacturerData: CourseItem[] = [
     body: "Cloud computing is transforming data storage.", 
     image: paperDemoImage,
     link: "CloudComputing",
-    courseName: "CLOUD"
+    courseName: "CloudComputing",
+     courseNameSee:'Cloud'
   }
 ];
 

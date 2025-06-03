@@ -7,10 +7,9 @@ import NotFound from "../pages/NotFound";
 import Ai from "../pages/material/Ai";
 import CyberSecurity from "../pages/material/CyberSecurity";
 import CloudComputing from "../pages/material/CloudComputing";
-import HomeLacturer from "../pages/HomeLacturer";
-import HomeStudent from "../pages/HomeStudent"; // נוספנו את דף ה-HomeStudent
-import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp"; // ✅ ייבוא קומפוננטת SignUp
+import SignIn from "../components/auth/SignIn";
+import HomePage from "../components/home/HomePage";
 
 const routes: RouteObject[] = [
   {
@@ -21,7 +20,8 @@ const routes: RouteObject[] = [
       {
         path: "HomeLacturer",
         children: [
-          { index: true, element: <HomeLacturer /> },
+          // { index: true, element: <HomeLacturer /> },
+          { index: true, element:<HomePage/>},
           { path: "Ai", element: <Ai /> },
           { path: "CyberSecurity", element: <CyberSecurity /> },
           { path: "CloudComputing", element: <CloudComputing /> },
@@ -30,7 +30,8 @@ const routes: RouteObject[] = [
       { path: "HomeStudent",
         children:
         [
-          { index: true, element: <HomeStudent /> },
+          // { index: true, element: <HomeStudent /> },
+          { index: true, element:<HomePage/>},
           { path: "Ai", element: <Ai /> },
           { path: "CyberSecurity", element: <CyberSecurity /> },
           { path: "CloudComputing", element: <CloudComputing /> },

@@ -19,7 +19,7 @@ import {
   useGetNewVideosQuery,
   useUpdateLastLoginMutation,
 } from '../../redux/slice/api/materialsApi';
-import { useGetNewTestsQuery } from '../../redux/slice/api/testApi';
+ import { useGetNewTestsQuery } from '../../redux/slice/api/testApi';
 import { markPopupAsShown } from '../../redux/slice/popupslice';
 
 type VideoType = {
@@ -32,6 +32,7 @@ type VideoType = {
 };
 
 const NewContentPopup = () => {
+  
   const dispatch = useDispatch();
   const wasPopupShown = useSelector(
     (state: RootState) => state.popup.wasShown
@@ -49,11 +50,14 @@ const NewContentPopup = () => {
 
   const { data: newVideosRaw } = useGetNewVideosQuery(lastLogin ?? '', {
     skip: !lastLogin,
+    
   });
 
   const { data: newTests } = useGetNewTestsQuery(lastLogin ?? '', {
     skip: !lastLogin,
   });
+
+        console.log(lastLogin);
 
   const [updateLastLogin] = useUpdateLastLoginMutation();
 
@@ -176,7 +180,7 @@ const NewContentPopup = () => {
         <DialogContent dividers>
           {selectedVideo && (
             <video
-              src={`${serverUrl}/uploads/${encodeURIComponent(
+              src={`${serverUrl}/uploads/${encodeURIComponent(selectedVideo.nameCours)}/${encodeURIComponent(
                 selectedVideo.videoPath
               )}`}
               controls

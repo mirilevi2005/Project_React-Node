@@ -1,4 +1,4 @@
-import {  SignInRequest, SignUpRequest, AuthResponse } from '../../../interface/authTypes'; // עדכני את הנתיב
+import {  SignInRequest, SignUpRequest, AuthResponse, userInfo } from '../../../interface/authTypes'; // עדכני את הנתיב
 import apiSlice from './apiSlice';
 
 const authApi = apiSlice.injectEndpoints({
@@ -31,9 +31,49 @@ const authApi = apiSlice.injectEndpoints({
       
       invalidatesTags: ["User"],
     }),
+
+forgotPassword: builder.mutation<void, { email: string }>({
+      query: (body) => ({
+        url: "/forgot-password",
+        method: "POST",
+        body,
+      }),
+    }),
+    verifyTempPassword: builder.mutation<
+      { success: boolean; token: string; role: string; email: string },
+      { email: string; tempPassword: string }
+    >({
+      query: (body) => ({
+        url: "/verify-temp-password",
+        method: "POST",
+        body,
+      }),
+    }),
+    changePassword: builder.mutation<void, { email: string; newPassword: string }>({
+    // changePassword: builder.mutation<void, SignInRequest>({
+      query: (body) => ({
+        url: "/change-password",
+        method: "POST",
+        body,
+      }),
+    }),
+    sendMagicLink: builder.mutation<userInfo, { email: string }>({
+  query: (body) => ({
+    url: "/send-magic-link",
+    method: "POST",
+    body,
+  }),
+  }),
    
   }),
+  
 });
 
-export const { useSignInMutation, useSignUpMutation,useGoogleSignInMutation } = authApi;
+export const { useSignInMutation,
+   useSignUpMutation,
+   useGoogleSignInMutation,
+   useForgotPasswordMutation,
+   useChangePasswordMutation,
+   useVerifyTempPasswordMutation,
+  useSendMagicLinkMutation } = authApi;
 export default authApi;

@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
 const apiSlice = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
@@ -19,12 +18,15 @@ const apiSlice = createApi({
       }),
       invalidatesTags: ['User'],
     }),
-     getStats: builder.query<{ studentsCount: number; videosCount: number }, void>({
-      query: () => '/stats',
+    getVideosCount: builder.query<number, string>({
+      query: (nameCours) => `/stats/${nameCours}`, // בשרת צריך לטפל בנתיב הזה ולהחזיר רק videosCount
+    }),
+    getCourseStats: builder.query<{ studentsCount: number; videos: number }, void>({
+      query: () => `/stats/`, // מחזיר את שאר הנתונים עבור הקורס
     }),
   }),
 });
 
-export const { useGetUserProfileQuery, useCreateUserMutation ,useGetStatsQuery} = apiSlice;
+export const { useGetUserProfileQuery, useCreateUserMutation ,useGetVideosCountQuery, useGetCourseStatsQuery} = apiSlice;
 
 export default apiSlice;

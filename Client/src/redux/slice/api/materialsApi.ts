@@ -55,7 +55,7 @@ const materialsApiSlice = apiSlice.injectEndpoints({
     }),
 
 getNewVideos: builder.query<Video[], string>({
-  query: (lastLogin) => `/users/new-videos?since=${lastLogin}`,
+  query: (lastLogin) => `/users/new-videos/${encodeURIComponent(lastLogin)}`,
   providesTags: ['User'],
 }),
 
@@ -68,8 +68,13 @@ getNewVideos: builder.query<Video[], string>({
       }),
       invalidatesTags: ['User'],
     }),
+    getExpiredMaterialsLast5Days: builder.query<Video[], void>({  // לא צריך פרמטרים
+  query: () => `HomeLacturer/materials/expired-materials-last-5-days`,
+  providesTags: ['Material'],
+}),
     
   })
+  
 });
 
 // יצוא הפונקציות שניתן להשתמש בהן ב-React
@@ -81,6 +86,7 @@ export const {
   useDeleteMaterialMutation,
   useGetNewVideosQuery,
   useUpdateLastLoginMutation,
+  useGetExpiredMaterialsLast5DaysQuery
 } = materialsApiSlice;
 
 export default materialsApiSlice;

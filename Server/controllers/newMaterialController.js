@@ -58,35 +58,35 @@ const Video = require('../models/LearningMaterials');
 //   } catch (error) {
 //     res.status(500).json({ message: 'Error fetching new videos', error });
 //   }
+// // };
+// const getNewVideosSinceLastLogin = async (req, res) => {
+//   try {
+//     const { since } = req.query;
+
+//     if (!since || isNaN(Date.parse(since))) {
+//       return res.status(400).json({ message: 'Invalid or missing since timestamp' });
+//     }
+
+//     const newVideos = await Video.find({
+//       uploadDate: { $gt: new Date(since) }
+//     });
+
+//     // ממירים את האובייקטים לפורמט JSON נקי
+//     const videosWithCourse = newVideos.map(video => ({
+//       _id: video._id,
+//       nameCours: video.nameCours,
+//       uploadDate: video.uploadDate,
+//       finishDate: video.finishDate,
+//       videoPath: video.videoPath,
+//       videoName: video.videoName,
+//       originalVideoName:video.originalVideoName
+//     }));
+
+//     res.status(200).json(videosWithCourse);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error fetching new videos', error });
+//   }
 // };
-const getNewVideosSinceLastLogin = async (req, res) => {
-  try {
-    const { since } = req.query;
-
-    if (!since || isNaN(Date.parse(since))) {
-      return res.status(400).json({ message: 'Invalid or missing since timestamp' });
-    }
-
-    const newVideos = await Video.find({
-      uploadDate: { $gt: new Date(since) }
-    });
-
-    // ממירים את האובייקטים לפורמט JSON נקי
-    const videosWithCourse = newVideos.map(video => ({
-      _id: video._id,
-      nameCours: video.nameCours,
-      uploadDate: video.uploadDate,
-      finishDate: video.finishDate,
-      videoPath: video.videoPath,
-      videoName: video.videoName,
-      originalVideoName:video.originalVideoName
-    }));
-
-    res.status(200).json(videosWithCourse);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching new videos', error });
-  }
-};
 
 
 // עדכון lastLogin לאחר סגירת הפופאפ
@@ -99,6 +99,35 @@ const updateLastLogin = async (req, res) => {
     res.status(500).json({ message: 'Error updating last login', error });
   }
 };
+
+const getNewVideosSinceLastLogin = async (req, res) => {
+  try {
+    const { lastLogin } = req.params;
+
+    if (!lastLogin || isNaN(Date.parse(lastLogin))) {
+      return res.status(400).json({ message: 'Invalid or missing lastLogin timestamp' });
+    }
+
+    const newVideos = await Video.find({
+      uploadDate: { $gt: new Date(lastLogin) }
+    });
+
+    const videosWithCourse = newVideos.map(video => ({
+      _id: video._id,
+      nameCours: video.nameCours,
+      uploadDate: video.uploadDate,
+      finishDate: video.finishDate,
+      videoPath: video.videoPath,
+      videoName: video.videoName,
+      originalVideoName: video.originalVideoName
+    }));
+
+    res.status(200).json(videosWithCourse);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching new videos', error });
+  }
+};
+
 
 module.exports = {
   getNewVideosSinceLastLogin,
