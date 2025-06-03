@@ -56,7 +56,6 @@ const ExpiringMaterialsAndTests = () => {
   }));
 
   const normalizedTests = tests.map((t:Test) => ({
-    ///מאיזה סוג האובייקט t????????????????????
     ...t,
     lastDate: t.lastDate instanceof Date ? t.lastDate.toISOString() : t.lastDate,
   }));
@@ -66,17 +65,17 @@ const ExpiringMaterialsAndTests = () => {
       id: v._id,
       title: v.videoName,
       expireDate: v.finishDate,
-      type: 'סרטון',
+      type: 'video',
       daysLeft: getDaysLeft(v.finishDate),
-      course: v.nameCours || 'אחר',
+      course: v.nameCours || 'besaddddd',
     })),
     ...normalizedTests.map((t) => ({
       id: t._id,
       title: t.title,
       expireDate: t.lastDate,
-      type: 'מבחן',
+      type: 'test',
       daysLeft: getDaysLeft(t.lastDate),
-      course: t.courseName || 'אחר',
+      course: t.courseName || 'besaddddd',
     })),
   ].sort((a, b) => a.daysLeft - b.daysLeft);
 
@@ -93,12 +92,12 @@ const ExpiringMaterialsAndTests = () => {
           }}
         >
           <Typography variant="h5" sx={{ mb: 2, fontWeight: 'bold' }}>
-            חומרים ומבחנים שפוקעים ב-5 הימים הקרובים
+           Materials and tests that expire in the next 5 days
           </Typography>
 
           <Stack spacing={2} sx={{ mt: 1 }}>
             {upcomingItems.length === 0 ? (
-              <Typography>אין חומרים או מבחנים שפוקעים בטווח זה.</Typography>
+              <Typography>There are no materials or tests that expire within this range.</Typography>
             ) : (
               upcomingItems.map((item) => (
                 <Paper
@@ -135,7 +134,7 @@ const ExpiringMaterialsAndTests = () => {
                         [{item.type}] {item.title}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
-                        פוקע בתאריך:{' '}
+                        Expires on :{' '}
                         {new Date(item.expireDate).toLocaleDateString()}
                       </Typography>
                     </Box>
@@ -144,7 +143,7 @@ const ExpiringMaterialsAndTests = () => {
                   <Chip
                     label={
                       item.daysLeft <= 5
-                        ? `${item.daysLeft} ימים נותרו`
+                        ? `${item.daysLeft} Days left `
                         : item.course
                     }
                     size="small"

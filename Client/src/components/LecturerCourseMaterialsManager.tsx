@@ -36,24 +36,154 @@ interface StudentScore {
   finishedAt?: string;
 }
 
+// const LecturerCourseMaterialsManager = () => {
+//   const theme = useTheme();
+//   const [activePanel, setActivePanel] = useState<'videos' | 'createTest' | 'tests' | 'grades' | null>(null);
+
+//   // חילוץ שם הקורס מה-URL
+//   const urlParts = window.location.pathname.split("/");
+//   const courseName = urlParts[urlParts.length - 1];
+
+//   // טעינת המבחנים של הקורס
+//   const { data: testsData, refetch } = useGetTestsByCourseForTeacherQuery(courseName);
+//   const testList: TestType[] = testsData?.tests ?? [];
+
+//   // קריאה עצלנית לציוני מבחנים
+//   const [triggerGetTestScores] = useLazyGetTestScoresQuery();
+
+//   // state לאחסון ציונים לפי מבחן
+//   const [selectedGrades, setSelectedGrades] = useState<{ [testId: string]: StudentScore[] }>({});
+
+
+//   useEffect(() => {
+//     const fetchGrades = async () => {
+//       const grades: { [testId: string]: StudentScore[] } = {};
+//       for (const test of testList) {
+//         try {
+//           const response = await triggerGetTestScores(test._id).unwrap();
+//           grades[test._id] = response.scores ?? []
+//           } catch (error) {
+//           console.error("❌ שגיאה בטעינת ציונים:", error);
+//           grades[test._id] = [];
+//         }
+//       }
+//       setSelectedGrades(grades);
+//     };
+
+//     if (testList.length > 0) {
+//       fetchGrades();
+//     }
+//   }, [testList, triggerGetTestScores]);
+
+//   // חישוב ממוצע ציונים לכל מבחן להצגה בגרף
+//   const aggregatedScores = testList.map((test) => {
+//   const scores = selectedGrades[test._id] ?? [];
+//   const avgScore =scores.reduce((sum, s) => sum + s.score, 0) / (scores.length || 1);
+//   return {
+//     testTitle: test.title,
+//     averageScore: avgScore,
+//   };
+// });
+
+//   // פונקציה ליצירת הפאנלים עם הקומפוננטות המתאימות
+//   const createPanels = (
+//     courseName: string,
+//     refetchTests: () => void,
+//     theme: any
+//   ): Panel[] => [
+//       {
+//         key: 'videos',
+//         icon: <VideoIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />,
+//         title: 'סרטוני לימוד',
+//         subtitle: 'צפייה וניהול סרטוני הקורס',
+//         buttonLabel: 'סרטונים',
+//         component: <VideoUpload />,
+//       },
+//       {
+//         key: 'createTest',
+//         icon: <QuizIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />,
+//         title: 'יצירת מבחן',
+//         subtitle: 'הוספת מבחן חדש לתלמידים',
+//         buttonLabel: 'מבחן חדש',
+//         component: <CreateAndAddTest courseName={courseName} refetchTests={refetchTests} />,
+//       },
+//       {
+//         key: 'tests',
+//         icon: <AssessmentIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />,
+//         title: 'מבחנים קיימים',
+//         subtitle: 'צפייה וניהול כל המבחנים',
+//         buttonLabel: 'מבחנים',
+//         component: <Tests />,
+//       },
+//       {
+//         key: 'grades',
+//         icon: <ChartIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />,
+//         title: 'ציוני תלמידים',
+//         subtitle: 'צפייה בציוני התלמידים',
+//         buttonLabel: 'ציונים',
+//         component: <CourseScoresChart courseName={courseName}  />,
+//       },
+//     ];
+
+//   const panels = createPanels(courseName, refetch, theme);
+
+//   return (
+// <Container maxWidth="lg" sx={containerSx}>
+//       <Grid container spacing={3}>
+//         {panels.map(({ key, icon, title, subtitle, buttonLabel }) => (
+//           <Grid item xs={12} sm={6} md={3} key={key}>
+//             <Card sx={cardSx(activePanel === key, theme)}>
+//              <CardContent sx={cardContentSx}>
+//   <Box sx={iconSx(theme)}>
+//     {icon}
+//   </Box>
+//   <Typography variant="h6">{title}</Typography>
+//   <Typography variant="body2" color="text.secondary">{subtitle}</Typography>
+// </CardContent>
+//               <CardActions>
+//                 <Button
+//                   fullWidth
+//                   variant={activePanel === key ? 'contained' : 'outlined'}
+//                   onClick={() => setActivePanel(activePanel === key ? null : key)}
+//                 >
+//                   {activePanel === key ? 'Hide' : `Show ${buttonLabel}`}
+//                 </Button>
+//               </CardActions>
+//             </Card>
+//           </Grid>
+//         ))}
+//       </Grid>
+
+//      <Box sx={bottomBoxSx}>
+//   {panels.map(panel =>
+//     panel.key === activePanel ? <Box key={panel.key}>{panel.component}</Box> : null
+//   )}
+// </Box>
+//     </Container>
+//   );
+// };
+
+// export default LecturerCourseMaterialsManager;
+
+
+
 const LecturerCourseMaterialsManager = () => {
   const theme = useTheme();
   const [activePanel, setActivePanel] = useState<'videos' | 'createTest' | 'tests' | 'grades' | null>(null);
 
-  // חילוץ שם הקורס מה-URL
+  // Extract course name from the URL
   const urlParts = window.location.pathname.split("/");
   const courseName = urlParts[urlParts.length - 1];
 
-  // טעינת המבחנים של הקורס
+  // Load tests for the course
   const { data: testsData, refetch } = useGetTestsByCourseForTeacherQuery(courseName);
   const testList: TestType[] = testsData?.tests ?? [];
 
-  // קריאה עצלנית לציוני מבחנים
+  // Lazy query for test scores
   const [triggerGetTestScores] = useLazyGetTestScoresQuery();
 
-  // state לאחסון ציונים לפי מבחן
+  // State to store grades per test
   const [selectedGrades, setSelectedGrades] = useState<{ [testId: string]: StudentScore[] }>({});
-
 
   useEffect(() => {
     const fetchGrades = async () => {
@@ -61,9 +191,9 @@ const LecturerCourseMaterialsManager = () => {
       for (const test of testList) {
         try {
           const response = await triggerGetTestScores(test._id).unwrap();
-          grades[test._id] = response.scores ?? []
-          } catch (error) {
-          console.error("❌ שגיאה בטעינת ציונים:", error);
+          grades[test._id] = response.scores ?? [];
+        } catch (error) {
+          console.error("❌ Error loading scores:", error);
           grades[test._id] = [];
         }
       }
@@ -75,17 +205,17 @@ const LecturerCourseMaterialsManager = () => {
     }
   }, [testList, triggerGetTestScores]);
 
-  // חישוב ממוצע ציונים לכל מבחן להצגה בגרף
+  // Calculate average score per test for display in chart
   const aggregatedScores = testList.map((test) => {
-  const scores = selectedGrades[test._id] ?? [];
-  const avgScore =scores.reduce((sum, s) => sum + s.score, 0) / (scores.length || 1);
-  return {
-    testTitle: test.title,
-    averageScore: avgScore,
-  };
-});
+    const scores = selectedGrades[test._id] ?? [];
+    const avgScore = scores.reduce((sum, s) => sum + s.score, 0) / (scores.length || 1);
+    return {
+      testTitle: test.title,
+      averageScore: avgScore,
+    };
+  });
 
-  // פונקציה ליצירת הפאנלים עם הקומפוננטות המתאימות
+  // Function to create the panels with the appropriate components
   const createPanels = (
     courseName: string,
     refetchTests: () => void,
@@ -94,59 +224,59 @@ const LecturerCourseMaterialsManager = () => {
       {
         key: 'videos',
         icon: <VideoIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />,
-        title: 'סרטוני לימוד',
-        subtitle: 'צפייה וניהול סרטוני הקורס',
-        buttonLabel: 'סרטונים',
+        title: 'Course Videos',
+        subtitle: 'View and manage course videos',
+        buttonLabel: 'Videos',
         component: <VideoUpload />,
       },
       {
         key: 'createTest',
         icon: <QuizIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />,
-        title: 'יצירת מבחן',
-        subtitle: 'הוספת מבחן חדש לתלמידים',
-        buttonLabel: 'מבחן חדש',
+        title: 'Create Test',
+        subtitle: 'Add a new test for students',
+        buttonLabel: 'New Test',
         component: <CreateAndAddTest courseName={courseName} refetchTests={refetchTests} />,
       },
       {
         key: 'tests',
         icon: <AssessmentIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />,
-        title: 'מבחנים קיימים',
-        subtitle: 'צפייה וניהול כל המבחנים',
-        buttonLabel: 'מבחנים',
+        title: 'Existing Tests',
+        subtitle: 'View and manage all tests',
+        buttonLabel: 'Tests',
         component: <Tests />,
       },
       {
         key: 'grades',
         icon: <ChartIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />,
-        title: 'ציוני תלמידים',
-        subtitle: 'צפייה בציוני התלמידים',
-        buttonLabel: 'ציונים',
-        component: <CourseScoresChart courseName={courseName}  />,
+        title: 'Student Grades',
+        subtitle: 'View student test scores',
+        buttonLabel: 'Grades',
+        component: <CourseScoresChart courseName={courseName} />,
       },
     ];
 
   const panels = createPanels(courseName, refetch, theme);
 
   return (
-<Container maxWidth="lg" sx={containerSx}>
+    <Container maxWidth="lg" sx={containerSx}>
       <Grid container spacing={3}>
         {panels.map(({ key, icon, title, subtitle, buttonLabel }) => (
           <Grid item xs={12} sm={6} md={3} key={key}>
             <Card sx={cardSx(activePanel === key, theme)}>
-             <CardContent sx={cardContentSx}>
-  <Box sx={iconSx(theme)}>
-    {icon}
-  </Box>
-  <Typography variant="h6">{title}</Typography>
-  <Typography variant="body2" color="text.secondary">{subtitle}</Typography>
-</CardContent>
+              <CardContent sx={cardContentSx}>
+                <Box sx={iconSx(theme)}>
+                  {icon}
+                </Box>
+                <Typography variant="h6">{title}</Typography>
+                <Typography variant="body2" color="text.secondary">{subtitle}</Typography>
+              </CardContent>
               <CardActions>
                 <Button
                   fullWidth
                   variant={activePanel === key ? 'contained' : 'outlined'}
                   onClick={() => setActivePanel(activePanel === key ? null : key)}
                 >
-                  {activePanel === key ? 'הסתר' : `הצג ${buttonLabel}`}
+                  {activePanel === key ? 'Hide' : `Show ${buttonLabel}`}
                 </Button>
               </CardActions>
             </Card>
@@ -154,16 +284,13 @@ const LecturerCourseMaterialsManager = () => {
         ))}
       </Grid>
 
-     <Box sx={bottomBoxSx}>
-  {panels.map(panel =>
-    panel.key === activePanel ? <Box key={panel.key}>{panel.component}</Box> : null
-  )}
-</Box>
+      <Box sx={bottomBoxSx}>
+        {panels.map(panel =>
+          panel.key === activePanel ? <Box key={panel.key}>{panel.component}</Box> : null
+        )}
+      </Box>
     </Container>
   );
 };
 
 export default LecturerCourseMaterialsManager;
-
-
-
