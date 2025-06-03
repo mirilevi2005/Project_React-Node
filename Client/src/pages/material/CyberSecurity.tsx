@@ -12,7 +12,7 @@ const CyberSecurity = () => {
   return (
     <div>
       <h1>Welcome to CyberSecurity course</h1>
-      {user?.roles === 'lacturer' ? (
+      {user?.roles === 'lecturer' ? (
         <LecturerCourseMaterialsManager/>
       ) : (
         // <VideoOfMaterialStudent />

@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom'; // שונה שם כדי �
 import { Box, Typography, CardContent, CardMedia, Chip, Link } from '@mui/material';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import { StyledCourseCard, backgroundImages } from '../../css/HomePage';
+import { StyledCourseCard, backgroundImages } from '../styles/HomePage';
 import { CourseItem } from '../../interface/HomePage';
 
 interface Props {

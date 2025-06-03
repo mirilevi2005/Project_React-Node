@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { NewPasswordForm as NewPasswordFormType } from '../../schema/SignIn'; 
-import { tempFormStyle } from '../../css/signInStyles'; 
+import { tempFormStyle } from '../styles/signInStyles'; 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NewPasswordSchema } from '../../schema/SignIn';
 interface Props {

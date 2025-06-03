@@ -1,33 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
-import {
-  Container,
-  Typography,
-  Grid,
-  Button,
-  Card,
-  CardContent,
-  CardActions,
-  useTheme,
-  Box,
-} from '@mui/material';
-import {
-  VideoLibrary as VideoIcon,
-  Quiz as QuizIcon,
-  Assessment as AssessmentIcon,
-  BarChart as ChartIcon,
-} from '@mui/icons-material';
-
+import { Container, Typography, Grid, Button, Card, CardContent, CardActions, useTheme, Box,} from '@mui/material';
+import { VideoLibrary as VideoIcon, Quiz as QuizIcon, Assessment as AssessmentIcon, BarChart as ChartIcon,} from '@mui/icons-material';
 import VideoUpload from './video/VideoUpload';
 import CreateAndAddTest from './test/CreateAndAddTest';
 import Tests from './test/Tests';
 import CourseScoresChart from './CourseScoresChart';
-
-import {
-  useGetTestsByCourseForTeacherQuery,
-  useLazyGetTestScoresQuery,
-} from "../redux/slice/api/testApi";
-
+import {useGetTestsByCourseForTeacherQuery,useLazyGetTestScoresQuery,} from "../redux/slice/api/testApi";
+import { TestType } from '../interface/Exam';
+import {containerSx,cardSx, cardContentSx, iconSx,bottomBoxSx} from './styles/LecturerCoursesMaterials';
 type Panel = {
   key: 'videos' | 'createTest' | 'tests' | 'grades';
   icon: React.ReactNode;
@@ -37,17 +17,17 @@ type Panel = {
   component: React.ReactNode;
 };
 
-interface TestType {
-  _id: string;
-  title: string;
-  lastDate: string;
-  questions: {
-    questionText: string;
-    options: string[];
-    correctAnswer: string;
-    timeLimit: number;
-  }[];
-}
+// interface TestType {
+//   _id: string;
+//   title: string;
+//   lastDate: string;
+//   questions: {
+//     questionText: string;
+//     options: string[];
+//     correctAnswer: string;
+//     timeLimit: number;
+//   }[];
+// }
 
 interface StudentScore {
   studentId: string;
@@ -148,25 +128,18 @@ const LecturerCourseMaterialsManager = () => {
   const panels = createPanels(courseName, refetch, theme);
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+<Container maxWidth="lg" sx={containerSx}>
       <Grid container spacing={3}>
         {panels.map(({ key, icon, title, subtitle, buttonLabel }) => (
           <Grid item xs={12} sm={6} md={3} key={key}>
-            <Card
-              sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 0.2s',
-                '&:hover': { transform: 'translateY(-5px)' },
-                border: activePanel === key ? `2px solid ${theme.palette.primary.main}` : 'none',
-              }}
-            >
-              <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
-                {icon}
-                <Typography variant="h6">{title}</Typography>
-                <Typography variant="body2" color="text.secondary">{subtitle}</Typography>
-              </CardContent>
+            <Card sx={cardSx(activePanel === key, theme)}>
+             <CardContent sx={cardContentSx}>
+  <Box sx={iconSx(theme)}>
+    {icon}
+  </Box>
+  <Typography variant="h6">{title}</Typography>
+  <Typography variant="body2" color="text.secondary">{subtitle}</Typography>
+</CardContent>
               <CardActions>
                 <Button
                   fullWidth
@@ -181,13 +154,16 @@ const LecturerCourseMaterialsManager = () => {
         ))}
       </Grid>
 
-      <Box sx={{ mt: 4 }}>
-        {panels.map(panel =>
-          panel.key === activePanel ? <Box key={panel.key}>{panel.component}</Box> : null
-        )}
-      </Box>
+     <Box sx={bottomBoxSx}>
+  {panels.map(panel =>
+    panel.key === activePanel ? <Box key={panel.key}>{panel.component}</Box> : null
+  )}
+</Box>
     </Container>
   );
 };
 
 export default LecturerCourseMaterialsManager;
+
+
+

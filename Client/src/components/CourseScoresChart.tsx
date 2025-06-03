@@ -64,11 +64,12 @@ const CourseScoresChart = ({ courseName }: Props) => {
       for (const test of testsData.tests) {
         try {
           const response = await triggerGetTestScores(test._id).unwrap();
-          const scores: StudentScore[] = (response ?? []).map((item) => ({
-          studentId: item.studentId,
-          scores: item.scores, // שימי לב להמרה בין השם 'scores' ל־ 'score'
-          userName: item.studentName ?? 'Unknown',
-          }));
+          const scores: StudentScore[] = response.scores ?? []
+          // const scores: StudentScore[] = (response ?? []).map((item) => ({
+          // studentId: item.studentId,
+          // scores: item.scores, // שימי לב להמרה בין השם 'scores' ל־ 'score'
+          // userName: item.studentName ?? 'Unknown',
+          // }));
           const average =
             scores.length > 0
               ? scores.reduce((sum, s) => sum + s.scores, 0) / scores.length

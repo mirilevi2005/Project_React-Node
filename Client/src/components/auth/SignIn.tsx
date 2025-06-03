@@ -16,7 +16,7 @@ import {
   useChangePasswordMutation,
   useSendMagicLinkMutation,
 } from "../../redux/slice/api/authApi"; 
-import { paperStyle, tabBoxStyle } from "../../css/signInStyles"; 
+import { paperStyle, tabBoxStyle } from "../styles/signInStyles"; 
 
 import {
   SignInSchema,
@@ -140,7 +140,7 @@ const SignIn = () => {
       signInMethods.reset();
       if (newUser.roles === "student") {
         navigate("/HomeStudent");
-      } else if (newUser.roles === "lacturer") { 
+      } else if (newUser.roles === "lecturer") { 
         navigate("/HomeLacturer");
       } else {
         navigate("/");

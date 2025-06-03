@@ -44,10 +44,10 @@ const StudentCourseFullScoreChart = ({ courseName, studentId }:Props) => {
 
       for (const test of testsData.tests) {
         try {
-          // const result = await triggerGetScores(test._id).unwrap();
-          // const scores = result?.scores ?? [];
           const result = await triggerGetScores(test._id).unwrap();
-          const scores = result ?? [];
+          const scores = result?.scores ?? [];
+          // const result = await triggerGetScores(test._id).unwrap();
+          // const scores = result ?? [];
           console.log(`📥 ציונים שהתקבלו עבור מבחן "${test.title}":`, scores);
 
           const testAllScores = scores
