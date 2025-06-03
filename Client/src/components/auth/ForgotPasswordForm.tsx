@@ -2,17 +2,14 @@ import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { tempFormStyle } from '../../css/signInStyles'; // עדכן נתיב אם צריך
 
-interface ForgotPasswordFormProps {
+interface Props {
   onSendTempPassword: (email: string) => void;
   onBack: () => void;
   isLoading: boolean; // forgotLoading
 }
 
-const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
-  onSendTempPassword,
-  onBack,
-  isLoading,
-}) => {
+const ForgotPasswordForm = ({onSendTempPassword,onBack,isLoading}: Props) => {
+  
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);

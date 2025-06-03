@@ -1,11 +1,12 @@
 import React from 'react';
 import { Box, Button, Divider, TextField, Typography } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
 import GoogleIcon from '@mui/icons-material/Google';
-import { useFormContext, SubmitHandler } from 'react-hook-form';
-import { SignInForm } from '../../schema/SignIn'; // עדכן נתיב אם צריך
-import { formStyle, centerTextStyle } from '../../css/signInStyles'; // עדכן נתיב אם צריך
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { SignInForm, SignInSchema } from '../../schema/SignIn'; 
+import { formStyle, centerTextStyle } from '../../css/signInStyles'; 
 
-interface PasswordSignInFormProps {
+interface Props {
   onPasswordLogin: SubmitHandler<SignInForm>;
   onGoogleLogin: () => void;
   onForgotPassword: () => void;
@@ -14,16 +15,10 @@ interface PasswordSignInFormProps {
   signInLoading: boolean;
 }
 
-const PasswordSignInForm: React.FC<PasswordSignInFormProps> = ({
-  onPasswordLogin,
-  onGoogleLogin,
-  onForgotPassword,
-  onNavigateToSignUp,
-  isLoading,
-  signInLoading,
-}) => {
-  const { register, handleSubmit, formState: { errors } } = useFormContext<SignInForm>();
-
+const PasswordSignInForm=({  onPasswordLogin,onGoogleLogin,onForgotPassword,onNavigateToSignUp,isLoading,signInLoading}:Props)=>{
+  const { register, handleSubmit, formState: { errors } } = useForm<SignInForm>({
+    resolver: zodResolver(SignInSchema),
+  });
   return (
     <Box component="form" onSubmit={handleSubmit(onPasswordLogin)} sx={formStyle}>
       <TextField

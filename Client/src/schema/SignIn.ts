@@ -91,11 +91,15 @@ export const TempPasswordSchema = z.object({
 });
 
 export const NewPasswordSchema = z.object({
-  newPassword: z.string().min(8, "הסיסמה חייבת להיות לפחות 8 תווים"),
-  confirmNewPassword: z.string().min(8, "אשר את הסיסמה החדשה"),
+  newPassword: z
+    .string()
+    .min(8, 'הסיסמה חייבת להכיל לפחות 8 תווים')
+    .regex(/[A-Z]/, 'הסיסמה חייבת להכיל לפחות אות גדולה אחת')
+    .regex(/[^A-Za-z0-9]/, 'הסיסמה חייבת להכיל לפחות תו מיוחד אחד'),
+  confirmNewPassword: z.string()
 }).refine((data) => data.newPassword === data.confirmNewPassword, {
-  message: "הסיסמאות לא תואמות",
-  path: ["confirmNewPassword"],
+  message: 'הסיסמאות אינן תואמות',
+  path: ['confirmNewPassword'],
 });
 
 // טיפוסים מתוך הסכימות

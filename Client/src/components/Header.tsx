@@ -57,10 +57,11 @@ const ElevationScroll = ({ children }: { children: React.ReactElement }) => {
   });
 };
 
-const Header: React.FC = () => {
+const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(selectCurrentUser);
+  console.log('user:', user);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);

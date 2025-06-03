@@ -1,20 +1,15 @@
 import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { useFormContext, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { TempPasswordForm } from '../../schema/SignIn'; // עדכן נתיב אם צריך
 import { tempFormStyle } from '../../css/signInStyles'; // עדכן נתיב אם צריך
 
-interface TemporaryPasswordFormProps {
+interface Props {
   onSubmit: SubmitHandler<TempPasswordForm>;
   isLoading: boolean; // verifyLoading
 }
-
-const TemporaryPasswordForm: React.FC<TemporaryPasswordFormProps> = ({
-  onSubmit,
-  isLoading,
-}) => {
-  const { register, handleSubmit, formState: { errors } } = useFormContext<TempPasswordForm>();
-
+const TemporaryPasswordForm=({ onSubmit,isLoading}:Props)=>{
+  const { register, handleSubmit, formState: { errors } } = useForm<TempPasswordForm>();
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={tempFormStyle}>
       <Typography>הזן את הסיסמה הזמנית שקיבלת בדוא"ל:</Typography>

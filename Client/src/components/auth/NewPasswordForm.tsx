@@ -1,19 +1,19 @@
 import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { useFormContext, SubmitHandler } from 'react-hook-form';
-import { NewPasswordForm as NewPasswordFormType } from '../../schema/SignIn'; // עדכן נתיב אם צריך
-import { tempFormStyle } from '../../css/signInStyles'; // עדכן נתיב אם צריך
-
-interface NewPasswordFormProps {
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { NewPasswordForm as NewPasswordFormType } from '../../schema/SignIn'; 
+import { tempFormStyle } from '../../css/signInStyles'; 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { NewPasswordSchema } from '../../schema/SignIn';
+interface Props {
   onSubmit: SubmitHandler<NewPasswordFormType>;
-  isLoading: boolean; // changeLoading
+  isLoading: boolean; 
 }
+ const NewPasswordForm = ({onSubmit,isLoading}: Props) => {
 
-const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
-  onSubmit,
-  isLoading,
-}) => {
-  const { register, handleSubmit, formState: { errors } } = useFormContext<NewPasswordFormType>();
+  const { register, handleSubmit, formState: { errors } } = useForm<NewPasswordFormType>({
+  resolver: zodResolver(NewPasswordSchema),
+});
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={tempFormStyle}>
