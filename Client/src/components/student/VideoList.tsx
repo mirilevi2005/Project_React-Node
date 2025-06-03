@@ -1245,24 +1245,9 @@
 
 
 import React, { useState } from 'react';
-import {
-  Container,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  CardActions,
-  Box,
-  CircularProgress,
-  Alert,
-  Divider,
-  Snackbar,
-  useTheme,
-} from '@mui/material';
-import {
-  CalendarToday as CalendarTodayIcon,
-  Visibility as VisibilityIcon,
-} from '@mui/icons-material';
+import {Container,Typography,Grid, Card, CardContent, CardActions,Box, CircularProgress, Alert,
+ Divider, Snackbar, useTheme,} from '@mui/material';
+import { CalendarToday as CalendarTodayIcon, Visibility as VisibilityIcon,} from '@mui/icons-material';
 import { useGetAllMaterialsByNameCourseQuery } from '../../redux/slice/api/materialsApi';
 import { Video } from '../../interface/VideoMaterial';
 

@@ -1,15 +1,8 @@
 
-import { Exam } from '../../../interface/Exam';
+import { Exam, TestScore } from '../../../interface/Exam';
 
 import apiSlice from './apiSlice';
 
-export interface TestScore {
-  testId: string;
-  studentId: string;
-  scores: number;
-  submittedAt?: string;
-  studentName?: string; 
-}
 
 const testApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

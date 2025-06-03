@@ -17,8 +17,8 @@ import { selectCurrentUser } from '../../redux/slice/authStateSlice'; // התא�
 import PageHeader from './PageHeader'; // התאם נתיב אם צריך
 import QuickStatsSection from './QuickStatsSection'; // התאם נתיב אם צריך
 import CourseListSection from './CourseListSection'; // התאם נתיב אם צריך
-import { CourseStatsData, QuickStat, CurrentUser } from '../../interface/HomePage'; // התאם נתיב אם צריך
-
+import { CourseStatsData, QuickStat } from '../../interface/HomePage'; // התאם נתיב אם צריך
+import {userInfo}from '../../interface/authTypes'
 // Other Components (נתיבים אלו צריכים להיות נכונים בפרויקט שלך)
 // ודא שהנתיבים הללו נכונים בפרויקט שלך
 import NewContentPopup from '../student/NewContentPopup'; // לדוגמה: '../student/NewContentPopup' אם HomePage בתיקיית pages
@@ -39,7 +39,7 @@ const HomePage = () => {
     videos: []
   });
 
-  const user = useSelector(selectCurrentUser) as CurrentUser | null; // הוספת טיפוס למשתמש
+  const user = useSelector(selectCurrentUser) as userInfo | null; // הוספת טיפוס למשתמש
 
   // RTK Query hooks לספירת וידאו בכל קורס
   const { data: dataAi, isLoading: loadingAi } = useGetVideosCountQuery('Ai');
@@ -51,12 +51,11 @@ const HomePage = () => {
   const { data: courseStatsApiData, isLoading: loadingCourseStats } = useGetCourseStatsQuery();
 
   useEffect(() => {
-    // שונה השם של data ל-courseStatsApiData
     if (courseStatsApiData) {
       setStats({
-        totalStudents: courseStatsApiData.studentsCount || 130, // ערך חלופי אם לא סופק
-        totalCourses: 3, // בהנחה שזה קבוע או אמור להגיע מה-API
-        totalVideos: courseStatsApiData.videos  || 36, // נסה לחשב, או קח מה-API או ערך חלופי
+        totalStudents: courseStatsApiData.studentsCount || 130, 
+        totalCourses: 3, 
+        totalVideos: courseStatsApiData.videos  || 36, 
         viewPercentage:94,
         // viewPercentage: courseStatsApiData.viewPercentage || 94, // בהנחה שזה קבוע או אמור להגיע מה-API
         videos: Array.isArray(courseStatsApiData.videos) ? courseStatsApiData.videos : []
@@ -72,15 +71,11 @@ const HomePage = () => {
 
   const getCurrentSemester = () => {
     const now = new Date();
-    const month = now.getMonth(); // 0-מבוסס (ינואר הוא 0)
+    const month = now.getMonth(); 
     const year = now.getFullYear();
-    
-    // סמסטר אביב: פברואר (1) עד יוני (5)
-    // סמסטר קיץ: יולי (6) עד אוגוסט (7)
-    // סמסטר סתיו: ספטמבר (8) עד ינואר (0) של השנה הבאה
-    if (month >= 1 && month <= 5) return `Spring ${year}`; // אביב
-    if (month >= 6 && month <= 7) return `Summer ${year}`; // קיץ
-    return `Fall ${year}`; // סתיו (כולל ספטמבר-דצמבר, וינואר של הסמסטר הבא)
+    if (month >= 1 && month <= 5) return `Spring ${year}`; 
+    if (month >= 6 && month <= 7) return `Summer ${year}`; 
+    return `Fall ${year}`;
   };
 
   // יצירת מערך הסטטיסטיקות המהירות
@@ -107,7 +102,7 @@ const HomePage = () => {
       icon: <TrendingUpIcon sx={{ fontSize: 28, color: '#3b82f6' }} />,
       title: "Participation Rate",
       value: loadingCourseStats ? "טוען..." : `${stats.viewPercentage}%`,
-      bgColor: "#fce7f3" // צבע לדוגמה, ייתכן שיצטרך התאמה
+      bgColor: "#fce7f3" 
     }
   ];
 
@@ -136,7 +131,7 @@ const HomePage = () => {
         courses={papersData}
         videoCounts={videoCountsPerCourse}
         participationRates={participationRatesPerCourse}
-        onSetHoveredCard={setHoveredCard} // הסטייט hoveredCard אינו בשימוש ישיר ב-CourseListSection כרגע
+        onSetHoveredCard={setHoveredCard} 
       />
       
       {/* קומפוננטה זו נוספה בקטע הקוד האחרון של HomePage.tsx שסיפקת */}

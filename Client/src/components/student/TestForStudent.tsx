@@ -712,56 +712,28 @@
 
 
 import { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Button,
-  Typography,
-  Stack,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  DialogActions,
-  Card,
-  CardContent,
-  CardActions,
-  LinearProgress,
-  Box,
-  Alert,
-  Paper,
-  Divider,
-  IconButton,
-} from "@mui/material";
-import {
-  CheckCircle,
-  Cancel,
-  Timer,
-  NavigateNext,
-  Close,
-} from "@mui/icons-material";
-import {
-  useGetTestsByCourseQuery,
-  useStartTestMutation,
-  useSubmitScoreMutation,
-} from "../../redux/slice/api/testApi";
+import {Dialog,DialogTitle,DialogContent,Button,Typography,Stack,Radio,RadioGroup,FormControlLabel,
+  DialogActions,Card,CardContent,CardActions,LinearProgress,Box,Alert,Paper,Divider,IconButton} from "@mui/material";
+import {CheckCircle,Cancel,Timer,NavigateNext,Close,} from "@mui/icons-material";
+import {useGetTestsByCourseQuery,useStartTestMutation,useSubmitScoreMutation,} from "../../redux/slice/api/testApi";
+import { Exam } from "../../interface/Exam";
 
-// TypeScript Interfaces
-export interface Exam {
-  _id: string;
-  title: string;
-  lastDate: string;
-  questions: Question[];
-  alreadyStarted: boolean;
-}
+// // TypeScript Interfaces
+// export interface Exam {
+//   _id: string;
+//   title: string;
+//   lastDate: string;
+//   questions: Question[];
+//   alreadyStarted: boolean;
+// }
 
-export interface Question {
-  _id: string;
-  questionText: string;
-  options: string[];
-  timeLimit: number;
-  correctAnswer: string;
-}
+// export interface Question {
+//   _id: string;
+//   questionText: string;
+//   options: string[];
+//   timeLimit: number;
+//   correctAnswer: string;
+// }
 
 interface Props {
   courseName: string;
@@ -776,17 +748,10 @@ const TestForStudent = ({ courseName, studentId }: Props) => {
   const [examCompleted, setExamCompleted] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [score, setScore] = useState<number | null>(null);
-
-  const { data, isLoading, isError } = useGetTestsByCourseQuery({
-    courseName,
-    studentId,
-  });
-
+  const { data, isLoading, isError } = useGetTestsByCourseQuery({courseName,studentId,});
   const [startTest, { isLoading: isStarting }] = useStartTestMutation();
   const [submitScore, { isLoading: isSubmitting }] = useSubmitScoreMutation();
-  
   const exams: Exam[] = data?.tests || [];
-
   const handleClose = (): void => {
     setSelectedExam(null);
     setCurrentQuestionIndex(0);
@@ -796,10 +761,8 @@ const TestForStudent = ({ courseName, studentId }: Props) => {
     setFeedback(null);
     setScore(null);
   };
-
   const handleExamClick = async (exam: Exam): Promise<void> => {
     if (exam.alreadyStarted) return;
-
     try {
       await startTest({ testId: exam._id, studentId }).unwrap();
       setSelectedExam(exam);
@@ -814,10 +777,8 @@ const TestForStudent = ({ courseName, studentId }: Props) => {
 
   const handleAnswerChange = (questionId: string, answer: string): void => {
     if (!selectedExam || answers[questionId]) return;
-
     const correctAnswer = selectedExam.questions[currentQuestionIndex].correctAnswer;
     const isCorrect = answer === correctAnswer;
-
     setAnswers((prev) => ({ ...prev, [questionId]: answer }));
     setFeedback(isCorrect ? "correct" : "incorrect");
   };
@@ -827,12 +788,10 @@ const TestForStudent = ({ courseName, studentId }: Props) => {
     const totalQuestions = selectedExam.questions.length;
     const pointsPerQuestion = 100 / totalQuestions;
     let correctCount = 0;
-
     selectedExam.questions.forEach((q) => {
       const selected = answers[q._id];
       if (selected === q.correctAnswer) correctCount++;
     });
-
     return Math.round(correctCount * pointsPerQuestion);
   };
 
@@ -840,7 +799,6 @@ const TestForStudent = ({ courseName, studentId }: Props) => {
     if (!selectedExam) return;
     setFeedback(null);
     const nextIndex = currentQuestionIndex + 1;
-
     if (nextIndex < selectedExam.questions.length) {
       setCurrentQuestionIndex(nextIndex);
       setTimeLeft(selectedExam.questions[nextIndex].timeLimit);
@@ -848,7 +806,6 @@ const TestForStudent = ({ courseName, studentId }: Props) => {
       const finalScore = calculateScore();
       setScore(finalScore);
       setExamCompleted(true);
-
       try {
         await submitScore({
           testId: selectedExam._id,

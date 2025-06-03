@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { tempFormStyle } from '../../css/signInStyles'; // עדכן נתיב אם צריך
+import { tempFormStyle } from '../../css/signInStyles'; 
 
 interface Props {
   onSendTempPassword: (email: string) => void;
   onBack: () => void;
-  isLoading: boolean; // forgotLoading
+  isLoading: boolean;
 }
 
 const ForgotPasswordForm = ({onSendTempPassword,onBack,isLoading}: Props) => {

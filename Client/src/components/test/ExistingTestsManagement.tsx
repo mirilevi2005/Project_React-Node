@@ -202,31 +202,13 @@
 
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import {
-  useGetTestsByCourseForTeacherQuery,
-  useDeleteTestMutation,
-  useLazyGetTestScoresQuery,
+import { Box, Button, Dialog, DialogContent, DialogTitle, List, ListItem, ListItemText, Typography,} from "@mui/material";
+import { useGetTestsByCourseForTeacherQuery, useDeleteTestMutation, useLazyGetTestScoresQuery,
 } from "../../redux/slice/api/testApi";
 import { RootState } from "../../redux/store"; // נתיב לפי הפרויקט שלך
 import { setSelectedGrades } from "../../redux/slice/testSlice"; // נתיב לפי הסלייס שלך
+import { StudentScore } from "../../interface/Exam";
 
-interface StudentScore {
-  studentId: string;
-  userName: string;
-  score: number;
-  finishedAt?: string;
-}
 
 interface TestType {
   _id: string;
@@ -239,23 +221,15 @@ interface Props {
   openFormForEdit: (testData: any) => void;
 }
 
-const ExistingTestsManagement = ({
-  courseName,
-  openFormForEdit,
-}:Props) => {
+const ExistingTestsManagement = ({courseName,openFormForEdit}:Props) => {
   const dispatch = useDispatch();
   const selectedGrades = useSelector((state: RootState) => state.tests.selectedGrades);
-
-
   const [openTestsDialog, setOpenTestsDialog] = useState(false);
   const [openGradesDialog, setOpenGradesDialog] = useState(false);
-
   const { data: testsData, refetch } = useGetTestsByCourseForTeacherQuery(courseName);
   const testList: TestType[] = testsData?.tests ?? [];
-
   const [deleteTest] = useDeleteTestMutation();
   const [triggerGetTestScores] = useLazyGetTestScoresQuery();
-
   const handleDeleteTest = async (id: string) => {
     if (window.confirm("האם את בטוחה שברצונך למחוק את המבחן?")) {
       try {
@@ -269,18 +243,22 @@ const ExistingTestsManagement = ({
 
   const handleOpenGradesDialog = async () => {
     const grades: { [testId: string]: StudentScore[] } = {};
-
     for (const test of testList) {
       try {
         const response = await triggerGetTestScores(test._id).unwrap();
-        grades[test._id] = response.scores ?? [];
+        // grades[test._id] = response.scores ?? [];
+       grades[test._id] = response.map((item): StudentScore => ({
+      studentId: item.studentId,
+      userName: item.studentName ?? "", // ברירת מחדל אם אין studentName
+      scores: item.scores,
+     finishedAt: item.submittedAt,     // העתקת submittedAt ל־finishedAt
+      }));
         console.log("✅ response:", response);
       } catch (error) {
         console.error("❌ שגיאה בטעינת ציונים:", error);
         grades[test._id] = [];
       }
     }
-
     dispatch(setSelectedGrades(grades)); 
     setOpenGradesDialog(true);
   };
@@ -372,7 +350,7 @@ const ExistingTestsManagement = ({
                       <ListItem key={score.studentId}>
                         <ListItemText
                           primary={score.userName}
-                          secondary={`ציון: ${score.score} | סיום: ${
+                          secondary={`ציון: ${score.scores} | סיום: ${
                             score.finishedAt ? new Date(score.finishedAt).toLocaleString() : "-"
                           }`}
                         />

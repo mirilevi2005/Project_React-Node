@@ -3,11 +3,11 @@ import { Grid } from '@mui/material';
 import QuickStatDisplayCard from './QuickStatDisplayCard';
 import { QuickStat } from '../../interface/HomePage';
 
-interface QuickStatsSectionProps {
+interface Props {
   quickStats: QuickStat[];
 }
 
-const QuickStatsSection: React.FC<QuickStatsSectionProps> = ({ quickStats }) => {
+const QuickStatsSection= ({ quickStats }:Props) => {
   return (
     <Grid container spacing={3} sx={{ mb: 15 }}>
       {quickStats.map((stat, index) => (

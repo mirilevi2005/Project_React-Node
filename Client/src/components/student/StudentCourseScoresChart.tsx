@@ -1,41 +1,22 @@
 
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-  useTheme,
-  Divider,
-} from "@mui/material";
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
-import {
-  useGetTestsByCourseQuery,
-  useLazyGetTestScoresQuery,
-} from "../../redux/slice/api/testApi";
-
+import {Box,Typography, useTheme, Divider} from "@mui/material";
+import {LineChart,Line,BarChart,Bar,XAxis,YAxis,Tooltip,ResponsiveContainer,Legend,} from "recharts";
+import {useGetTestsByCourseQuery,useLazyGetTestScoresQuery,} from "../../redux/slice/api/testApi";
 interface Props {
   courseName: string;
   studentId: string;
 }
 
-interface Test {
-  _id: string;
-  title: string;
-}
+// interface Test {
+//   _id: string;
+//   title: string;
+// }
 
-interface ScoreEntry {
-  studentId: string | { _id: string };
-  score: number;
-}
+// interface ScoreEntry {
+//   studentId: string | { _id: string };
+//   score: number;
+// }
 
 interface TestChartEntry {
   testTitle: string;
@@ -43,19 +24,17 @@ interface TestChartEntry {
   studentScore?: number | null;
 }
 
-const StudentCourseFullScoreChart: React.FC<Props> = ({ courseName, studentId }) => {
+const StudentCourseFullScoreChart = ({ courseName, studentId }:Props) => {
   const theme = useTheme();
   const { data: testsData } = useGetTestsByCourseQuery({ courseName });
   const [triggerGetScores] = useLazyGetTestScoresQuery();
-
   const [chartData, setChartData] = useState<TestChartEntry[]>([]);
   const [averageScore, setAverageScore] = useState<number>(0);
   const [studentAverage, setStudentAverage] = useState<number | null>(null);
-
   useEffect(() => {
     const fetchScores = async () => {
       if (!testsData?.tests) {
-        console.warn("⚠️ אין מבחנים לקורס:", courseName);
+        // console.warn("⚠️ אין מבחנים לקורס:", courseName);
         return;
       }
 
@@ -65,9 +44,10 @@ const StudentCourseFullScoreChart: React.FC<Props> = ({ courseName, studentId })
 
       for (const test of testsData.tests) {
         try {
+          // const result = await triggerGetScores(test._id).unwrap();
+          // const scores = result?.scores ?? [];
           const result = await triggerGetScores(test._id).unwrap();
-          const scores = result?.scores ?? [];
-
+          const scores = result ?? [];
           console.log(`📥 ציונים שהתקבלו עבור מבחן "${test.title}":`, scores);
 
           const testAllScores = scores
@@ -84,7 +64,7 @@ const StudentCourseFullScoreChart: React.FC<Props> = ({ courseName, studentId })
               String((s.studentId as any)?._id ?? s.studentId) === String(studentId)
           );
 
-          const studentScore = studentScoreObj?.score ?? null;
+          const studentScore = studentScoreObj?.scores ?? null;
 
           if (typeof studentScore === "number") studentScores.push(studentScore);
           allScores.push(...testAllScores);
