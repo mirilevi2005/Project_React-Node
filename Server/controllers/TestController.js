@@ -197,15 +197,6 @@ exports.getTestScores = async (req, res) => {
     if (!test) {
       return res.status(404).json({ message: 'Test not found' });
     }
-
-    // const scores = test.studentsScores.map(entry => ({
-    //   studentId: entry.studentId._id.toString(),
-    //   userName: entry.studentId.userName,
-    //   email: entry.studentId.email,
-    //   score: entry.score,
-    //   finishedAt: entry.finishedAt
-    // }));
-
   const scores = test.studentsScores
   .filter(entry => entry.studentId)
   .map(entry => ({
@@ -290,7 +281,7 @@ exports.getTestsByCourseForTeacher = async (req, res) => {
     res.status(500).json({ message: 'שגיאה בשליפת מבחנים' });
   }
 };
-// מבחנים שפוקעים ב-5 הימים הקרובים והתלמידה עדיין לא עשתה
+//12 מבחנים שפוקעים ב-5 הימים הקרובים והתלמידה עדיין לא עשתה
 exports.getUpcomingTestsForStudent = async (req, res) => {
   try {
     const { studentId } = req.params;
@@ -298,7 +289,6 @@ exports.getUpcomingTestsForStudent = async (req, res) => {
     const fiveDaysLater = new Date();
     fiveDaysLater.setDate(now.getDate() + 5);
 
-    // נניח שלמבחן יש שדה lastDate שהוא מועד הפקיעה
     const upcomingTests = await Test.find({
       lastDate: { $gte: now, $lte: fiveDaysLater },
       "studentsScores.studentId": { $ne: studentId }

@@ -22,7 +22,7 @@ const signIn = async (req, res) => {
   // שמירת זמן התחברות קודם אם סטודנט
   let previousLogin = null;
   if (foundUser.roles === "student") {
-    previousLogin = foundUser.lastLogin || new Date(0); // אם אין עדיין ערך
+    previousLogin = foundUser.lastLogin || new Date(0);
     foundUser.lastLogin = new Date();
     await foundUser.save();
   }
@@ -44,84 +44,30 @@ const signIn = async (req, res) => {
 };
 
 //הרשמה
-// const signUp = async (req, res) => {
-//   const { userName, email, password, adminCode } = req.body;
-//   if (!userName || !password || !email)
-//     return res.status(400).json({ message: "All fields are required" });
-//   const foundUser = await User.findOne({ userName }).lean();
-//   if (foundUser) {
-//     return res.status(409).json({ message: "Duplicate username" });
-//   }
-//   const foundUserEmail = await User.findOne({ email }).lean();
-//   if (foundUserEmail) {
-//     return res.status(409).json({ message: "Duplicate email" });
-//   }
-//   const hashedPwd = await bcrypt.hash(password, 10);
-//   // קביעת תפקיד לפי קוד מורה
-//  const role = adminCode === process.env.TEACHER_SECRET ? "lecturer" : "student";
-
-//   const newUser = await User.create(userInfo);
-//   const userInfo = {
-//   userName,
-//   email,
-//   password: hashedPwd,
-//   roles: role,
-//   _id: newUser._id,
-// };
-//   const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
-
-//   if (newUser) {
-//     // return res
-//       // .status(201)
-//       // .json({
-//       //   message: `New user ${newUser.userName} created as ${role}`,
-//       //   newUser,
-//       // });
-//     res.json({
-//     accessToken,
-//     newUser: userInfo
-//   });
-//   } else {
-//     return res.status(400).json({ message: "Invalid user received" });
-//   }
-// };
-
-
 const signUp = async (req, res) => {
   const { userName, email, password, adminCode } = req.body;
-
   if (!userName || !password || !email) {
     return res.status(400).json({ message: "All fields are required" });
   }
-
   const foundUser = await User.findOne({ userName }).lean();
   if (foundUser) {
     return res.status(409).json({ message: "Duplicate username" });
   }
-
   const foundUserEmail = await User.findOne({ email }).lean();
   if (foundUserEmail) {
     return res.status(409).json({ message: "Duplicate email" });
   }
-
   const hashedPwd = await bcrypt.hash(password, 10);
-
-  // קביעת תפקיד לפי קוד מורה
   const role = adminCode === process.env.TEACHER_SECRET ? "lecturer" : "student";
-
-  // יצירת המשתמש במסד הנתונים
   const newUser = await User.create({
     userName,
     email,
     password: hashedPwd,
     roles: role,
   });
-
   if (!newUser) {
     return res.status(400).json({ message: "Invalid user received" });
   }
-
-  // יצירת accessToken - לא כולל סיסמה!
   const accessToken = jwt.sign(
     {
       _id: newUser._id,
@@ -132,8 +78,6 @@ const signUp = async (req, res) => {
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "1h" }
   );
-
-  // שליחת תגובה ללקוח
   res.status(201).json({
     accessToken,
     newUser: {
@@ -145,8 +89,6 @@ const signUp = async (req, res) => {
   });
 };
 
-
-// התחברות עם Google
 const googleLogin = async (req, res) => {
   const { email, userName } = req.body;
 
@@ -155,18 +97,16 @@ const googleLogin = async (req, res) => {
   }
 
   try {
-    let user = await User.findOne({ email }).lean();
-
-    // // אם לא קיים, צור משתמש חדש
-    // if (!user) {
-    //   const newUser = await User.create({
-    //     userName,
-    //     email,
-    //     roles: "student", // ברירת מחדל
-    //   });
-
-    //   user = newUser.toObject(); // כדי להחזיר אותו אח"כ
-    // }
+    let user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    let previousLogin = null;
+    if (user.roles === "student") {
+      previousLogin = user.lastLogin || new Date(0);
+      user.lastLogin = new Date();
+      await user.save();
+    }
 
     const userInfo = {
       _id: user._id,
@@ -175,17 +115,19 @@ const googleLogin = async (req, res) => {
       roles: user.roles,
     };
 
-    // const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET, {
-    //   expiresIn: "1h",
-    // });
- const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
- 
-    return res.json({ accessToken, newUser: userInfo });
+    const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
+
+    return res.json({
+      accessToken,
+      newUser: userInfo,
+      previousLogin: userInfo.roles === "student" ? previousLogin : null,
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });
   }
 };
+
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
@@ -196,10 +138,10 @@ const forgotPassword = async (req, res) => {
       return res.status(404).json({ error: "משתמש לא נמצא" });
     }
 
-    const tempPassword = crypto.randomBytes(4).toString("hex"); // מייצר סיסמה זמנית אקראית
+    const tempPassword = crypto.randomBytes(4).toString("hex"); 
     const hashedTempPassword = await bcrypt.hash(tempPassword, 10);
 
-    user.password = hashedTempPassword; // מחליף סיסמה קיימת בסיסמה הזמנית החדשה
+    user.password = hashedTempPassword; 
     await user.save();
 
     const transporter = nodemailer.createTransport({
@@ -212,13 +154,6 @@ const forgotPassword = async (req, res) => {
         rejectUnauthorized: false,
       },
     });
-
-    // await transporter.sendMail({
-    //   from: process.env.EMAIL_USER,
-    //   to: email,
-    //   subject: "איפוס סיסמה באתר EduThec",
-    //   text: `הסיסמה הזמנית שלך היא: ${tempPassword}`,
-    // });
     await transporter.sendMail({
   from: process.env.EMAIL_USER,
   to: email,
@@ -314,13 +249,10 @@ const sendMagicLinkEmail = async (req, res) => {
     let greetingName = user.name || "משתמש";
     switch (role) {
       case "lecturer":
-        link = `${process.env.CLIENT_URL}/HomeLacturer`;
+        link = `${process.env.CLIENT_URL}/HomeLecturer`;
         break;
       case "student":
         link = `${process.env.CLIENT_URL}/HomeStudent`;
-        break;
-      case "admin":
-        link = `${process.env.CLIENT_URL}/HomeAdmin`;
         break;
       default:
         link = `${process.env.CLIENT_URL}/Home`;

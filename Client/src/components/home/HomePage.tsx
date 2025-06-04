@@ -6,7 +6,7 @@ import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 
 // Data
-import papersData from '../../data/HomeLacturerData'; // התאם נתיב אם צריך
+import papersData from '../../data/HomeLecturerData'; 
 
 // Redux
 import { useGetCourseStatsQuery, useGetVideosCountQuery } from '../../redux/slice/api/userApi'; // התאם נתיב אם צריך
@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../redux/slice/authStateSlice'; // התאם נתיב אם צריך
 
 // Child Components & Types
-import PageHeader from './PageHeader'; // התאם נתיב אם צריך
+// import PageHeader from './PageHeader'; // התאם נתיב אם צריך
 import QuickStatsSection from './QuickStatsSection'; // התאם נתיב אם צריך
 import CourseListSection from './CourseListSection'; // התאם נתיב אם צריך
 import { CourseStatsData, QuickStat } from '../../interface/HomePage'; // התאם נתיב אם צריך
@@ -22,7 +22,7 @@ import {userInfo}from '../../interface/authTypes'
 // Other Components (נתיבים אלו צריכים להיות נכונים בפרויקט שלך)
 // ודא שהנתיבים הללו נכונים בפרויקט שלך
 import NewContentPopup from '../student/NewContentPopup'; // לדוגמה: '../student/NewContentPopup' אם HomePage בתיקיית pages
-import ExpiringMaterialsAndTests from '../ExpiringMaterialsAndTests'; // לדוגמה: '../ExpiringMaterialsAndTests'
+import ExpiringMaterialsAndTests from './ExpiringMaterialsAndTests'; // לדוגמה: '../ExpiringMaterialsAndTests'
 
 // קומפוננטות שמיובאות אך לא בשימוש בקוד שסיפקת:
 // import UpcomingStudentTasks from './ExpiringMaterialsAndTests';
@@ -63,11 +63,11 @@ const HomePage = () => {
     }
   }, [courseStatsApiData]);
 
-  const currentDate = new Date().toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  // const currentDate = new Date().toLocaleDateString('en-US', {
+  //   year: 'numeric',
+  //   month: 'long',
+  //   day: 'numeric'
+  // });
 
   const getCurrentSemester = () => {
     const now = new Date();
@@ -120,10 +120,10 @@ const HomePage = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4, backgroundColor: '#fafafa', minHeight: '100vh' }}>
-      {user?.roles === 'student' ? <NewContentPopup /> : null}
+    <Container maxWidth="lg" sx={{ py: 4, backgroundColor: '#fafafa', minHeight: '200vh' }}>
+      {user?.roles === 'student' && <NewContentPopup /> }
       
-      <PageHeader currentDate={currentDate} />
+      {/* <PageHeader currentDate={currentDate} /> */}
       
       <QuickStatsSection quickStats={quickStatsList} />
       

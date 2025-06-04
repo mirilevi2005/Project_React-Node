@@ -1,13 +1,12 @@
 
 const allowedOrigins = [
-    /^http:\/\/localhost:\d+$/, // regex שמאפשר כל פורט בlocalhost
+    /^http:\/\/localhost:\d+$/, 
 ];
 
 const corsOptions = {
     origin: (origin, callback) => {
         console.log('CORS origin:', origin);
         if (!origin) {
-            // אם אין origin (לדוגמה בקשות מהשרת עצמו) - אפשר לאפשר
             callback(null, true);
             return;
         }

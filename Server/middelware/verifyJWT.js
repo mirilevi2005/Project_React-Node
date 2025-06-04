@@ -10,12 +10,12 @@ const verifyJWT = (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    console.log("Token received:", token); // הוסף את זה לבדוק אם הטוקן התקבל
+    console.log("Token received:", token);
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if (err) return res.status(403).json({ message: 'Forbidden' });
-        req.user = decoded; // שומר את המידע על המשתמש בתוך הבקשה
-        next(); // ממשיכים לנתיב הבא
+        req.user = decoded; 
+        next(); 
     });
 };
 

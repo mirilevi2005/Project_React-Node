@@ -3,11 +3,11 @@ import React from 'react';
 import {Grid,Paper,Stack,Box,Typography,Chip} from '@mui/material';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import { Link } from 'react-router-dom';
-import { useGetExpiredMaterialsLast5DaysQuery } from '../redux/slice/api/materialsApi';
-import { useGetRecentTestsForStudentQuery } from '../redux/slice/api/testApi';
+import { useGetExpiredMaterialsLast5DaysQuery } from '../../redux/slice/api/materialsApi';
+import { useGetRecentTestsForStudentQuery } from '../../redux/slice/api/testApi';
 import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
-import { Video } from '../interface/VideoMaterial';
+import { RootState } from '../../redux/store';
+import { Video } from '../../interface/VideoMaterial';
 
 type Test = {
   _id: string;
@@ -80,8 +80,8 @@ const ExpiringMaterialsAndTests = () => {
   ].sort((a, b) => a.daysLeft - b.daysLeft);
 
   return (
-    <Grid container spacing={4} sx={{ mt: 2 }}>
-      <Grid item xs={12} md={8}>
+    <Grid container spacing={4} sx={{ mt: 3 }}>
+      <Grid item xs={12} md={20}>
         <Paper
           elevation={0}
           sx={{

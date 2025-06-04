@@ -2,14 +2,12 @@ import React from 'react';
 import { Box, Typography, Grid } from '@mui/material';
 import { QuickStatPaper, StatIconBox } from '../styles/HomePage';
 import { QuickStat } from '../../interface/HomePage';
-
 interface Props {
   stat: QuickStat;
 }
-
 const QuickStatDisplayCard = ({ stat }:Props) => {
   return (
-    <Grid item xs={12} sm={6} md={3}> {/* המפתח (key) יסופק על ידי פונקציית המיפוי בקומפוננטת האב */}
+   <Grid item xs={12} sm={30} md={3} sx={{ mt: 4 }}>
       <QuickStatPaper elevation={0}>
         <StatIconBox sx={{ backgroundColor: stat.bgColor }}>
           {stat.icon}

@@ -18,11 +18,11 @@ const LearningMaterialsSchema = new mongoose.Schema({
     finishDate: {
         type: Date,
     },
-    videoPath: { // שדה חדש לשמירת הנתיב של הווידאו
+    videoPath: { 
         type: String,
         required: true
     },
-    videoName: { // שדה חדש לשמירת הנתיב של הווידאו
+    videoName: {
         type: String,
         required: true
     }

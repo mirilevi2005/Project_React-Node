@@ -9,7 +9,7 @@ interface Props {
 
 const QuickStatsSection= ({ quickStats }:Props) => {
   return (
-    <Grid container spacing={3} sx={{ mb: 15 }}>
+    <Grid container spacing={3} sx={{ mb: 20 }}>
       {quickStats.map((stat, index) => (
         <QuickStatDisplayCard key={index} stat={stat} />
       ))}

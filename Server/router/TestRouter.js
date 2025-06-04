@@ -27,7 +27,7 @@ router.put('/:id', testController.updateTest);
 router.delete('/:id', testController.deleteTest);
 // קבלת ציוני תלמידות למבחן לפי ID
 router.get('/scores/:testId', testController.getTestScores);
-// שליפת מבחנים חדשים (5 ימים אחרונים) שעדיין לא נפתרו ע"י תלמידה
+// שליפת מבחנים חדשים  שעדיין לא נפתרו ע"י תלמידה
 router.get("/recent/:studentId", testController.getUpcomingTestsForStudent);
 
 module.exports = router;

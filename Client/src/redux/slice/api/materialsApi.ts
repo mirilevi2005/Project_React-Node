@@ -8,7 +8,7 @@ const materialsApiSlice = apiSlice.injectEndpoints({
 
     addMaterial: builder.mutation({
       query: ({ formData, nameCours }) => ({
-        url: `/HomeLacturer/${nameCours}`,  // שם הקורס נכנס ב-URL
+        url: `/HomeLecturer/${nameCours}`,  // שם הקורס נכנס ב-URL
         method: 'POST',
         body: formData,
       }),
@@ -18,7 +18,7 @@ const materialsApiSlice = apiSlice.injectEndpoints({
 
 
     getAllMaterialsByNameCourse: builder.query<VideosResponse, string>({
-      query: (courseName) => `/HomeLacturer/${courseName}`,
+      query: (courseName) => `/HomeLecturer/${courseName}`,
       providesTags: ["Material"],
     }),
     
@@ -26,7 +26,7 @@ const materialsApiSlice = apiSlice.injectEndpoints({
 
     // קבלת סרטון לפי מזהה
     getMaterialById: builder.query<Video, string>({
-      query: (id) => `/HomeLacturer/${id}`,  // ניתן לעדכן את הנתיב כך שיתאים לכל סרטון
+      query: (id) => `/HomeLecturer/${id}`,  // ניתן לעדכן את הנתיב כך שיתאים לכל סרטון
       providesTags: ["Material"]
     }),
 
@@ -35,7 +35,7 @@ const materialsApiSlice = apiSlice.injectEndpoints({
       query: (formData) => {
         const nameCours = formData.get("nameCours") as string;
         return {
-          url: `/HomeLacturer/${nameCours}`,
+          url: `/HomeLecturer/${nameCours}`,
           method: "PUT",
           body: formData,
         };
@@ -48,17 +48,16 @@ const materialsApiSlice = apiSlice.injectEndpoints({
     // מחיקת חומר (סרטון)
     deleteMaterial: builder.mutation<void, string>({
       query: (courseName) => ({
-        url: `/HomeLacturer/material/${courseName}`,  // השתמש ב-videoPath כפרמטר ב-URL
+        url: `/HomeLecturer/material/${courseName}`,  // השתמש ב-videoPath כפרמטר ב-URL
         method: "DELETE",
       }),
       invalidatesTags: ["Material"],
     }),
 
 getNewVideos: builder.query<Video[], string>({
-  query: (lastLogin) => `/users/new-videos/${encodeURIComponent(lastLogin)}`,
+  query: (lastLogin) => `/users/new-videos/${lastLogin}`,
   providesTags: ['User'],
 }),
-
 
     // עדכון תאריך התחברות - זו מוטציה, לכן invalidatesTags בסדר
     updateLastLogin: builder.mutation<void, void>({
@@ -69,7 +68,7 @@ getNewVideos: builder.query<Video[], string>({
       invalidatesTags: ['User'],
     }),
     getExpiredMaterialsLast5Days: builder.query<Video[], void>({  // לא צריך פרמטרים
-  query: () => `HomeLacturer/materials/expired-materials-last-5-days`,
+  query: () => `HomeLecturer/materials/expired-materials-last-5-days`,
   providesTags: ['Material'],
 }),
     

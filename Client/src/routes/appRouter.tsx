@@ -1,13 +1,10 @@
-
-
-
 import { createBrowserRouter, RouteObject } from "react-router";
 import AppLayout from "../components/AppLayout";
 import NotFound from "../pages/NotFound";
 import Ai from "../pages/material/Ai";
 import CyberSecurity from "../pages/material/CyberSecurity";
 import CloudComputing from "../pages/material/CloudComputing";
-import SignUp from "../components/SignUp"; // ✅ ייבוא קומפוננטת SignUp
+import SignUp from "../components/auth/SignUp"; 
 import SignIn from "../components/auth/SignIn";
 import HomePage from "../components/home/HomePage";
 
@@ -18,9 +15,8 @@ const routes: RouteObject[] = [
       { index: true, path: '/', element: <SignIn /> },
       { path: "SignUp", element: <SignUp /> },
       {
-        path: "HomeLacturer",
+        path: "HomeLecturer",
         children: [
-          // { index: true, element: <HomeLacturer /> },
           { index: true, element:<HomePage/>},
           { path: "Ai", element: <Ai /> },
           { path: "CyberSecurity", element: <CyberSecurity /> },
@@ -30,13 +26,12 @@ const routes: RouteObject[] = [
       { path: "HomeStudent",
         children:
         [
-          // { index: true, element: <HomeStudent /> },
           { index: true, element:<HomePage/>},
           { path: "Ai", element: <Ai /> },
           { path: "CyberSecurity", element: <CyberSecurity /> },
           { path: "CloudComputing", element: <CloudComputing /> },
         ]
-       }, // הוספנו את הנתיב ל-HomeStudent
+       },
       { path: "*", element: <NotFound /> },
     ],
   },

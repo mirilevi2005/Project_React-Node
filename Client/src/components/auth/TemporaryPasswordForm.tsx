@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { TempPasswordForm } from '../../schema/SignIn'; // עדכן נתיב אם צריך
-import { tempFormStyle } from '../styles/signInStyles'; // עדכן נתיב אם צריך
+import { TempPasswordForm } from '../../schema/SignIn'; 
+import { tempFormStyle } from '../styles/signInStyles'; 
 
 interface Props {
   onSubmit: SubmitHandler<TempPasswordForm>;
-  isLoading: boolean; // verifyLoading
+  isLoading: boolean;
 }
 const TemporaryPasswordForm=({ onSubmit,isLoading}:Props)=>{
   const { register, handleSubmit, formState: { errors } } = useForm<TempPasswordForm>();

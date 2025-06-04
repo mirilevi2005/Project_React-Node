@@ -10,7 +10,7 @@ const fs = require("fs");
 const path = require("path");
 const verifyJWT = require("../middelware/verifyJWT");
 
-// 📌 הגדרת אחסון Multer לפי שם קורס
+//  הגדרת אחסון Multer לפי שם קורס
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const courseName = req.params.nameCours;
@@ -29,21 +29,22 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// 📌 העלאת סרטון חדש לפי שם קורס
+//  העלאת סרטון חדש לפי שם קורס
 router.post("/:nameCours", upload.single("video"), LearningMaterialsController.addMaterial);
 
-// 📌 קבלת כל הסרטונים של קורס מסוים
+//  קבלת כל הסרטונים של קורס מסוים
 router.get("/:nameCours", LearningMaterialsController.getMaterialsByCourseName);
 
-// 📌 מחיקת סרטון לפי מזהה
+//  מחיקת סרטון לפי מזהה
 router.delete("/material/:MaterialId", LearningMaterialsController.deleteMaterial);
 
-// ✅ עדכון שם סרטון לפי מזהה
-router.put("/:nameCours", upload.none(), LearningMaterialsController.updateMaterial); // לא נשלחת קובץ, רק FormData
+//  עדכון שם סרטון לפי מזהה
+router.put("/:nameCours", upload.none(), LearningMaterialsController.updateMaterial);
 
-
+//קבלת הסרטות חדשות
 router.get('/material/:timestamp', verifyJWT, LearningMaterialsController.getNewVideosSince);
 
+//קבלת 5 ימים האחרונים
 router.get('/materials/expired-materials-last-5-days', LearningMaterialsController.getMaterialsExpiringSoon);
 
 

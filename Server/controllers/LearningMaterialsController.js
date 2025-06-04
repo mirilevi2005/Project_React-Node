@@ -1,6 +1,6 @@
 
 const Material = require('../models/LearningMaterials');
-const upload = require('../middelware/multerConfig'); // ייבוא ה-upload שנמצא ב-multerConfig.js
+const upload = require('../middelware/multerConfig'); 
 const fs = require('fs');
 const { default: mongoose } = require('mongoose');
 const path = require("path");
@@ -14,10 +14,10 @@ exports.addMaterial = async (req, res) => {
             return res.status(400).json({ message: "No file uploaded" });
         }
 
-        const nameCours = req.params.nameCours; // לקיחת שם הקורס מהפרמטר
+        const nameCours = req.params.nameCours; 
         const uploadDate = req.body.uploadDate;
         const finishDate = req.body.finishDate;
-        const videoName = req.body.videoName || req.file.originalname; // אפשר לשמור את השם המקורי אם לא נשלח
+        const videoName = req.body.videoName || req.file.originalname; 
 
         console.log(`Saving material for course: ${nameCours}, Video: ${videoName}`);
 
