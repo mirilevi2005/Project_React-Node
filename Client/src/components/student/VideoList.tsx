@@ -25,7 +25,7 @@ interface Props {
 }
 
 const VideoList=({ courseName }:Props) => {
-  const theme = useTheme();
+
   const { data, isError, isLoading } = useGetAllMaterialsByNameCourseQuery(courseName);
   const [expandedVideo, setExpandedVideo] = useState<string | null>(null);
   const [showSnackbar, setShowSnackbar] = useState(false);

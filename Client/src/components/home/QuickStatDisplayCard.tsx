@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Typography, Grid } from '@mui/material';
 import { QuickStatPaper, StatIconBox } from '../styles/HomePage';
 import { QuickStat } from '../../interface/HomePage';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { NewPasswordForm as NewPasswordFormType } from '../../schema/SignIn'; 

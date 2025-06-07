@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link as RouterLink } from 'react-router-dom'; // כדי לא להתנגש עם MUI Link
 import { Box, Typography, CardContent, CardMedia, Chip, Link } from '@mui/material';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';

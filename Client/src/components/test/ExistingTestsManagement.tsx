@@ -144,7 +144,7 @@ const ExistingTestsManagement = ({ courseName, openFormForEdit }: Props) => {
                       <ListItem key={score.studentId}>
                         <ListItemText
                           primary={score.userName}
-                          secondary={`Score: ${score.scores} | Finished: ${
+                          secondary={`Score: ${score.score} | Finished: ${
                             score.finishedAt ? new Date(score.finishedAt).toLocaleString() : "-"
                           }`}
                         />

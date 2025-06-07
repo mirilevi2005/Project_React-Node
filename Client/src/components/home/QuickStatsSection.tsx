@@ -1,4 +1,3 @@
-import React from 'react';
 import { Grid } from '@mui/material';
 import QuickStatDisplayCard from './QuickStatDisplayCard';
 import { QuickStat } from '../../interface/HomePage';
