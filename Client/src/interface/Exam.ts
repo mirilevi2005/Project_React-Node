@@ -60,7 +60,7 @@ export interface TestScore {
 
 export interface StudentScore {
   studentId: string;
-  scores: number;
+  score: number;
   userName: string;
   finishedAt?: string;
 }
