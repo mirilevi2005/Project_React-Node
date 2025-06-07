@@ -1,8 +1,6 @@
 import { useSelector } from 'react-redux';
 
-import VideoOfMaterialStudent from '../../components/student/VideoOfMaterialStudent';
 import { selectCurrentUser } from '../../redux/slice/authStateSlice';
-import VideoOfMaterialLacturer from '../../components/video/VideoOfMaterialLacturer';
 import LecturerCourseMaterialsManager from '../../components/LecturerCourseMaterialsManager';
 import StudentCourseMaterialsManager from '../../components/student/StudentCourseMaterialsManager';
 
@@ -15,7 +13,6 @@ const CyberSecurity = () => {
       {user?.roles === 'lecturer' ? (
         <LecturerCourseMaterialsManager/>
       ) : (
-        // <VideoOfMaterialStudent />
         <StudentCourseMaterialsManager/>
       )}
     </div>
