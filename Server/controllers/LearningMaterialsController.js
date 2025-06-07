@@ -7,8 +7,7 @@ const path = require("path");
 
 exports.addMaterial = async (req, res) => {
     try {
-        console.log("Received request body:", req.body);
-        console.log("Received file:", req.file);
+
 
         if (!req.file) {
             return res.status(400).json({ message: "No file uploaded" });
@@ -19,7 +18,6 @@ exports.addMaterial = async (req, res) => {
         const finishDate = req.body.finishDate;
         const videoName = req.body.videoName || req.file.originalname; 
 
-        console.log(`Saving material for course: ${nameCours}, Video: ${videoName}`);
 
         const _id = new mongoose.Types.ObjectId();
 
@@ -46,7 +44,6 @@ exports.addMaterial = async (req, res) => {
 exports.getAllMaterials = async (req, res) => {
     try {
         const materials = await Material.find();
-        console.log(materials);
         res.json(materials);
     } catch (error) {
         console.error('Failed to get materials:', error);
@@ -60,9 +57,7 @@ exports.getAllMaterials = async (req, res) => {
 exports.getMaterialsByCourseName = async (req, res) => {
     try {
         const { nameCours } = req.params;
-        console.log("Fetching materials for course:", nameCours);
 
-        // חיפוש במסד הנתונים לפי שם הקורס
         const materials = await Material.find({ nameCours });
 
         if (!materials || materials.length === 0) {
@@ -122,7 +117,6 @@ exports.deleteMaterial = async (req, res) => {
         
         try {
             await fs.promises.unlink(videoPath);
-            console.log("File deleted successfully:", videoPath);
         } catch (err) {
             console.error("Failed to delete file:", err);
         }

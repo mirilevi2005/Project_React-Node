@@ -12,7 +12,6 @@ const VideoOfMaterialStudent = () => {
   const courseName = urlParts[urlParts.length - 1];
 
   const student = useSelector(selectCurrentUser);
-  console.log(student);
   const studentId = student?._id;
   useEffect(() => {
     setUploadedCourse(courseName);

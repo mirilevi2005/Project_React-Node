@@ -192,7 +192,6 @@ exports.getTestScores = async (req, res) => {
     }
 
     const test = await Test.findById(testId).populate('studentsScores.studentId', 'userName email');
-    console.log(test);
 
     if (!test) {
       return res.status(404).json({ message: 'Test not found' });

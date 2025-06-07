@@ -5,7 +5,6 @@ const allowedOrigins = [
 
 const corsOptions = {
     origin: (origin, callback) => {
-        console.log('CORS origin:', origin);
         if (!origin) {
             callback(null, true);
             return;

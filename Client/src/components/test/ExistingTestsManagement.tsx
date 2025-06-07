@@ -58,7 +58,6 @@ const ExistingTestsManagement = ({ courseName, openFormForEdit }: Props) => {
       try {
         const response = await triggerGetTestScores(test._id).unwrap();
         grades[test._id] = response.scores ?? [];
-        console.log("✅ response:", response);
       } catch (error) {
         console.error("❌ Error loading scores:", error);
         grades[test._id] = [];

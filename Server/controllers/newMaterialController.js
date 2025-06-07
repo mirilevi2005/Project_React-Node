@@ -13,7 +13,6 @@ exports.updateLastLogin = async (req, res) => {
 };
 
 exports.getNewVideosSinceLastLogin = async (req, res) => {
-  console.log("miri");
   
   try {
     const { lastLogin } = req.params;

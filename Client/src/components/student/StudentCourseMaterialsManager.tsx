@@ -42,7 +42,6 @@ const StudentCourseMaterialsManager = () => {
           <TestForStudent courseName={courseName} studentId={studentId!} />
         );
       case "chart":
-        // StudentCourseMaterialsManager.tsx
         const StudentCourseMaterialsManager = ({
           courseName,
           studentId,
@@ -72,23 +71,11 @@ const StudentCourseMaterialsManager = () => {
     }
   };
 
-  // const cardStyle = (panel: string) => ({
-  //   height: "100%",
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   transition: "transform 0.2s",
-  //   "&:hover": { transform: "translateY(-5px)" },
-  //   border:
-  //     activePanel === panel
-  //       ? `2px solid ${theme.palette.primary.main}`
-  //       : "none",
-  // });
-
   const cardStyle = (panel: string) => ({
-  height: 250, // גובה אחיד לכל הכרטיסים
+  height: 250, 
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-between", // מחלק את CardContent ו-CardActions בגובה
+  justifyContent: "space-between", 
   transition: "transform 0.2s",
   "&:hover": { transform: "translateY(-5px)" },
   border:

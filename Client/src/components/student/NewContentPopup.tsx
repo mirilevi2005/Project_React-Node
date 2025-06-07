@@ -46,12 +46,10 @@ const NewContentPopup = () => {
   const [showSnackbar, setShowSnackbar] = useState(false);
 
   const lastLogin = previousLoginFromRedux || localStorage.getItem('previousLogin');
- console.log(lastLogin);
  
   const { data: newVideosRaw } = useGetNewVideosQuery(lastLogin ?? '', {
     skip: !lastLogin,
   });
-  console.log(newVideosRaw);
   
 
   const { data: newTests } = useGetNewTestsQuery(lastLogin ?? '', {

@@ -1,10 +1,8 @@
 const Material = require('../models/LearningMaterials')
 
 exports.addMaterial = async(req,res)=>{
-  {console.log("mirimiri");
-  }
+
     const material = await Material.create(req.body);
-    console.log(material);
     res.json(material)
 }
 

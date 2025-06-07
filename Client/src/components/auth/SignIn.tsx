@@ -190,7 +190,6 @@ const SignIn = () => {
     try {
       const result = await sendMagicLink({ email: magicEmail }).unwrap();
       setMagicLinkSent(true);
-      console.log("Magic link sent successfully:", result);
       alert(result);
       dispatch(setUser(result));
     } catch (error) {

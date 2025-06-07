@@ -64,8 +64,6 @@ const StudentCourseFullScoreChart = ({ courseName, studentId }: Props) => {
           const result = await triggerGetScores(test._id).unwrap();
           const scores = result?.scores ?? [];
 
-          console.log(`📥 Scores received for test "${test.title}":`, scores);
-
           // Extract only numeric score values
           const testAllScores = scores
             .map((s: any) => s.score)
@@ -116,10 +114,6 @@ const StudentCourseFullScoreChart = ({ courseName, studentId }: Props) => {
             ) / 10
           : 0;
 
-      console.log("📊 Full chart data:", tempChart);
-      console.log("📈 Class average:", avgAll, "📘 Student average:", avgStudent);
-
-      // Update state
       setChartData(tempChart);
       setAverageScore(avgAll);
       setStudentAverage(avgStudent);

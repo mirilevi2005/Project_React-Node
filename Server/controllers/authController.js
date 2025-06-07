@@ -6,7 +6,6 @@ const nodemailer = require("nodemailer");
 
 const signIn = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
 
   if (!email || !password)
     return res
@@ -284,7 +283,6 @@ const sendMagicLinkEmail = async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
-    console.log(`Email sent to ${email}`);
 
   res.json({
   message: "Magic link sent",

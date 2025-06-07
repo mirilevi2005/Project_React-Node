@@ -2,7 +2,6 @@
 const express = require("express");
 const router = express.Router();
 
-  // 👈 נוסיף את הפונקציה הזו
 const LearningMaterialsController= require("../controllers/LearningMaterialsController");
 
 const multer = require("multer");
