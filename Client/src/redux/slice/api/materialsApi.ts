@@ -8,7 +8,7 @@ const materialsApiSlice = apiSlice.injectEndpoints({
 
     addMaterial: builder.mutation({
       query: ({ formData, nameCours }) => ({
-        url: `/HomeLecturer/${nameCours}`,  // שם הקורס נכנס ב-URL
+        url: `/HomeLecturer/${nameCours}`, 
         method: 'POST',
         body: formData,
       }),
@@ -24,9 +24,8 @@ const materialsApiSlice = apiSlice.injectEndpoints({
     
 
 
-    // קבלת סרטון לפי מזהה
     getMaterialById: builder.query<Video, string>({
-      query: (id) => `/HomeLecturer/${id}`,  // ניתן לעדכן את הנתיב כך שיתאים לכל סרטון
+      query: (id) => `/HomeLecturer/${id}`,  
       providesTags: ["Material"]
     }),
 
@@ -48,7 +47,7 @@ const materialsApiSlice = apiSlice.injectEndpoints({
     // מחיקת חומר (סרטון)
     deleteMaterial: builder.mutation<void, string>({
       query: (courseName) => ({
-        url: `/HomeLecturer/material/${courseName}`,  // השתמש ב-videoPath כפרמטר ב-URL
+        url: `/HomeLecturer/material/${courseName}`,  
         method: "DELETE",
       }),
       invalidatesTags: ["Material"],
@@ -59,7 +58,7 @@ getNewVideos: builder.query<Video[], string>({
   providesTags: ['User'],
 }),
 
-    // עדכון תאריך התחברות - זו מוטציה, לכן invalidatesTags בסדר
+   
     updateLastLogin: builder.mutation<void, void>({
       query: () => ({
         url: '/users/update-last-login',
@@ -67,7 +66,7 @@ getNewVideos: builder.query<Video[], string>({
       }),
       invalidatesTags: ['User'],
     }),
-    getExpiredMaterialsLast5Days: builder.query<Video[], void>({  // לא צריך פרמטרים
+    getExpiredMaterialsLast5Days: builder.query<Video[], void>({  
   query: () => `HomeLecturer/materials/expired-materials-last-5-days`,
   providesTags: ['Material'],
 }),
@@ -76,7 +75,6 @@ getNewVideos: builder.query<Video[], string>({
   
 });
 
-// יצוא הפונקציות שניתן להשתמש בהן ב-React
 export const { 
   useAddMaterialMutation,
   useGetAllMaterialsByNameCourseQuery,

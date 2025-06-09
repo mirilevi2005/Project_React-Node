@@ -2,13 +2,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const apiSlice = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8080', // ה-baseUrl שלך
-    credentials: 'include', // אם יש צורך בשיתוף cookies
+    baseUrl: 'http://localhost:8080',
+    credentials: 'include', 
   }),
   tagTypes: ['User'],
   endpoints: (builder) => ({
     getUserProfile: builder.query({
-      query: () => '/user', // שלח בקשה לנתיב של פרטי המשתמש
+      query: () => '/user', 
     }),
     createUser: builder.mutation({
       query: (newUser) => ({
@@ -19,10 +19,10 @@ const apiSlice = createApi({
       invalidatesTags: ['User'],
     }),
     getVideosCount: builder.query<number, string>({
-      query: (nameCours) => `/stats/${nameCours}`, // בשרת צריך לטפל בנתיב הזה ולהחזיר רק videosCount
+      query: (nameCours) => `/stats/${nameCours}`, 
     }),
     getCourseStats: builder.query<{ studentsCount: number; videos: number }, void>({
-      query: () => `/stats/`, // מחזיר את שאר הנתונים עבור הקורס
+      query: () => `/stats/`, 
     }),
   }),
 });

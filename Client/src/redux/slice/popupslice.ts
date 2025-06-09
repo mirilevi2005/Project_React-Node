@@ -1,4 +1,3 @@
-// redux/slice/popupSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
 
 interface PopupState {

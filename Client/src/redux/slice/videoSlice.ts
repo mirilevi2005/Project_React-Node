@@ -3,9 +3,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Video } from "../../interface/VideoMaterial";  
 
 const initialState = {  
-  VideoList: [] as Video[],  // הגדרה ישירה של מערך מסוג Video
-  uploadedVideo: null as Video | null, // משתנה זמני להעלאה
-  selectedMaterial: null as Video | null, // הוספת selectedMaterial
+  VideoList: [] as Video[], 
+  uploadedVideo: null as Video | null,
+  selectedMaterial: null as Video | null,
 
 };
 

@@ -1,4 +1,4 @@
-import {  SignInRequest, SignUpRequest, AuthResponse, userInfo } from '../../../interface/authTypes'; // עדכני את הנתיב
+import {  SignInRequest, SignUpRequest, AuthResponse, userInfo } from '../../../interface/authTypes'; 
 import apiSlice from './apiSlice';
 
 const authApi = apiSlice.injectEndpoints({
@@ -50,7 +50,6 @@ forgotPassword: builder.mutation<void, { email: string }>({
       }),
     }),
     changePassword: builder.mutation<void, { email: string; newPassword: string }>({
-    // changePassword: builder.mutation<void, SignInRequest>({
       query: (body) => ({
         url: "/change-password",
         method: "POST",

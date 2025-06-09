@@ -81,7 +81,7 @@ getNewTests: builder.query<Exam[], string>({
   query: (lastLogin) => `/test/new/${lastLogin}`,
 }),
  
-getRecentTestsForStudent: builder.query<Exam[], string>({  // מקבל studentId כמחרוזת
+getRecentTestsForStudent: builder.query<Exam[], string>({  
   query: (studentId) => `/test/recent/${studentId}`,
   providesTags: ['Test'],
 }),
