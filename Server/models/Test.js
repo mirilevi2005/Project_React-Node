@@ -13,6 +13,6 @@ const testSchema = new mongoose.Schema({
     score: Number,
     finishedAt: Date
   }]
-}, { timestamps: true }); // ← חשוב מאוד
+}, { timestamps: true }); 
 
 module.exports = mongoose.model('Test', testSchema);

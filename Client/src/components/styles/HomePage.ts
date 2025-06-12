@@ -1,7 +1,6 @@
 import { styled } from '@mui/material/styles';
 import { Card, Paper, Typography, Box } from '@mui/material';
 
-// רכיב מעוצב עבור כרטיסי קורס בודדים
 export const StyledCourseCard = styled(Card)({
   height: '100%',
   display: 'flex',
@@ -18,7 +17,6 @@ export const StyledCourseCard = styled(Card)({
   }
 });
 
-// רכיב מעוצב עבור כותרות מקטע (לא בשימוש בגרסה הנוכחית של HomePage אך נשמר לשימוש פוטנציאלי)
 export const SectionTitle = styled(Typography)({
   fontWeight: 'bold',
   color: '#1e3a8a',
@@ -37,8 +35,8 @@ export const SectionTitle = styled(Typography)({
   }
 });
 
-// רכיב מעוצב עבור כרטיסי סטטיסטיקה מהירה (QuickStatCard המקורי)
-export const QuickStatPaper = styled(Paper)({ // שונה שם כדי למנוע התנגשות עם שם קומפוננטה פוטנציאלי
+
+export const QuickStatPaper = styled(Paper)({ 
   padding: 24,
   display: 'flex',
   alignItems: 'center',
@@ -54,8 +52,7 @@ export const QuickStatPaper = styled(Paper)({ // שונה שם כדי למנוע
   }
 });
 
-// רכיב מעוצב עבור מיכל האייקון בתוך כרטיס סטטיסטיקה מהירה (StatIcon המקורי)
-export const StatIconBox = styled(Box)({ // שונה שם לבהירות
+export const StatIconBox = styled(Box)({ 
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -65,7 +62,6 @@ export const StatIconBox = styled(Box)({ // שונה שם לבהירות
   marginRight: 16,
 });
 
-// תמונות רקע לקורסים
 export const backgroundImages: Record<string, string> = {
   "Ai": "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   "CyberSecurity": "https://images.pexels.com/photos/5380642/pexels-photo-5380642.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",

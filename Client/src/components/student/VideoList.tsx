@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import {
   Container,
   Typography,
@@ -30,7 +30,6 @@ const VideoList=({ courseName }:Props) => {
   const [expandedVideo, setExpandedVideo] = useState<string | null>(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
-  // Check if video is still valid based on finish date
   const isVideoValid = (date: string | Date) => new Date(date) > new Date();
   const videos: Video[] = data?.videos || [];
 

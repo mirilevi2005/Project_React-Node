@@ -1,8 +1,6 @@
-// styles.ts
 import { styled } from '@mui/material/styles';
 import { Card, Typography, Paper, Box, SxProps, Theme } from '@mui/material';
 
-// רכיבי styled
 export const StyledCourseCard = styled(Card)({
   height: '100%',
   display: 'flex',

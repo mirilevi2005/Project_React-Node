@@ -17,77 +17,61 @@ import {
 } from "../../redux/slice/api/testApi";
 
 interface Props {
-  courseName: string;   // Course name
-  studentId: string;    // Student ID
+  courseName: string;  
+  studentId: string;  
 }
 
-// Structure of an entry in the chart displaying test results
 interface TestChartEntry {
-  testTitle: string;      // Test title
-  averageScore: number;   // Class average score for the test
-  studentScore?: number | null;  // Student's score for the test (if exists)
+  testTitle: string;     
+  averageScore: number;
+  studentScore?: number | null;  
 }
 
 const StudentCourseFullScoreChart = ({ courseName, studentId }: Props) => {
   const theme = useTheme();
 
-  // Fetch list of tests by course name
   const { data: testsData } = useGetTestsByCourseQuery({ courseName });
 
-  // Lazy function to fetch scores for a specific test (called manually)
   const [triggerGetScores] = useLazyGetTestScoresQuery();
 
-  // State to store chart data
   const [chartData, setChartData] = useState<TestChartEntry[]>([]);
 
-  // Overall class average score
   const [averageScore, setAverageScore] = useState<number>(0);
 
-  // Individual student average score (can be null if no data)
   const [studentAverage, setStudentAverage] = useState<number | null>(null);
 
-  // Use effect to fetch scores after loading list of tests
   useEffect(() => {
     const fetchScores = async () => {
       if (!testsData?.tests) {
-        // If no tests for the course, do nothing
         return;
       }
 
-      let allScores: number[] = [];      // All scores of all students for all tests
-      let studentScores: number[] = [];  // Only the student's scores
-      const tempChart: TestChartEntry[] = []; // Build data for the chart
+      let allScores: number[] = [];    
+      let studentScores: number[] = [];  
+      const tempChart: TestChartEntry[] = []; 
 
       for (const test of testsData.tests) {
         try {
-          // Request scores for a specific test
           const result = await triggerGetScores(test._id).unwrap();
           const scores = result?.scores ?? [];
-
-          // Extract only numeric score values
           const testAllScores = scores
             .map((s: any) => s.score)
             .filter((score: any) => typeof score === "number");
-
-          // Calculate class average for the test
           const testAvg =
             testAllScores.length > 0
               ? testAllScores.reduce((sum: any, s: any) => sum + s, 0) / testAllScores.length
               : 0;
 
-          // Find the student's score for the current test
           const studentScoreObj = scores.find(
             (s: any) =>
               String((s.studentId as any)?._id ?? s.studentId) === String(studentId)
           );
 
-          // Student's score (if exists)
           const studentScore = studentScoreObj?.score ?? null;
 
           if (typeof studentScore === "number") studentScores.push(studentScore);
           allScores.push(...testAllScores);
 
-          // Add to chart data
           tempChart.push({
             testTitle: test.title,
             averageScore: Math.round(testAvg * 10) / 10,
@@ -98,7 +82,6 @@ const StudentCourseFullScoreChart = ({ courseName, studentId }: Props) => {
         }
       }
 
-      // Overall average of all scores from all tests
       const avgAll =
         allScores.length > 0
           ? Math.round(
@@ -106,7 +89,6 @@ const StudentCourseFullScoreChart = ({ courseName, studentId }: Props) => {
             ) / 10
           : 0;
 
-      // Overall individual average of the student
       const avgStudent =
         studentScores.length > 0
           ? Math.round(
@@ -122,7 +104,6 @@ const StudentCourseFullScoreChart = ({ courseName, studentId }: Props) => {
     fetchScores();
   }, [testsData, triggerGetScores, studentId, courseName]);
 
-  // Function to get comparison text between averages
   const getComparisonText = () => {
     if (studentAverage === null) return "No score data available";
     if (studentAverage > averageScore) return "You are above average 👏";

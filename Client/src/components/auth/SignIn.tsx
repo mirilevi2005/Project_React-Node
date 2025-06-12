@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Box, Paper, Tab, Tabs } from "@mui/material";
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../firebase"; // Update path if needed
+import { auth, provider } from "../../firebase"; 
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,6 @@ import {
   TempPasswordForm,
   NewPasswordForm as NewPasswordFormType, 
 } from "../../schema/SignIn"; 
-// import PasswordSignInFormComponent from "./PasswordSignInForm";
 import MagicLinkFormComponent from "./MagicLinkForm";
 import ForgotPasswordFormComponent from "./ForgotPasswordForm";
 import TemporaryPasswordFormComponent from "./TemporaryPasswordForm";
@@ -54,7 +53,6 @@ const SignIn = () => {
   ]);
   const dispatch = useDispatch();
 
-  // RTK Query mutations
   const [signInMutation, { isLoading: signInLoading }] = useSignInMutation();
   const [googleSignInMutation] = useGoogleSignInMutation();
   const [forgotPasswordMutation, { isLoading: forgotLoading }] = useForgotPasswordMutation();
@@ -207,7 +205,6 @@ const SignIn = () => {
         </Tabs>
       </Box>
 
-      {/* Tab: Sign in with password */}
       {tabValue === 0 && !showForgotPassword && !showTempPasswordInput && !tempPasswordVerified && (
         <FormProvider {...signInMethods}>
           <PasswordSignInForm
@@ -220,7 +217,6 @@ const SignIn = () => {
           />
         </FormProvider>
       )}
-       {/* טאב אימות אימייל */}
        {tabValue === 1 && !showForgotPassword && !showTempPasswordInput && !tempPasswordVerified && (
          <MagicLinkFormComponent
             magicEmail={magicEmail}
@@ -232,7 +228,6 @@ const SignIn = () => {
           />
       )}
     
-{/* טופס שליחה למייל זמני */}
 {tabValue === 0 && showForgotPassword && (
   <ForgotPasswordFormComponent
     onSendTempPassword={sendTempPasswordToEmail}
@@ -241,29 +236,19 @@ const SignIn = () => {
   />
 )}
 
-{/* טופס הזנת סיסמה זמנית */}
 {tabValue === 0 && showTempPasswordInput && !tempPasswordVerified && (
   <FormProvider {...tempPasswordMethods}>
     <TemporaryPasswordFormComponent
       onSubmit={onSubmitTempPassword}
-      // onBack={() => {
-      //   setShowTempPasswordInput(false);
-      //   setShowForgotPassword(true);
-      // }}
       isLoading={verifyLoading}
     />
   </FormProvider>
 )}
 
-{/* טופס סיסמה חדשה */}
 {tabValue === 0 && tempPasswordVerified && (
   <FormProvider {...newPasswordMethods}>
     <NewPasswordFormComponent
       onSubmit={onSubmitNewPassword}
-      // onBack={() => {
-      //   setTempPasswordVerified(false);
-      //   setShowTempPasswordInput(true);
-      // }}
       isLoading={changeLoading}
     />
   </FormProvider>
