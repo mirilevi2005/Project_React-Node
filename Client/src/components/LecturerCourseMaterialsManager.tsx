@@ -63,15 +63,15 @@ const LecturerCourseMaterialsManager = () => {
     }
   }, [testList, triggerGetTestScores]);
 
-  // Calculate average score per test for display in chart
-  const aggregatedScores = testList.map((test) => {
-    const scores = selectedGrades[test._id] ?? [];
-    const avgScore = scores.reduce((sum, s) => sum + s.score, 0) / (scores.length || 1);
-    return {
-      testTitle: test.title,
-      averageScore: avgScore,
-    };
-  });
+  // // Calculate average score per test for display in chart
+  // const aggregatedScores = testList.map((test) => {
+  //   const scores = selectedGrades[test._id] ?? [];
+  //   const avgScore = scores.reduce((sum, s) => sum + s.score, 0) / (scores.length || 1);
+  //   return {
+  //     testTitle: test.title,
+  //     averageScore: avgScore,
+  //   };
+  // });
 
   // Function to create the panels with the appropriate components
   const createPanels = (

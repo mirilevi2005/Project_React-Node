@@ -35,7 +35,8 @@ import PasswordSignInForm from "./PasswordSignInForm";
 
 const SignIn = () => {
   const [tabValue, setTabValue] = useState(0);
-  const [isLoading, setIsLoading] = useState(false); 
+  // const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading] = useState(false); 
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [tempPasswordEmail, setTempPasswordEmail] = useState("");
   const [showTempPasswordInput, setShowTempPasswordInput] = useState(false);
@@ -70,7 +71,8 @@ const SignIn = () => {
     resolver: zodResolver(NewPasswordSchema),
   });
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  // const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = ( newValue: number) => {
     setTabValue(newValue);
     setShowForgotPassword(false);
     setShowTempPasswordInput(false);

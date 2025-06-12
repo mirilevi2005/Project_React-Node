@@ -2,12 +2,12 @@
 import {
   AppBar,
   Typography,
-  Button,
-  Avatar,
+  // Button,
+  // Avatar,
   useScrollTrigger,
-  IconButton,
-  Container,
-  Box,
+  // IconButton,
+  // Container,
+  // Box,
   Theme, 
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -19,7 +19,9 @@ export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   boxShadow: 'none',
 }));
 
-export const LogoText = styled(Typography)(({ theme }) => ({
+// export const LogoText = styled(Typography)(({ theme }) => ({
+export const LogoText = styled(Typography)(() => ({
+
   fontWeight: 'bold',
   background: 'linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)',
   WebkitBackgroundClip: 'text',
@@ -31,7 +33,7 @@ export const LogoText = styled(Typography)(({ theme }) => ({
 export const ElevationScroll = ({ children }: { children: React.ReactElement }) => {
   const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
   return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0,
+    // elevation: trigger ? 4 : 0,
   });
 };
 
